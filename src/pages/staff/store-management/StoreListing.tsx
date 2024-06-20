@@ -29,7 +29,7 @@ function StoreListing() {
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
-    const storeData = useSelector((state: any) => state.stores.storeData);
+    const storeData = useSelector((state: any) => state?.stores?.storeData);
     const [initialRecords, setInitialRecords] = useState(sortBy(storeData, 'store'));
     const [recordsData, setRecordsData] = useState(initialRecords);
 
@@ -168,9 +168,9 @@ function StoreListing() {
                             title: 'Status',
                             sortable: false,
                             render: (store:any) =>
-                                status && (
-                                    <span onClick={() => updateStatus(store._id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
-                                        {store.status}
+                                store.status && (
+                                    <span onClick={() => updateStatus(store?._id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
+                                        {store?.status}
                                     </span>
                                 ),
                         },
@@ -179,11 +179,12 @@ function StoreListing() {
                             accessor: 'id',
                             title: 'Action',
                             titleClassName: '!text-center',
-                            render: ( _id:any ) => {
+                            render: ( store:any ) => {
                                 return (
                                     <div className="flex items-center w-max mx-auto gap-2">
                                         <Tippy content="view">
-                                            <Link to={`/staff/stores/${_id}`} type="button">
+                                            <Link to={`/staff/stores/${store?._id}`} type="button">
+                                        {/* {JSON.stringify(_id)} */}
                                                 <IconEye />
                                             </Link>
                                         </Tippy>
