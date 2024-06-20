@@ -17,13 +17,13 @@ import { IoMdClose } from 'react-icons/io';
 const StaffDetailsTable = () => {
     const adminDetails = useSelector((state: any) => state.admin.adminDetails);
     const dispatch = useDispatch();
-    const staffDetails = useSelector((state: any) => state.staffs.staffDetails);
+    const staffDetails: any = useSelector((state: any) => state?.staffs?.staffDetails);
     const [updatingModal, setUpdatingModal] = useState(false);
     const [clickedStaffId, setClickedStaffId] = useState<string>('');
     const [selectedStaff, setSelectedStaff] = useState<any>(null);
     const [staffReportModal, setStaffReportModal] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
-  
+
     useEffect(() => {
         const fetchStaff = async () => {
             const res = await getStaffs(adminDetails?.token);
@@ -87,10 +87,9 @@ const StaffDetailsTable = () => {
         });
     };
 
-    const selectedStaffTarget: any = staffDetails.filter((item:any) => {
-        return item._id == staffReportModal;
+    const selectedStaffTarget: any = staffDetails?.filter((item: any) => {
+        return item?._id == staffReportModal;
     });
-
 
     const targetSubmit = async (values: TTarget) => {
         try {
@@ -105,7 +104,7 @@ const StaffDetailsTable = () => {
             setStaffReportModal('');
             setLoading(false);
         } catch (error) {
-            showAlert("error","Something went wrong! please try again later")
+            showAlert('error', 'Something went wrong! please try again later');
             setLoading(false);
             console.log(error);
         }
@@ -119,10 +118,10 @@ const StaffDetailsTable = () => {
                     {
                         title: 'Staff Name',
                         accessor: 'name',
-                        render: ( name:any, _id :any) => {
+                        render: (staff: any) => {
                             return (
-                                <div onClick={() => setStaffReportModal(_id)} className="cursor-pointer text-blue-600">
-                                    <Tooltip content="Click to see staff details"> {name} </Tooltip>
+                                <div onClick={() => setStaffReportModal(staff._id)} className="cursor-pointer text-blue-600">
+                                    <Tooltip content="Click to see staff details"> {staff.name} </Tooltip>
                                 </div>
                             );
                         },
@@ -138,7 +137,7 @@ const StaffDetailsTable = () => {
                     {
                         accessor: 'Actions',
                         title: 'Action',
-                        render: ({ _id }) => {
+                        render: (_id:any ) => {
                             return (
                                 <div className="flex gap-x-3">
                                     <FaEdit className="cursor-pointer" size={20} onClick={() => handleEdit(_id)} color="green" />
@@ -264,9 +263,18 @@ const StaffDetailsTable = () => {
                                         </button>
                                     </div>
                                     <div className="p-5">
+                                        {/* <h1 className="text-xl font-medium">Added Stores</h1>
+                                        {selectedStaffTarget && selectedStaffTarget[0]?.target > 0 && <h1>Current Target : <span className="text-xl my-3 font-bold"> {selectedStaffTarget[0]?.target}</span> </h1>}
+                                        <h4>Current count of added stores : <span className="text-xl my-3 font-bold">{selectedStaffTarget[0]?.addedStoresCount}</span></h4> */}
                                         <h1 className="text-xl font-medium">Added Stores</h1>
-                                        {selectedStaffTarget[0]?.target > 0 && <h1>Current Target : <span className="text-xl my-3 font-bold"> {selectedStaffTarget[0]?.target}</span> </h1>}
-                                        <h4>Current count of added stores : <span className="text-xl my-3 font-bold">{selectedStaffTarget[0]?.addedStoresCount}</span></h4>
+                                        {selectedStaffTarget && selectedStaffTarget[0]?.target > 0 && (
+                                            <h1>
+                                                Current Target : <span className="text-xl my-3 font-bold"> {selectedStaffTarget[0]?.target}</span>{' '}
+                                            </h1>
+                                        )}
+                                        <h4>
+                                            Current count of added stores : <span className="text-xl my-3 font-bold">{selectedStaffTarget && selectedStaffTarget[0]?.addedStoresCount}</span>
+                                        </h4>
                                     </div>
                                     <div className="px-5">
                                         <Form
@@ -278,7 +286,7 @@ const StaffDetailsTable = () => {
                                                         <Field
                                                             initialValue={selectedStaff?.name}
                                                             id="target"
-                                                            label={selectedStaffTarget[0]?.target > 0 && "Update Target"}
+                                                            label={selectedStaffTarget[0]?.target > 0 && 'Update Target'}
                                                             type="number"
                                                             placeholder="Enter target"
                                                             component={WrappedInput}

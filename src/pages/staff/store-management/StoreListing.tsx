@@ -132,13 +132,13 @@ function StoreListing() {
                             accessor: 'store',
                             title: 'Name',
                             sortable: true,
-                            render: ( storeName:any, district :any) => {
+                            render: ( store:any) => {
                                 return (
                                     <div className="w-max">
-                                        <h2 className="font-bold">{storeName}</h2>
+                                        <h2 className="font-bold">{store.storeName}</h2>
                                         <small>
                                             {/* {city}, */}
-                                            {district}
+                                            {store.district}
                                         </small>
                                     </div>
                                 );
@@ -149,10 +149,10 @@ function StoreListing() {
                             accessor: 'phone',
                             title: 'Contact',
                             sortable: true,
-                            render: ({ phone, email }) => (
+                            render: (store:any) => (
                                 <div className="w-max">
-                                    <h2>{phone}</h2>
-                                    <small>{email}</small>
+                                    <h2>{store.phone}</h2>
+                                    <small>{store.email}</small>
                                 </div>
                             ),
                         },
@@ -160,31 +160,26 @@ function StoreListing() {
                             accessor: 'wholeSale',
                             title: 'wholeSale',
                             sortable: false,
-                            render: ({ wholeSale }) => wholeSale && <IconCircleCheck className="w-6 h-6" />,
+                            render: ( wholeSale:any ) => wholeSale && <IconCircleCheck className="w-6 h-6" />,
                         },
                         { accessor: 'retail', title: 'Retail', sortable: false, render: ({ retail }) => retail && <IconCircleCheck className="w-6 h-6" /> },
                         {
                             accessor: 'status',
                             title: 'Status',
                             sortable: false,
-                            render: ({ status, _id }) =>
+                            render: (store:any) =>
                                 status && (
-                                    <span onClick={() => updateStatus(_id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
-                                        {status}
+                                    <span onClick={() => updateStatus(store._id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
+                                        {store.status}
                                     </span>
                                 ),
                         },
-                        // {
-                        //     accessor: 'status',
-                        //     title: 'Retails',
-                        //     sortable: true,
-                        //     render: ({ status }) => <span className={storeStatus[status].badgeClass}>{status}</span>,
-                        // },
+
                         {
                             accessor: 'id',
                             title: 'Action',
                             titleClassName: '!text-center',
-                            render: ({ _id }) => {
+                            render: ( _id:any ) => {
                                 return (
                                     <div className="flex items-center w-max mx-auto gap-2">
                                         <Tippy content="view">

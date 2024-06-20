@@ -130,7 +130,7 @@ console.log("staffData  ",staffData)
                 </div>
                 <div className="panel bg-gradient-to-r from-fuchsia-500 to-fuchsia-400">
                     <div className="flex justify-between">
-                        <div className="ltr:mr-1 rtl:ml-1 text-md font-semibold">Your Target : {staffData.target}</div>
+                        <div className="ltr:mr-1 rtl:ml-1 text-md font-semibold">Your Target : {staffData?.target}</div>
                         {/* <div className="dropdown">
                             <Dropdown offset={[0, 5]} placement={`'bottom-end'}`} btnClassName="hover:opacity-80" button={<IconHorizontalDots className="hover:opacity-80 opacity-70" />}>
                                 <ul className="text-black dark:text-white-dark">

@@ -169,7 +169,7 @@ const Sidebar = () => {
                                 </ul>
                             </li>
 
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <ul>
                                     <li className="nav-item">
                                         <NavLink to="/admin/account" className="group" onClick={() => toggleMenu('account')}>
@@ -180,7 +180,7 @@ const Sidebar = () => {
                                         </NavLink>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> */}
                         </ul>
                     </PerfectScrollbar>
                 </div>

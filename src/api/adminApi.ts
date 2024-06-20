@@ -3,7 +3,7 @@ import instance from '../config/axiosInstance';
 
 export const adminLogin = async (payload: any) => {
     try {
-        const res = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/login`, payload);
+        const res = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/login`, payload);
         return res;
     } catch (error) {
         return error

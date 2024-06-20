@@ -56,9 +56,9 @@ function Dashboard({ role }: { role: string }) {
         );
     }
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
-    console.log(data);
+    // if (isLoading) return <div>Loading...</div>;
+    // if (error) return <div>Error: {error.message}</div>;
+    // console.log(data);
 
     if (!data) {
         return null;
@@ -67,10 +67,9 @@ function Dashboard({ role }: { role: string }) {
     const series = data?.map((item: { count: any }) => item?.count);
     const labels = data?.map((item: { category: any }) => item?.category);
 
-    console.log("Data",data)
     const totalStore = series?.reduce((a:any,b:any)=>{
       return a+b
-    })
+    },0)
 
     const totalStores: any = {
         series: series,
@@ -258,7 +257,7 @@ function Dashboard({ role }: { role: string }) {
                         </div>
                     </div>
                     <div className="flex items-center mt-5">
-                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 74 </div>
+                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 0 </div>
                         {/* <div className="badge bg-white/30">- 2.35% </div> */}
                     </div>
                     <div className="flex cursor-pointer items-center font-semibold mt-5">
