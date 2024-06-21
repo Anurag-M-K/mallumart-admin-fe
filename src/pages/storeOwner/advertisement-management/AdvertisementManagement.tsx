@@ -177,7 +177,7 @@ export default function AdvertisementManagement() {
                                     accessor: 'advertisementDisplayStatus',
                                     title: 'Status',
                                     sortable: false,
-                                    render: ({ advertisementDisplayStatus }) => (
+                                    render: ( advertisementDisplayStatus:any ) => (
                                         <Tooltip content="Please contact the admin to display this ad on main page">
 
                                         <span className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
@@ -196,7 +196,7 @@ export default function AdvertisementManagement() {
                                     accessor: 'id',
                                     title: 'Action',
                                     titleClassName: '!text-center',
-                                    render: ({ _id }) => {
+                                    render: ( _id:any ) => {
                                         return (
                                             <div className="flex items-center w-max mx-auto gap-2">
                                                 {/* <Tooltip content="How users can see this advertisement">

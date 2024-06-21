@@ -134,7 +134,7 @@ const themeConfigSlice = createSlice({
         },
 
         setPageTitle(state, { payload }) {
-            document.title = `${payload} | MALLU STORE - Multivendor`;
+            document.title = `${payload} | MALLU MART - Multivendor`;
         },
     },
 });
