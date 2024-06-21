@@ -18,7 +18,7 @@ import IconEdit from '../../../components/Icon/IconEdit';
 import IconLoader from '../../../components/Icon/IconLoader';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 import Select from 'react-select';
-
+import { MdOutlineMiscellaneousServices } from 'react-icons/md';
 import { FaMobileAlt, FaTshirt, FaBlender, FaBook, FaSpa, FaFootballBall, FaPuzzlePiece, FaCar, FaAppleAlt, FaGem } from 'react-icons/fa';
 function CategoryManagement() {
     const dispatch = useDispatch();
@@ -40,21 +40,20 @@ function CategoryManagement() {
     const [subcategoryView, setSubcategoryView] = useState<string[]>([]);
 
     const categoryOptions = [
-        { value: 'electronics', label: <FaMobileAlt />,icon:"<FaMobileAlt />" },
-        { value: 'fashion', label: <FaTshirt/>,icon:"<FaTshirt/>" },
-        { value: 'home-appliances', label: <FaBlender />,icon:"<FaBlender />" },
-        { value: 'books', label: <FaBook/>,icon:"<FaBook/>" },
-        { value: 'beauty', label: <FaSpa/>,icon:"<FaSpa/>" },
-        { value: 'sports', label: <FaFootballBall/>,icon:"<FaFootballBall/>" },
-        { value: 'toys', label: <FaPuzzlePiece/>,icon:"<FaPuzzlePiece/>" },
-        { value: 'automotive', label: <FaCar/> ,icon:"<FaCar/>"},
-        { value: 'grocery', label: <FaAppleAlt/>,icon:"<FaAppleAlt/>" },
-        { value: 'jewelry', label: <FaGem/>,icon:"<FaGem/>" },
+        { value: 'electronics', label: <FaMobileAlt />, icon: '<FaMobileAlt />' },
+        { value: 'fashion', label: <FaTshirt />, icon: '<FaTshirt/>' },
+        { value: 'home-appliances', label: <FaBlender />, icon: '<FaBlender />' },
+        { value: 'books', label: <FaBook />, icon: '<FaBook/>' },
+        { value: 'beauty', label: <FaSpa />, icon: '<FaSpa/>' },
+        { value: 'sports', label: <FaFootballBall />, icon: '<FaFootballBall/>' },
+        { value: 'toys', label: <FaPuzzlePiece />, icon: '<FaPuzzlePiece/>' },
+        { value: 'automotive', label: <FaCar />, icon: '<FaCar/>' },
+        { value: 'grocery', label: <FaAppleAlt />, icon: '<FaAppleAlt/>' },
+        { value: 'jewelry', label: <FaGem />, icon: '<FaGem/>' },
+        { value: 'service', label: <MdOutlineMiscellaneousServices />, icon: '<MdOutlineMiscellaneousServices />' },
     ];
 
-
-
-    const formatOptionLabel = ({ label, icon }:{label:any,icon:any}) => (
+    const formatOptionLabel = ({ label, icon }: { label: any; icon: any }) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             {icon}
             <span style={{ marginLeft: 10 }}>{label}</span>
@@ -117,7 +116,7 @@ function CategoryManagement() {
             if (editCategoryId) {
                 return editCategory(editCategoryId, newTodo);
             } else {
-                console.log("newtodo ",newTodo)
+                console.log('newtodo ', newTodo);
                 return addCategory(newTodo);
             }
         },
@@ -130,7 +129,7 @@ function CategoryManagement() {
         },
         onError: (data: any) => {
             const errorMsg = data?.response?.data ?? data.message;
-            showAlert('error', errorMsg);
+            showAlert('error', "Something went wrong!. Please check again");
         },
     });
 
@@ -269,27 +268,27 @@ function CategoryManagement() {
                                                                     options={categoryOptions}
                                                                 />
                                                             </> */}
-<div>
-<label htmlFor="disSelect" className="text-sm font-bold">
-                                                                   Select icon  
+                                                            <div>
+                                                                <label htmlFor="disSelect" className="text-sm font-bold">
+                                                                    Select icon
                                                                 </label>
                                                                 <select
-                                                                                id="icon"
-                                                                                {...register('icon')}
-                                                                                className={`form-select !appearance-none disabled:pointer-events-none ${
-                                                                                    !watchParent && 'rgb(14 23 38 / var(--tw-text-opacity))'
-                                                                                } disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b] appearance-none empty:text-white`}
-                                                                            >
-                                                                                <option className="" value="">
-                                                                                    None
-                                                                                </option>
-                                                                                {categoryOptions?.map((icon) => (
-                                                                                    <option key={icon.value} value={icon.value} className="text-dark">
-                                                                                        {icon.value}
-                                                                                    </option>
-                                                                                ))}
-                                                                            </select>
-</div>
+                                                                    id="icon"
+                                                                    {...register('icon')}
+                                                                    className={`form-select !appearance-none disabled:pointer-events-none ${
+                                                                        !watchParent && 'rgb(14 23 38 / var(--tw-text-opacity))'
+                                                                    } disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b] appearance-none empty:text-white`}
+                                                                >
+                                                                    <option className="" value="">
+                                                                        None
+                                                                    </option>
+                                                                    {categoryOptions?.map((icon) => (
+                                                                        <option key={icon.value} value={icon.value} className="text-dark">
+                                                                            {icon.value}
+                                                                        </option>
+                                                                    ))}
+                                                                </select>
+                                                            </div>
 
                                                             <div>
                                                                 <label htmlFor="disSelect" className="text-sm font-bold">

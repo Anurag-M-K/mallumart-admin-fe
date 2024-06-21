@@ -2,6 +2,7 @@ import instance from '../config/axiosInstance';
 import { ICategoryFormatted } from '../types/question';
 
 export const staffLogin = async (payload:any) => {
+    console.log("payload ",payload)
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/staff/login`,

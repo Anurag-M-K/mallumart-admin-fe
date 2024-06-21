@@ -45,7 +45,6 @@ console.log("staffData  ",staffData)
   
   if(isPending) return <div>Loading</div>
   if(error)return null;
-  console.log("Data ",data)
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6 text-white">
@@ -66,7 +65,7 @@ console.log("staffData  ",staffData)
         </div>
     </div>
     <div className="flex items-center mt-5">
-        <div className="text-3xl text-center font-bold ltr:mr-3 rtl:ml-3">Today added : {todayAdded.length}</div>
+        <div className="text-3xl text-center font-bold ltr:mr-3 rtl:ml-3">Today added : {todayAdded?.length}</div>
         {/* <div className="badge bg-white/30">+ 2.35% </div> */}
     </div>
     <div  className="flex items-center font-semibold mt-5">
@@ -145,7 +144,7 @@ console.log("staffData  ",staffData)
                         </div> */}
                     </div>
                     <div className="flex items-center mt-5">
-                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">You added :{staffData.addedStoresCount}</div>
+                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">You added :{staffData?.addedStoresCount}</div>
                         {/* <div className="badge bg-white/30">- 0.35% </div> */}
                     </div>
                     <div className="flex items-center font-semibold mt-5">

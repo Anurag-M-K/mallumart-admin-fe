@@ -30,6 +30,7 @@ const LoginBoxed = ({ role }: { role: string }) => {
         try {
             setLoading(true)
             const login:any = await adminLogin(values);
+            console.log("login ",login)
             localStorage.setItem('adminToken', login?.data?.token);
     
             dispatch(setAdminDetails(login?.data));
