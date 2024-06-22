@@ -1,6 +1,6 @@
 import instance from "../config/axiosInstance";
 
-export const changePassword = async (token:string,payload:TStaffChangePassword,role:string) => {
+export const changePassword = async (token:string,payload:TChangePassword,role:string) => {
     console.log("in api function ",payload)
     try {
         const res = await instance({

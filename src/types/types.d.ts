@@ -22,7 +22,7 @@ type ICategorySchema = {
     value: string;
 }
 
-type TStaffChangePassword = {
+type TChangePassword = {
     password:string;
     newPassword:string;
     reEnterPassword:string;

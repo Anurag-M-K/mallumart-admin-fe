@@ -21,6 +21,7 @@ import { password_check, validation_required } from '../../utils/validation';
 import { Spinner } from 'flowbite-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { changePassword } from '../../api/commonApi';
+import { RiLockPasswordLine } from "react-icons/ri";
 
 const StaffHeader = () => {
     const staffData = useSelector((state: any) => state.staff);
@@ -65,7 +66,7 @@ const StaffHeader = () => {
     };
 
    
-    const onSubmit = async (values: TStaffChangePassword) => {
+    const onSubmit = async (values: TChangePassword) => {
         try {
             setLoading(true)
             const response: any = await changePassword(staffData.staffToken, values, 'staff');
@@ -188,7 +189,7 @@ const StaffHeader = () => {
                                     <li className="cursor-pointer hover:bg-blue-100" onClick={() => setModal(true)}>
                                         <div className="flex items-center px-4 py-4">
                                             {/* <img className="rounded-md w-10 h-10 object-cover" src="/assets/images/user-profile.jpeg" alt="userProfile" /> */}
-                                            <IconEdit className="w-5 h-5" />
+                                            <RiLockPasswordLine className="w-5 h-5" />
                                             <div className="ltr:pl-4 rtl:pr-4 truncate">
                                                 <h4 className="text-base">Change password</h4>
                                             </div>

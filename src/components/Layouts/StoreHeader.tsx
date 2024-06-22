@@ -24,12 +24,15 @@ import { Spinner } from 'flowbite-react';
 import toast, { Toaster } from 'react-hot-toast';
 import WrappedSelect from '../wrappedComponents/wrappedComponent';
 import { setStoreOwnerLogout, setstoreOwnerData } from '../../store/storeOwnerSlice';
+import { RiLockPasswordLine } from "react-icons/ri";
+import { changePassword } from '../../api/commonApi';
 
 const StoreHeader = () => {
     const location = useLocation();
     const [modal, setModal] = useState(false);
+    const [passwordChangeModal, setPasswordChangeModal] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
-
+    const [res,setRes]=useState<any>(null)
     useEffect(() => {
         const selector = document.querySelector('ul.horizontal-menu a[href="' + window.location.pathname + '"]');
         if (selector) {
@@ -128,6 +131,23 @@ const StoreHeader = () => {
         window.location.reload();
     };
 
+    const passwordSubmit = async (values: any) => {
+        try {
+            setLoading(true)
+            const response: any = await changePassword(storeOwnerToken, values, 'store');
+            setRes(response);
+            if (response?.status === 200) {
+                toast.success(response?.data?.message);
+                setPasswordChangeModal(false)
+            } else {
+                toast.error(response?.data?.message);
+            }
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+        }
+    };
     return (
         <header className={`z-40 ${themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}`}>
             <div className="shadow-sm">
@@ -215,6 +235,15 @@ const StoreHeader = () => {
                                             Update Store Status
                                         </Link>
                                     </li>
+                                    <li className="cursor-pointer hover:bg-blue-100" onClick={() => setPasswordChangeModal(true)}>
+                                        <div className="flex items-center px-4 py-4">
+                                            {/* <img className="rounded-md w-10 h-10 object-cover" src="/assets/images/user-profile.jpeg" alt="userProfile" /> */}
+                                            <RiLockPasswordLine className="w-5 h-5" />
+                                            <div className="ltr:pl-4 rtl:pr-4 truncate">
+                                                <h4 className="text-base">Change password</h4>
+                                            </div>
+                                        </div>
+                                    </li>
                                     {/* <li>
                                         <Link to="/auth/boxed-lockscreen" className="dark:hover:text-white">
                                             <IconLockDots className="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0" />
@@ -294,6 +323,107 @@ const StoreHeader = () => {
                                                 )}
                                             />
                                         </div>
+                                    </Dialog.Panel>
+                                </Transition.Child>
+                            </div>
+                        </div>
+                    </Dialog>
+                </Transition>
+            </div>
+            <div>
+                <Transition appear show={passwordChangeModal} as={Fragment}>
+                    <Dialog as="div" open={passwordChangeModal  } onClose={() => setPasswordChangeModal(false)}>
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                        >
+                            <div className="fixed inset-0" />
+                        </Transition.Child>
+                        <div id="login_modal" className="fixed inset-0 bg-[black]/60 z-[999] overflow-y-auto">
+                            <div className="flex items-start justify-center min-h-screen px-4">
+                                <Transition.Child
+                                    as={Fragment}
+                                    enter="ease-out duration-300"
+                                    enterFrom="opacity-0 scale-95"
+                                    enterTo="opacity-100 scale-100"
+                                    leave="ease-in duration-200"
+                                    leaveFrom="opacity-100 scale-100"
+                                    leaveTo="opacity-0 scale-95"
+                                >
+                                    <Dialog.Panel className="panel border-0 py-1 px-4 rounded-lg overflow-hidden w-full max-w-sm my-8 text-black dark:text-white-dark">
+                                        <div className="flex items-center justify-between p-5 font-semibold text-lg dark:text-white">
+                                            <h5>Change your password</h5>
+                                            <button type="button" onClick={() => setPasswordChangeModal(false)} className="text-white-dark hover:text-dark">
+                                                <IconX />
+                                            </button>
+                                        </div>
+                                        <hr />
+                                        <div className="p-5">
+                                            <Form
+                                                onSubmit={passwordSubmit}
+                                                render={({ handleSubmit, values }) => (
+                                                    <form onSubmit={handleSubmit}>
+                                                        <div className="my-4">
+                                                            <label htmlFor="Password">Current password</label>
+                                                            <div className="relative text-white-dark">
+                                                                <Field
+                                                                    name="password"
+                                                                    id="password"
+                                                                    type="password"
+                                                                    placeholder="Enter Current Password"
+                                                                    validate={validation_required}
+                                                                    component={WrappedInput}
+                                                                    className="form-input ps-10 placeholder:text-white-dark"
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="my-4">
+                                                            <label htmlFor="Password">New password</label>
+                                                            <div className="relative text-white-dark">
+                                                                <Field
+                                                                    name="newPassword"
+                                                                    id="newPassword"
+                                                                    type="password"
+                                                                    validate={validation_required}
+                                                                    placeholder="Enter Password"
+                                                                    component={WrappedInput}
+                                                                    className="form-input ps-10 placeholder:text-white-dark"
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="my-4">
+                                                            <label htmlFor="Password">Re enter new password</label>
+                                                            <div className="relative text-white-dark">
+                                                                <Field
+                                                                    name="reEnterPassword"
+                                                                    id="reEnterPassword"
+                                                                    type="password"
+                                                                    placeholder="Re Enter Password"
+                                                                    component={WrappedInput}
+                                                                    className="form-input ps-10 placeholder:text-white-dark"
+                                                                />
+                                                            </div>
+                                                            <div className='mt-4 text-center'>
+
+                                                                {res?.response?.status != 200 && <span className="text-red-500 mt-5 text-center">{res?.response?.data?.message}</span>  } 
+                                                            </div>
+                                                        </div>
+                                                        <button type="submit" className="btn btn-primary mb-3 w-full">
+                                                            {loading ? <Spinner /> : 'Submit'}
+                                                        </button>
+                                                    </form>
+                                                )}
+                                            />
+                                        </div>
+
+                                        
                                     </Dialog.Panel>
                                 </Transition.Child>
                             </div>

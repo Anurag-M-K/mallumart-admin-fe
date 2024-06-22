@@ -30,22 +30,20 @@ function StoreOwnerLanding() {
         fetchStoreData();
     }, []);
 
-    //     const expirationDate = new Date(storeOwnerData?.subscriptionExpiresAt);
-
-    //     const daysLeft = Math.round((expirationDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24));
-    //     const timeLeft = Math.round(daysLeft / (1000 * 3600 * 24));
-    // console.log("timeleft ",timeLeft)
+ 
 
     const calculateDaysLeft = (expirationDate: any) => {
+        console.log("Exiprationdat ",expirationDate)
         const currentDate: any = new Date();
         const expiryDate: any = new Date(expirationDate);
         const timeDifference = expiryDate - currentDate;
         const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
         return daysLeft;
     };
+    console.log("storeOwnerData ",storeOwnerData)
 
-    const daysleft = calculateDaysLeft(storeOwnerData.subscriptionExpiresAt);
-
+    const daysleft = calculateDaysLeft(storeOwnerData?.subscriptionExpiresAt);
+console.log("daysleft ",daysleft)
 
         const whatsappNumber = import.meta.env.VITE_APP_ADMIN_PHONE_NUMBER
         const message = "Hi, I want to upgrade my store plan.";
@@ -132,12 +130,14 @@ function StoreOwnerLanding() {
                             <li>Unlimited Reports</li>
                             <li>One year time period</li>
                         </ul>
-                        <div className="flex items-center justify-between mb-4 font-semibold">
+                        {daysleft > 0 && (
+
+                            <div className="flex items-center justify-between mb-4 font-semibold">
                             <p className="flex items-center rounded-full bg-dark px-2 py-1 text-xs text-white-light font-semibold">
                                 <IconClock className="w-3 h-3 ltr:mr-1 rtl:ml-1" />{daysleft} Days Left
                             </p>
-                            {/* <p className="text-info">$25 / month</p> */}
                         </div>
+                        ) }
                         <div className="rounded-full h-2.5 p-0.5 bg-dark-light overflow-hidden mb-5 dark:bg-dark-light/10">
                             <div
                                 className="bg-gradient-to-r from-[#f67062] to-[#fc5296] w-full h-full rounded-full relative"
