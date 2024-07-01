@@ -8,7 +8,6 @@ interface ProtectedRouteProps {
 
 const ProtectedRouteStore: React.FC<ProtectedRouteProps> = ({ children }) => {
   const store: any = useSelector((state: any) => state.storeOwner);
-  console.log("store ",store)
   let location = useLocation();
 
   if (!store?.isAuthenticated) {

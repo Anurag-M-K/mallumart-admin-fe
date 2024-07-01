@@ -8,7 +8,6 @@ interface ProtectedRouteProps {
 
 const ProtectedRouteAdmin: React.FC<ProtectedRouteProps> = ({ children }) => {
   const admin: any = useSelector((state: any) => state.admin);
-  console.log("admin ",admin)
   let location = useLocation();
 
   if (!admin?.isAuthenticated) {

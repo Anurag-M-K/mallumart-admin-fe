@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { setPageTitle } from '../../../store/themeConfigSlice';
@@ -13,7 +13,10 @@ import { Spinner } from 'flowbite-react';
 
 const StoreOwnerLogin = () => {
     const dispatch = useDispatch();
-
+    const store: any = useSelector((state: any) => state.storeOwner);
+    if (store?.isAuthenticated) {
+        return <Navigate to="/store" replace />;
+    }
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -28,7 +31,7 @@ const StoreOwnerLogin = () => {
             const login = await storeLogin(values);
             localStorage.setItem('storeToken', login?.token);
             dispatch(setstoreOwnerToken(login.token));
-            dispatch(setstoreOwnerData(login))
+            dispatch(setstoreOwnerData(login));
             if (login.status === 'ok') {
                 navigate('/store');
             }

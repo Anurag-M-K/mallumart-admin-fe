@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { setPageTitle } from '../../../store/themeConfigSlice';
@@ -21,7 +21,10 @@ import { Spinner } from 'flowbite-react';
 const LoginBoxed = ({ role }: { role: string }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false);
-
+    const staff: any = useSelector((state: any) => state.staff);
+    if (staff?.isAuthenticated) {
+        return <Navigate to="/staff"  replace />;
+      }
     useEffect(() => {
         dispatch(setPageTitle('Login Boxed'));
     });

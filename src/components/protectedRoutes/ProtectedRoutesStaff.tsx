@@ -8,7 +8,6 @@ interface ProtectedRouteProps {
 
 const ProtectedRouteStaff: React.FC<ProtectedRouteProps> = ({ children }) => {
   const staff: any = useSelector((state: any) => state.staff);
-  console.log("staff ",staff)
   let location = useLocation();
 
   if (!staff?.isAuthenticated) {
