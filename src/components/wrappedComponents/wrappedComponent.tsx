@@ -51,30 +51,48 @@ const WrappedSelect: React.FC<WrappedSelectProps> = ({ input, meta, label, place
 export default WrappedSelect;
 
 interface WrappedCheckboxProps {
-    id: string;
+ 
     label: string;
-    checked: boolean;
-    onChange: (checked: boolean) => void;
+    id: string;
+    className?: string;
+    input: any;
+    meta: any;
 }
-export function WrappedCheckbox({ initialValue, label, hint, input, ...props }: any) {
+export function WrappedCheckbox({  label, input, ...props }: WrappedCheckboxProps) {
+    const [isChecked ,setIsChecked] = useState(false)
+
+
+    const checkedChange = () => {
+        if(input.value){
+            setIsChecked(true)
+        }else{
+            setIsChecked(false)
+        }
+    }
+
+    useEffect(()=>{
+        checkedChange()
+    },[])
+
+
+    const handleOnchange  = (e:any) =>{
+        input.onChange(e.target.checked)
+        setIsChecked(!isChecked)
+    }
+
     return (
         <div className={`flex-1 mb-3 ${props.className}`}>
             <div className="flex items-center">
                 <label htmlFor={props.id} className="block text-black dark:text-white">
                     {label}
                 </label>
-                {hint && (
-                    <span data-tooltip-target="tooltip-light" className="ml-1 mb-2">
-                        {/* Implement Tooltip component here */}
-                    </span>
-                )}
             </div>
             <div className="flex items-center">
                 <input
                     type="checkbox"
                     id={props.id}
-                    checked={input.value}
-                    onChange={() => input.onChange(!input.value)} // Toggle the value
+                    checked={isChecked}
+                    onChange={handleOnchange} // Toggle the value
                 />
             </div>
         </div>
@@ -84,7 +102,6 @@ export function WrappedCheckbox({ initialValue, label, hint, input, ...props }: 
 export const WrappedToggleButton = ({ input, onChange, ...props }: any) => {
     const [switch1, setSwitch1] = useState(false);
 
-    console.log('input ', input);
     const handleToggle = () => {
         if (input.value === 'active') {
             input.onChane = 'inactive';
@@ -270,6 +287,7 @@ interface IWrappedLocationProps extends FieldRenderProps<any, HTMLElement> {
 }
 
 export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, label, ...rest }) => {
+
     const handleCurrentLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -285,7 +303,9 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
             console.error('Geolocation is not supported by this browser.');
         }
     };
+    console.log("input value ",input.value)
 
+    
     return (
         <div>
             <label>{label}</label>

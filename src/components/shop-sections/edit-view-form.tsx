@@ -31,6 +31,7 @@ export default function EditViewStoreForm() {
             }
         });
         changedFields.storeId = storeId;
+        console.log("changefield ",changedFields)
         try {
             setLoading(true);
             const response: any = await updateStore(staffData?.staffToken, changedFields);
@@ -55,6 +56,7 @@ export default function EditViewStoreForm() {
         value: category?._id,
     }));
 
+    console.log("singleStore ",singleStore)
     return (
         <Form
             initialValues={
@@ -66,8 +68,8 @@ export default function EditViewStoreForm() {
                     district: singleStore[0]?.district,
                     location: singleStore[0]?.location,
                     email: singleStore[0]?.email,
-                    wholeSale: singleStore[0]?.wholeSale,
-                    retail: singleStore[0]?.retail,
+                    wholeSale: singleStore[0]?.wholeSale ?? false,
+                    retail: singleStore[0]?.retail ?? false,
                     category: singleStore[0]?.category,
                     address: singleStore[0]?.address,
                     phone: singleStore[0]?.phone,
@@ -82,19 +84,7 @@ export default function EditViewStoreForm() {
             onSubmit={(values: TStoreValues) => onSubmit(values)}
             render={({ handleSubmit, values }) => (
                 <form onSubmit={handleSubmit} className="md:grid md:grid-cols-12 gap-4">
-                    {/* <div className="col-span-2">
-                                <Field
-                                
-                                    initialPreview={singleStore[0].shopImgUrl}
-                                    id="shopImgUrl"
-                                    hint="Upload a shop image"
-                                    component={WrappedFileUpload}
-                                    // validate={shop_validate_file_upload}
-                                    label="Shop image"
-                                    name="shopImgUrl"
-                                    accept="image/*"
-                                />
-                            </div> */}
+                  
                     <div className="col-span-6">
                         <div className="flex flex-col gap-4">
                             <Field
@@ -147,32 +137,27 @@ export default function EditViewStoreForm() {
                                 className="form-input ps-10 placeholder:text-white-dark"
                                 name="email"
                             />
-                            {/* {JSON.stringify(values.status)}
-                                    <Field
-                                        id="status"
-                                        label="Status"
-                                        component={WrappedToggleButton}
-                                        className=" placeholder:text-white-dark"
-                                        name="status"
-                                    /> */}
                             <div className="flex border-none text-white-dark">
                                 <Field
-                                    initialValue={singleStore[0].wholeSale}
+                                    initialValue={singleStore[0].wholeSale ?? false}
                                     id="wholeSale"
                                     type="checkbox"
                                     className="placeholder:text-white-dark"
                                     name="wholeSale"
                                     label="Whole sale"
                                     component={WrappedCheckbox}
+                                    value={singleStore[0].wholeSale ?? false}
                                 />
                                 <Field
-                                    initialValue={singleStore[0].retail}
+                                    initialValue={singleStore[0].retail ?? false}
                                     id="retail"
                                     type="checkbox"
                                     label="Retail"
                                     component={WrappedCheckbox}
                                     className="placeholder:text-white-dark"
                                     name="retail"
+                                    value={singleStore[0].retail ?? false}
+
                                 />
                             </div>
                         </div>
@@ -180,11 +165,12 @@ export default function EditViewStoreForm() {
                     <div className="col-span-6">
                         <div className="flex flex-col gap-4">
                             <Field
+                                initialValue={singleStore[0].category}
                                 id="category"
                                 // validate={validation_required}
                                 type="text"
-                                label="Category"
-                                placeholder="Category"
+                                label={"Category"}
+                                placeholder={singleStore[0].category ?? "Category"}
                                 options={categoryOptions}
                                 component={WrappedSelect}
                                 className="form-input ps-10 placeholder:text-white-dark"

@@ -60,7 +60,7 @@ function StoreViewEdit({ admin = false }: { admin?: boolean }) {
             ) : tabs === 'products' ? (
                 <ProductView />
             ) : (
-                <SubscriptionManage/>
+                <SubscriptionManage />
             )}
             <Toaster />
         </div>

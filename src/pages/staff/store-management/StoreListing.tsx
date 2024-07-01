@@ -157,10 +157,7 @@ function StoreListing() {
                             ),
                         },
                         {
-                            accessor: 'wholeSale',
-                            title: 'wholeSale',
-                            sortable: false,
-                            render: ( wholeSale:any ) => wholeSale && <IconCircleCheck className="w-6 h-6" />,
+                            accessor: 'wholeSale', title: 'wholeSale', sortable: false, render: ({ wholeSale }) => wholeSale && <IconCircleCheck className="w-6 h-6" />,
                         },
                         { accessor: 'retail', title: 'Retail', sortable: false, render: ({ retail }) => retail && <IconCircleCheck className="w-6 h-6" /> },
                         {

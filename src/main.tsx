@@ -26,7 +26,7 @@ const queryClient = new QueryClient();
 
 let persistor = persistStore(store);
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <React.StrictMode>
+    <>
         <QueryClientProvider client={queryClient}>
             <Suspense>
                 <Provider store={store}>
@@ -38,5 +38,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 </Provider>
             </Suspense>
         </QueryClientProvider>
-    </React.StrictMode>
+    </>
 );
