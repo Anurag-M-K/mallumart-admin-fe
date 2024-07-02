@@ -3,7 +3,7 @@ import { Field, Form } from 'react-final-form';
 import WrappedInput from '../../../components/wrappedComponents/WrappedInputField';
 import WrappedSelect, { WrappedCheckbox, WrappedFileUpload, WrappedInputForUniqueName, WrappedLocation, wrapidQuill } from '../../../components/wrappedComponents/wrappedComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { addStore } from '../../../api/staffApi';
+import { addStore, fetchAllStore } from '../../../api/staffApi';
 import toast, { Toaster } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
 import { getCategory } from '../../../api/categoryApi';
@@ -12,6 +12,8 @@ import { Spinner } from 'flowbite-react';
 import { shop_validate_file_upload, validation_required } from '../../../utils/validation';
 import { districts } from '../../../constants/store';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { setStoreData } from '../../../store/storeSlice';
 
 type IOptions = {
     value: string;
@@ -28,7 +30,7 @@ function StoreAdding() {
     const dispatch = useDispatch();
     const staffData = useSelector((state: any) => state.staff);
     const [previewSource, setPreviewSource] = useState();
-
+    const navigate = useNavigate();
     const options: IOptions[] = [
         { value: 'wholesale', label: 'Whole Sale' },
         { value: 'retail', label: 'Retail' },
@@ -66,7 +68,10 @@ function StoreAdding() {
                 });
             };
             if (response?.status == 201) {
-                showAlert("success","Store added successfully");
+                const res = await fetchAllStore(staffData?.staffToken);
+                dispatch(setStoreData(res?.data));
+                showAlert('success', 'Store added successfully');
+                navigate('/staff/stores');
                 setLoading(false);
                 setStoreAddingModal(false);
             }
@@ -133,12 +138,12 @@ function StoreAdding() {
                                         className="form-input ps-10 placeholder:text-white-dark"
                                         name="district"
                                     />
-                                  <Field
+                                    <Field
                                         id="location"
                                         type="text"
                                         label="Location"
                                         placeholder="Enter store location"
-                                        component={WrappedLocation} 
+                                        component={WrappedLocation}
                                         className="form-input ps-10 placeholder:text-white-dark"
                                         name="location"
                                     />
@@ -212,7 +217,7 @@ function StoreAdding() {
                     )}
                 />
             </div>
-            <Toaster  />
+            <Toaster />
         </div>
     );
 }

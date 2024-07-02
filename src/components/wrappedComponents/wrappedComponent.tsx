@@ -287,13 +287,12 @@ interface IWrappedLocationProps extends FieldRenderProps<any, HTMLElement> {
 }
 
 export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, label, ...rest }) => {
-
     const handleCurrentLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-                    input.onChange({ latitude, longitude });
+                    input.onChange({coordinates:[longitude, latitude] });
                 },
                 (error) => {
                     console.error('Error obtaining location:', error);
@@ -303,9 +302,9 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
             console.error('Geolocation is not supported by this browser.');
         }
     };
-    console.log("input value ",input.value)
-
     
+
+
     return (
         <div>
             <label>{label}</label>
@@ -316,7 +315,7 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
                         type="number"
                         name="longitude"
                         placeholder="Longitude"
-                        value={input.value?.longitude || ''}
+                        value={input.value?.coordinates[0] || ''}
                         onChange={(e) => input.onChange({ ...input.value, longitude: e.target.value })}
                         {...rest}
                     />
@@ -327,7 +326,7 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
                         name="latitude"
                         placeholder="Latitude"
                         className="mb-4"
-                        value={input.value?.latitude || ''}
+                        value={input.value?.coordinates[1] || ''}
                         onChange={(e) => input.onChange({ ...input.value, latitude: e.target.value })}
                         {...rest}
                     />

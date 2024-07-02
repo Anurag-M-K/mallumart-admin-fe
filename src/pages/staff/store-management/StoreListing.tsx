@@ -66,7 +66,6 @@ function StoreListing() {
         setRecordsData([...initialRecords?.slice(from, to)]);
     }, [page, pageSize, initialRecords]);
 
-    console.log('Staoredart ', storeData);
     useEffect(() => {
         setInitialRecords(() => {
             return storeData?.filter((item: { status: any; storeName: string; category: string; phone: { toString: () => string }; email: string }) => {
