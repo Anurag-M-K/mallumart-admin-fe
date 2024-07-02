@@ -315,8 +315,8 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
                         type="number"
                         name="longitude"
                         placeholder="Longitude"
-                        value={input.value?.coordinates[0] || ''}
-                        onChange={(e) => input.onChange({ ...input.value, longitude: e.target.value })}
+                        value={input?.value?.coordinates?.[0] || ''}
+                        onChange={(e) => input?.onChange({ ...input.value, longitude: e.target.value })}
                         {...rest}
                     />
                 </div>
@@ -326,7 +326,7 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
                         name="latitude"
                         placeholder="Latitude"
                         className="mb-4"
-                        value={input.value?.coordinates[1] || ''}
+                        value={input.value?.coordinates?.[1] || ''}
                         onChange={(e) => input.onChange({ ...input.value, latitude: e.target.value })}
                         {...rest}
                     />
