@@ -24,6 +24,9 @@ import { setStoreData } from '../../../store/storeSlice';
 import IconEdit from '../../../components/Icon/IconEdit';
 import { Button } from 'flowbite-react';
 import IconPlus from '../../../components/Icon/IconPlus';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { MdOutlineDeleteOutline } from 'react-icons/md';
+import { deleteStoreById } from '../../../api/commonApi';
 
 function StoreListing() {
     const [page, setPage] = useState(1);
@@ -89,7 +92,7 @@ function StoreListing() {
     const onSubmit = async (values: any) => {
         try {
             setLoading(true);
-            const response:any = await addStore(values, staffData?.staffToken);
+            const response: any = await addStore(values, staffData?.staffToken);
             if (response?.status === 201) {
                 toast.success('Store added successfully');
                 setLoading(false);
@@ -107,6 +110,25 @@ function StoreListing() {
         const response: any = await fetchAllStore(staffData?.staffToken);
         dispatch(setStoreData(response?.data));
         setInitialRecords(response?.data);
+    };
+
+    const deleteStore = async (storeId: string) => {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Do you want to delete store permenently?',
+            text: 'Please verify store, it cant be take back',
+            showCancelButton: true,
+            // confirmButtonText,
+            padding: '2em',
+            customClass: 'sweet-alerts',
+        }).then(async (result) => {
+            if (result.value) {
+                await deleteStoreById(staffData?.staffToken, storeId, 'staff');
+                const response: any = await fetchAllStore(staffData?.staffToken);
+                dispatch(setStoreData(response?.data));
+                setInitialRecords(response?.data);
+            }
+        });
     };
     return (
         <div>
@@ -128,7 +150,7 @@ function StoreListing() {
                             accessor: 'store',
                             title: 'Name',
                             sortable: true,
-                            render: ( store:any) => {
+                            render: (store: any) => {
                                 return (
                                     <div className="w-max">
                                         <h2 className="font-bold">{store?.storeName}</h2>
@@ -145,7 +167,7 @@ function StoreListing() {
                             accessor: 'phone',
                             title: 'Contact',
                             sortable: true,
-                            render: (store:any) => (
+                            render: (store: any) => (
                                 <div className="w-max">
                                     <h2>{store?.phone}</h2>
                                     <small>{store?.email}</small>
@@ -153,14 +175,17 @@ function StoreListing() {
                             ),
                         },
                         {
-                            accessor: 'wholeSale', title: 'wholeSale', sortable: false, render: ({ wholeSale }) => wholeSale && <IconCircleCheck className="w-6 h-6" />,
+                            accessor: 'wholeSale',
+                            title: 'wholeSale',
+                            sortable: false,
+                            render: ({ wholeSale }) => wholeSale && <IconCircleCheck className="w-6 h-6" />,
                         },
                         { accessor: 'retail', title: 'Retail', sortable: false, render: ({ retail }) => retail && <IconCircleCheck className="w-6 h-6" /> },
                         {
                             accessor: 'status',
                             title: 'Status',
                             sortable: false,
-                            render: (store:any) =>
+                            render: (store: any) =>
                                 store.status && (
                                     <span onClick={() => updateStatus(store?._id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
                                         {store?.status}
@@ -172,15 +197,17 @@ function StoreListing() {
                             accessor: 'id',
                             title: 'Action',
                             titleClassName: '!text-center',
-                            render: ( store:any ) => {
+                            render: (store: any) => {
                                 return (
                                     <div className="flex items-center w-max mx-auto gap-2">
                                         <Tippy content="view">
-                                            <Link to={`/staff/stores/${store?._id}`} type="button">
-                                                <IconEye />
-                                            </Link>
+                                            <div className="flex gap-x-3 justify-center items-center">
+                                                <Link to={`/staff/stores/${store?._id}`} type="button">
+                                                    <IconEye />
+                                                </Link>
+                                                <MdOutlineDeleteOutline onClick={() => deleteStore(store?._id)} className="cursor-pointer" color="red" size={20} />
+                                            </div>
                                         </Tippy>
-                                       
                                     </div>
                                 );
                             },

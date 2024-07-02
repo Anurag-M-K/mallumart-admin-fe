@@ -22,15 +22,12 @@ const LoginBoxed = ({ role }: { role: string }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false);
     const staff: any = useSelector((state: any) => state.staff);
-    if (staff?.isAuthenticated) {
-        return <Navigate to="/staff"  replace />;
-      }
     useEffect(() => {
         dispatch(setPageTitle('Login Boxed'));
     });
-
+    
     const navigate = useNavigate();
-
+    
     const onSubmit = async (values: any) => {
         try {
             setLoading(true);
@@ -40,7 +37,7 @@ const LoginBoxed = ({ role }: { role: string }) => {
             if (login.status === 'ok') {
                 navigate('/staff');
             }
-
+            
             toast.error(login.response.data.message);
             setLoading(false);
         } catch (error) {
@@ -48,7 +45,10 @@ const LoginBoxed = ({ role }: { role: string }) => {
             console.log(error);
         }
     };
-
+    
+    if (staff?.isAuthenticated) {
+        return <Navigate to="/staff"  replace />;
+      }
     return (
         <div>
             <div className="absolute inset-0">

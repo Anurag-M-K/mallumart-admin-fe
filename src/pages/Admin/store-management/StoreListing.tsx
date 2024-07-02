@@ -9,12 +9,12 @@ import IconCircleCheck from '../../../components/Icon/IconCircleCheck';
 import IconEye from '../../../components/Icon/IconEye';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 import { Link } from 'react-router-dom';
-import { deleteStoreById, fetchAllStore, updateStoreStatus } from '../../../api/adminApi';
+import {  fetchAllStore, updateStoreStatus } from '../../../api/adminApi';
 import { useQuery } from '@tanstack/react-query';
 import { setStoreData } from '../../../store/storeSlice';
 import { MdOutlineDeleteOutline } from "react-icons/md";
-
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { deleteStoreById } from '../../../api/commonApi';
 const StoreListingDup = () => {
     useEffect(()=>{
         fetchStore()
@@ -133,7 +133,7 @@ const deleteStore = async (storeId:string) => {
         customClass: 'sweet-alerts',
     }).then(async (result) => {
         if (result.value) {
-            await deleteStoreById(adminDetails?.token, storeId);
+            await deleteStoreById(adminDetails?.token, storeId,"admin");
             const response: any = await fetchAllStore(adminDetails?.token);
             dispatch(setStoreData(response?.data));
             setInitialRecords(response.data);

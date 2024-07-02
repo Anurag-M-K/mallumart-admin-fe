@@ -16,3 +16,18 @@ export const changePassword = async (token:string,payload:TChangePassword,role:s
         return error;
     }
 }
+
+export const deleteStoreById = async (token: string, storeId:string,role:string) => {
+    try {
+       const res =  await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/${role}/store/${storeId}`,
+            method: 'DELETE',
+            headers: {
+                Authorization: token,
+            },
+        });
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+};
