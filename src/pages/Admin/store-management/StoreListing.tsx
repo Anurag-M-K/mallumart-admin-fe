@@ -9,10 +9,12 @@ import IconCircleCheck from '../../../components/Icon/IconCircleCheck';
 import IconEye from '../../../components/Icon/IconEye';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 import { Link } from 'react-router-dom';
-import { fetchAllStore, updateStoreStatus } from '../../../api/adminApi';
+import { deleteStoreById, fetchAllStore, updateStoreStatus } from '../../../api/adminApi';
 import { useQuery } from '@tanstack/react-query';
 import { setStoreData } from '../../../store/storeSlice';
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 const StoreListingDup = () => {
     useEffect(()=>{
         fetchStore()
@@ -104,7 +106,49 @@ const StoreListingDup = () => {
         setInitialRecords(response.data);
     }
 
-    return (
+    const showAlert = async (icon: SweetAlertIcon, title: string) => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+        });
+        toast.fire({
+            icon,
+            title,
+            padding: '10px 20px',
+        });
+    };
+
+const deleteStore = async (storeId:string) => {
+
+
+    Swal.fire({
+        icon: 'warning',
+        title: 'Do you want to delete store permenently?',
+        text: "Please verify store, it cant be take back",
+        showCancelButton: true,
+        // confirmButtonText,
+        padding: '2em',
+        customClass: 'sweet-alerts',
+    }).then(async (result) => {
+        if (result.value) {
+            await deleteStoreById(adminDetails?.token, storeId);
+            const response: any = await fetchAllStore(adminDetails?.token);
+            dispatch(setStoreData(response?.data));
+            setInitialRecords(response.data);
+
+            // setEditCategoryId(id);
+            // await mutateAsync(field);
+            // if (isError) {
+                //     showAlert('error', 'status update fail');
+                // } else {
+                    //     showAlert('success', 'status updated');
+                    // }
+                }
+            });
+        }
+            return (
         <div>
             <Breadcrumbs heading="Stores" links={[{ name: 'Dashboard', href: '/admin' }, { name: 'Stores' }]} />
             <div className="panel mt-6">
@@ -171,9 +215,14 @@ const StoreListingDup = () => {
                                 render: (store: any) => (
                                     <div className="flex items-center w-max mx-auto gap-2">
                                         <Tippy content="view">
+                                            <div className='flex gap-x-2 items-center justify-center'>
+
                                             <Link to={`/admin/stores/${store._id}`} type="button">
                                                 <IconEye />
+
                                             </Link>
+                                                <MdOutlineDeleteOutline onClick={()=>deleteStore(store?._id)} className='cursor-pointer' color='red' size={20}/>
+                                            </div>
                                         </Tippy>
                                     </div>
                                 ),

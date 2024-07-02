@@ -241,3 +241,18 @@ export const fetchMostSearchedProducts = async (adminToken:string) => {
         return error
     }
 }
+
+export const deleteStoreById = async (adminToken: string, storeId:string) => {
+    try {
+       const res =  await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/store/${storeId}`,
+            method: 'DELETE',
+            headers: {
+                Authorization: adminToken,
+            },
+        });
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+};
