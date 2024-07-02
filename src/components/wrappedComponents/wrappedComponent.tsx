@@ -302,8 +302,18 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
             console.error('Geolocation is not supported by this browser.');
         }
     };
-    
 
+    const handleLongitudeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const longitude = parseFloat(e.target.value);
+        const currentLatitude = input?.value?.coordinates?.[1] || 0;
+        input.onChange({ coordinates: [longitude, currentLatitude] });
+    };
+
+    const handleLatitudeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const latitude = parseFloat(e.target.value);
+        const currentLongitude = input?.value?.coordinates?.[0] || 0;
+        input.onChange({ coordinates: [currentLongitude, latitude] });
+    };
 
     return (
         <div>
@@ -316,8 +326,8 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
                         name="longitude"
                         placeholder="Longitude"
                         value={input?.value?.coordinates?.[0] || ''}
-                        onChange={(e) => input?.onChange({ ...input.value, longitude: e.target.value })}
-                        {...rest}
+                        onChange={handleLongitudeChange}
+                          {...rest}
                     />
                 </div>
                 <div>
@@ -327,7 +337,7 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
                         placeholder="Latitude"
                         className="mb-4"
                         value={input.value?.coordinates?.[1] || ''}
-                        onChange={(e) => input.onChange({ ...input.value, latitude: e.target.value })}
+                        onChange={handleLatitudeChange}
                         {...rest}
                     />
                 </div>

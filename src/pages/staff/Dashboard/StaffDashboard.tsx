@@ -127,57 +127,25 @@ console.log("staffData  ",staffData)
                       
                     </div>
                 </div>
-                <div className="panel bg-gradient-to-r from-fuchsia-500 to-fuchsia-400">
+               {
+                staffData.target ? (
+                    <div className="panel bg-gradient-to-r from-fuchsia-500 to-fuchsia-400">
                     <div className="flex justify-between">
                         <div className="ltr:mr-1 rtl:ml-1 text-md font-semibold">Your Target : {staffData?.target}</div>
-                        {/* <div className="dropdown">
-                            <Dropdown offset={[0, 5]} placement={`'bottom-end'}`} btnClassName="hover:opacity-80" button={<IconHorizontalDots className="hover:opacity-80 opacity-70" />}>
-                                <ul className="text-black dark:text-white-dark">
-                                    <li>
-                                        <button type="button">View Report</button>
-                                    </li>
-                                    <li>
-                                        <button type="button">Edit Report</button>
-                                    </li>
-                                </ul>
-                            </Dropdown>
-                        </div> */}
+
                     </div>
                     <div className="flex items-center mt-5">
                         <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">You added :{staffData?.addedStoresCount}</div>
-                        {/* <div className="badge bg-white/30">- 0.35% </div> */}
                     </div>
                     <div className="flex items-center font-semibold mt-5">
                         <IconEye className="ltr:mr-2 rtl:ml-2 shrink-0" />
                         <Link to="/staff/stores">See your added details</Link>
                     </div>
                 </div>
+                ): null
+               }
 
-                {/* Bounce Rate */}
-                {/* <div className="panel bg-gradient-to-r from-fuchsia-500 to-fuchsia-400">
-                    <div className="flex justify-between">
-                        <div className="ltr:mr-1 rtl:ml-1 text-md font-semibold">See your report</div>
-                        <div className="dropdown">
-                            <Dropdown offset={[0, 5]} placement={`'bottom-end'}`} btnClassName="hover:opacity-80" button={<IconHorizontalDots className="hover:opacity-80 opacity-70" />}>
-                                <ul className="text-black dark:text-white-dark">
-                                    <li>
-                                        <button type="button">View Report</button>
-                                    </li>
-                                    <li>
-                                        <button type="button">Edit Report</button>
-                                    </li>
-                                </ul>
-                            </Dropdown>
-                        </div>
-                    </div>
-                    <div className="flex items-center mt-5">
-                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"></div>
-                    </div>
-                    <div className="flex items-center font-semibold mt-5">
-                        <IconEye className="ltr:mr-2 rtl:ml-2 shrink-0" />
-                        <Link to="/admin/categories">See all categories</Link>
-                    </div>
-                </div> */}
+    
             </div>
   )
 }
