@@ -32,15 +32,17 @@ const StaffDetailsTable = () => {
         fetchStaff();
     }, []);
 
+    console.log("sel;ected staff ",selectedStaff)
     // updating staff details
     const onSubmit = async (values: any) => {
+        values.email = selectedStaff.email
         const res: any = await updateStaff(adminDetails?.token, values);
         setUpdatingModal(false);
         const staffData = await getStaffs(adminDetails?.token);
         dispatch(setStaffDetails(staffData));
-
-        if (res.status === 200) {
-            toast.success('Updated Successfully');
+        console.log("res ",res)
+        if (res?.status === 200) {
+            showAlert('success','Updated Successfully');
         } else {
             toast.error('Something went wrong');
         }
@@ -48,7 +50,7 @@ const StaffDetailsTable = () => {
 
     const handleEdit = async (id: any) => {
         setClickedStaffId(id);
-        const Staff = staffDetails?.find((staff: any) => staff._id === id);
+        const Staff = staffDetails?.find((staff: any) => staff?._id === id);
         setUpdatingModal(true);
         if (Staff) {
             setSelectedStaff(Staff);
@@ -98,8 +100,8 @@ const StaffDetailsTable = () => {
             const res = await addTarget(adminDetails.token, values);
             const staffResponise = await getStaffs(adminDetails?.token);
             dispatch(setStaffDetails(staffResponise));
-            if (res.status === 200) {
-                showAlert('success', res.data.message);
+            if (res?.status === 200) {
+                showAlert('success', res?.data?.message);
             }
             setStaffReportModal('');
             setLoading(false);
@@ -137,11 +139,11 @@ const StaffDetailsTable = () => {
                     {
                         accessor: 'Actions',
                         title: 'Action',
-                        render: (_id:any ) => {
+                        render: (staff:any ) => {
                             return (
                                 <div className="flex gap-x-3">
-                                    <FaEdit className="cursor-pointer" size={20} onClick={() => handleEdit(_id)} color="green" />
-                                    <RiDeleteBin6Line className="cursor-pointer" size={20} onClick={() => showDeleteAlert(_id)} color="red" />
+                                    <FaEdit className="cursor-pointer" size={20} onClick={() => handleEdit(staff?._id)} color="green" />
+                                    <RiDeleteBin6Line className="cursor-pointer" size={20} onClick={() => showDeleteAlert(staff?._id)} color="red" />
                                 </div>
                             );
                         },
