@@ -8,7 +8,7 @@ import IconArrowLeft from '../../../components/Icon/IconArrowLeft';
 import { Link } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useQuery } from '@tanstack/react-query';
-import { fetchStoreCountByCategory } from '../../../api/adminApi';
+import { fetchMostSearchedProducts, fetchStoreCountByCategory } from '../../../api/adminApi';
 import Dropdown from '../../../components/Dropdown';
 import IconHorizontalDots from '../../../components/Icon/IconHorizontalDots';
 import IconEye from '../../../components/Icon/IconEye';
@@ -17,9 +17,9 @@ import { getCategory } from '../../../api/categoryApi';
 
 function Dashboard({ role }: { role: string }) {
     const token = localStorage.getItem('adminToken');
-    const adminDetails = useSelector((state: any) => state.admin.adminDetails);
+    const adminDetails = useSelector((state: any) => state?.admin.adminDetails);
     const [loading] = useState(false);
-    const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
+    const isDark = useSelector((state: IRootState) => state?.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const [isScrolled, setIsScrolled] = useState(false);
     
     useEffect(() => {
@@ -39,14 +39,19 @@ function Dashboard({ role }: { role: string }) {
       }, []);
     const { isLoading, error, data } = useQuery({
         queryKey: ['total-count'],
-        queryFn: () => fetchStoreCountByCategory(adminDetails.token) 
+        queryFn: () => fetchStoreCountByCategory(adminDetails?.token) 
     });
     const { isLoading: isLoadingCategory, error: errorCategory, data: categoryData } = useQuery({
         queryKey: ['category'],
         queryFn: getCategory
       });
-        console.log("categoryData ",categoryData)
 
+      const  {isLoading:isLoadingMostSearchedProduct,error:mostSearchedErroe,data:mostSearchedProducts} = useQuery({
+        queryKey:['most-searched-products'],
+        queryFn:()=> fetchMostSearchedProducts(adminDetails.token)
+      })
+
+      console.log('most searched products ',mostSearchedProducts)
     if (import.meta.env.VITE_APP_ADMIN_EMAIL !== adminDetails?.email && !token) {
         return (
             <div className="flex justify-center items-center   ">
@@ -56,9 +61,6 @@ function Dashboard({ role }: { role: string }) {
         );
     }
 
-    // if (isLoading) return <div>Loading...</div>;
-    // if (error) return <div>Error: {error.message}</div>;
-    // console.log(data);
 
     if (!data) {
         return null;
@@ -208,7 +210,9 @@ function Dashboard({ role }: { role: string }) {
             },
         },
     };
-    // const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
+
+    console.log("totalStores ",totalStores)
+
 
     return (
         <>
@@ -284,7 +288,7 @@ function Dashboard({ role }: { role: string }) {
                         </div>
                     </div>
                     <div className="flex items-center mt-5">
-                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">Grinder</div>
+                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{mostSearchedProducts?.[0].productName}</div>
                         {/* <div className="badge bg-white/30">+ 1.35% </div> */}
                     </div>
                     <div onClick={()=>'#most_searched_list'} className="flex cursor-pointer items-center font-semibold mt-5">
@@ -362,123 +366,18 @@ function Dashboard({ role }: { role: string }) {
                     </div>
                 </div>
                 <div id='most_searched_list' className="panel h-full sm:col-span-2 xl:col-span-1 pb-0">
-                    <h5 className="font-semibold text-lg dark:text-white-light mb-5">Most Searched Products</h5>
+                    <h5 className="font-semibold text-lg dark:text-white-light mb-5">Most Searched top 10 Products</h5>
                     <PerfectScrollbar className="relative h-[290px] ltr:pr-3 rtl:pl-3 ltr:-mr-3 rtl:-ml-3 mb-4">
+                        {mostSearchedProducts?.map((item:TSearchedProducts)=>(
                         <div className="text-sm cursor-pointer">
                             <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-primary w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Updated Server Logs</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">Just Now</div>
-
-                                <span className="badge badge-outline-primary absolute ltr:right-0 rtl:left-0 text-xs bg-primary-light dark:bg-black opacity-0 group-hover:opacity-100">Pending</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-success w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Send Mail to HR and Admin</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">2 min ago</div>
-
-                                <span className="badge badge-outline-success absolute ltr:right-0 rtl:left-0 text-xs bg-success-light dark:bg-black opacity-0 group-hover:opacity-100">Completed</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-danger w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Backup Files EOD</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">14:00</div>
-
-                                <span className="badge badge-outline-danger absolute ltr:right-0 rtl:left-0 text-xs bg-danger-light dark:bg-black opacity-0 group-hover:opacity-100">Pending</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-black w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Collect documents from Sara</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">16:00</div>
-
-                                <span className="badge badge-outline-dark absolute ltr:right-0 rtl:left-0 text-xs bg-dark-light dark:bg-black opacity-0 group-hover:opacity-100">Completed</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-warning w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Conference call with Marketing Manager.</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">17:00</div>
-
-                                <span className="badge badge-outline-warning absolute ltr:right-0 rtl:left-0 text-xs bg-warning-light dark:bg-black opacity-0 group-hover:opacity-100">
-                                    In progress
-                                </span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-info w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Rebooted Server</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">17:00</div>
-
-                                <span className="badge badge-outline-info absolute ltr:right-0 rtl:left-0 text-xs bg-info-light dark:bg-black opacity-0 group-hover:opacity-100">Completed</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-secondary w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Send contract details to Freelancer</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">18:00</div>
-
-                                <span className="badge badge-outline-secondary absolute ltr:right-0 rtl:left-0 text-xs bg-secondary-light dark:bg-black opacity-0 group-hover:opacity-100">
-                                    Pending
-                                </span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-primary w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Updated Server Logs</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">Just Now</div>
-
-                                <span className="badge badge-outline-primary absolute ltr:right-0 rtl:left-0 text-xs bg-primary-light dark:bg-black opacity-0 group-hover:opacity-100">Pending</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-success w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Send Mail to HR and Admin</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">2 min ago</div>
-
-                                <span className="badge badge-outline-success absolute ltr:right-0 rtl:left-0 text-xs bg-success-light dark:bg-black opacity-0 group-hover:opacity-100">Completed</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-danger w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Backup Files EOD</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">14:00</div>
-
-                                <span className="badge badge-outline-danger absolute ltr:right-0 rtl:left-0 text-xs bg-danger-light dark:bg-black opacity-0 group-hover:opacity-100">Pending</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-black w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Collect documents from Sara</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">16:00</div>
-
-                                <span className="badge badge-outline-dark absolute ltr:right-0 rtl:left-0 text-xs bg-dark-light dark:bg-black opacity-0 group-hover:opacity-100">Completed</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-warning w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Conference call with Marketing Manager.</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">17:00</div>
-
-                                <span className="badge badge-outline-warning absolute ltr:right-0 rtl:left-0 text-xs bg-warning-light dark:bg-black opacity-0 group-hover:opacity-100">
-                                    In progress
-                                </span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-info w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Rebooted Server</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">17:00</div>
-
-                                <span className="badge badge-outline-info absolute ltr:right-0 rtl:left-0 text-xs bg-info-light dark:bg-black opacity-0 group-hover:opacity-100">Completed</span>
-                            </div>
-                            <div className="flex items-center py-1.5 relative group">
-                                <div className="bg-secondary w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
-                                <div className="flex-1">Send contract details to Freelancer</div>
-                                <div className="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">18:00</div>
-
-                                <span className="badge badge-outline-secondary absolute ltr:right-0 rtl:left-0 text-xs bg-secondary-light dark:bg-black opacity-0 group-hover:opacity-100">
-                                    Pending
-                                </span>
-                            </div>
+                                <div className="bg-primary mr-3 w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                                <div className="flex-1">{item?.productName}</div>
                         </div>
+                        </div>
+                        ))}
                     </PerfectScrollbar>
-                    <div className="border-t border-white-light dark:border-white/10">
-                        <Link to="/" className=" font-semibold group hover:text-primary p-4 flex items-center justify-center group">
-                            View All
-                            <IconArrowLeft className="rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition duration-300 ltr:ml-1 rtl:mr-1" />
-                        </Link>
-                    </div>
+                
                 </div>
             </div>
         </>

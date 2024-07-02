@@ -226,3 +226,18 @@ export const addTarget = async (adminToken: string,payload:any) => {
         console.log(error);
     }
 };
+
+export const fetchMostSearchedProducts = async (adminToken:string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/most-searched-products`,
+            method:"GET",
+            headers:{
+                Authorization:adminToken
+            }            
+        })      
+        return res.data  
+    } catch (error) {
+        return error
+    }
+}

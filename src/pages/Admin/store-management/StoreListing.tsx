@@ -14,6 +14,9 @@ import { useQuery } from '@tanstack/react-query';
 import { setStoreData } from '../../../store/storeSlice';
 
 const StoreListingDup = () => {
+    useEffect(()=>{
+        fetchStore()
+    },[])
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -33,6 +36,13 @@ const StoreListingDup = () => {
         direction: 'asc',
     });
     const adminDetails = useSelector((state: any) => state.admin.adminDetails);
+
+    const fetchStore = async() =>{
+       const res = await fetchAllStore(adminDetails?.token)
+            dispatch(setStoreData(res?.data));
+            setInitialRecords(res?.data)
+    }
+
 
     // Fetching all store data
     const { isLoading, error, data } = useQuery({

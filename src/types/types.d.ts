@@ -75,5 +75,10 @@ type TRecordsData = {
     retail:any;
     status:any;
     _id:string;
+}
 
+type TSearchedProducts = {
+    _id:string;
+    productName:string;
+    searchCount:number;
 }
