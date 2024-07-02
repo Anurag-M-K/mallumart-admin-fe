@@ -158,7 +158,7 @@ const StoreSidebar = () => {
                                 </NavLink>
                             </li>
 
-                            <li className="menu nav-item">
+                            {/* <li className="menu nav-item">
                                 <NavLink to="/store/subscription" className="group" onClick={() => toggleMenu('subscripton')}>
                                     <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
                                         <div className="flex items-center">
@@ -167,7 +167,7 @@ const StoreSidebar = () => {
                                         </div>
                                     </button>
                                 </NavLink>
-                            </li>
+                            </li> */}
 
                             <li className="nav-item">
                                 <ul>
@@ -182,7 +182,7 @@ const StoreSidebar = () => {
                                 </ul>
                             </li>
 
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <ul>
                                     <li className="nav-item">
                                         <NavLink to="/store/contact-us" className="group" onClick={() => toggleMenu('advertisment')}>
@@ -193,7 +193,7 @@ const StoreSidebar = () => {
                                         </NavLink>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> */}
 
                             {/* <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
                                 <IconMinus className="w-4 h-5 flex-none hidden" />

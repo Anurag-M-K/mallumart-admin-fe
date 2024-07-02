@@ -129,7 +129,7 @@ const StaffSidebar = () => {
                                 </AnimateHeight>
                             </li>
 
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <ul>
                                     <li className="nav-item">
                                         <NavLink to="/staff/account" className="group" onClick={() => toggleMenu('account')}>
@@ -140,7 +140,7 @@ const StaffSidebar = () => {
                                         </NavLink>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> */}
                         </ul>
                     </PerfectScrollbar>
                 </div>
