@@ -39,7 +39,6 @@ function StaffManagement() {
             const response = await addStaff(values, adminDetails?.token);
             const staffData = await getStaffs(adminDetails?.token);
             dispatch(setStaffDetails(staffData));
-            console.log('resopnbse ', response);
             setStaffRegisterModal(false);
         } catch (error) {
             setLoading(false);
@@ -49,15 +48,15 @@ function StaffManagement() {
 
     return (
         <div>
-                        <Breadcrumbs heading="Staff Management" links={[{ name: 'Dashboard', href: '/admin' }, { name: 'Staff Management' }]} />
+            <Breadcrumbs heading="Staff Management" links={[{ name: 'Dashboard', href: '/admin' }, { name: 'Staff Management' }]} />
 
             <div className="flex justify-end my-4">
-            <button type="button"  onClick={() => setStaffRegisterModal(true)} className="btn btn-primary">
-                            <IconPlus className="w-5 h-5 ltr:mr-1.5 rtl:ml-1.5 shrink-0" />
-                            Register Staff
-                        </button>
+                <button type="button" onClick={() => setStaffRegisterModal(true)} className="btn btn-primary">
+                    <IconPlus className="w-5 h-5 ltr:mr-1.5 rtl:ml-1.5 shrink-0" />
+                    Register Staff
+                </button>
             </div>
-           
+
             <StaffDetailsTable />
 
             <div>
@@ -112,7 +111,6 @@ function StaffManagement() {
                                                                 className="form-input  placeholder:text-white-dark"
                                                                 name="name"
                                                                 validate={validation_required}
-
                                                             />
                                                         </div>
                                                         <div className="relative my-5 text-white-dark">
@@ -124,7 +122,6 @@ function StaffManagement() {
                                                                 className="form-input ps-10 placeholder:text-white-dark"
                                                                 name="email"
                                                                 validate={validation_email}
-
                                                             />
                                                         </div>
                                                         <div className="relative my-5 text-white-dark">

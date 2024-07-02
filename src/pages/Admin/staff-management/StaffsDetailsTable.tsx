@@ -179,7 +179,7 @@ const StaffDetailsTable = () => {
                                     <div className="flex items-center justify-between p-5 text-lg font-semibold dark:text-white">
                                         <h5>Update Staff</h5>
                                         <button type="button" onClick={() => setUpdatingModal(false)} className="text-white-dark hover:text-dark">
-                                            x
+                                        <IoMdClose />
                                         </button>
                                     </div>
                                     <div className="p-5">
@@ -188,9 +188,9 @@ const StaffDetailsTable = () => {
                                             initialValues={{ name: selectedStaff?.name, email: selectedStaff?.email, status: selectedStaff?.status }}
                                             render={({ handleSubmit, values }) => (
                                                 <form onSubmit={handleSubmit}>
-                                                    <div className="relative mb-5 text-white-dark">
+                                                    {/* <div className="relative mb-5 text-white-dark">
                                                         <div className="border py-2 rounded-md ps-5">{selectedStaff?.email}</div>
-                                                    </div>
+                                                    </div> */}
                                                     <div className="relative my-2 text-white-dark">
                                                         <Field
                                                             initialValue={selectedStaff?.name}
