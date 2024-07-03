@@ -17,9 +17,8 @@ import IconCaretDown from '../../../components/Icon/IconCaretDown';
 import IconEdit from '../../../components/Icon/IconEdit';
 import IconLoader from '../../../components/Icon/IconLoader';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
-import Select from 'react-select';
-import { MdOutlineMiscellaneousServices } from 'react-icons/md';
-import { FaMobileAlt, FaTshirt, FaBlender, FaBook, FaSpa, FaFootballBall, FaPuzzlePiece, FaCar, FaAppleAlt, FaGem } from 'react-icons/fa';
+import DynamicIconPicker from '../../../components/DynamicIconPicker';
+
 function CategoryManagement() {
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
@@ -31,7 +30,7 @@ function CategoryManagement() {
     });
 
     useEffect(() => {
-        dispatch(setPageTitle('Treeview'));
+        dispatch(setPageTitle('Category'));
     }, [dispatch]);
 
     // Component State
@@ -39,26 +38,6 @@ function CategoryManagement() {
     const [modal, setModal] = useState(false);
     const [subcategoryView, setSubcategoryView] = useState<string[]>([]);
 
-    const categoryOptions = [
-        { value: 'electronics', label: <FaMobileAlt />, icon: '<FaMobileAlt />' },
-        { value: 'fashion', label: <FaTshirt />, icon: '<FaTshirt/>' },
-        { value: 'home-appliances', label: <FaBlender />, icon: '<FaBlender />' },
-        { value: 'books', label: <FaBook />, icon: '<FaBook/>' },
-        { value: 'beauty', label: <FaSpa />, icon: '<FaSpa/>' },
-        { value: 'sports', label: <FaFootballBall />, icon: '<FaFootballBall/>' },
-        { value: 'toys', label: <FaPuzzlePiece />, icon: '<FaPuzzlePiece/>' },
-        { value: 'automotive', label: <FaCar />, icon: '<FaCar/>' },
-        { value: 'grocery', label: <FaAppleAlt />, icon: '<FaAppleAlt/>' },
-        { value: 'jewelry', label: <FaGem />, icon: '<FaGem/>' },
-        { value: 'service', label: <MdOutlineMiscellaneousServices />, icon: '<MdOutlineMiscellaneousServices />' },
-    ];
-
-    const formatOptionLabel = ({ label, icon }: { label: any; icon: any }) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-            {icon}
-            <span style={{ marginLeft: 10 }}>{label}</span>
-        </div>
-    );
     const defaultValues = useMemo(
         () => ({
             name: '',
@@ -71,24 +50,37 @@ function CategoryManagement() {
 
     const categorySchema = useMemo(
         () =>
-            z.object({
-                name: z.string().trim().min(1, 'category name field cannot be empty'),
-                parentId: z
-                    .string()
-                    .optional()
-                    .refine(
-                        (val) => {
-                            if (!val) return true;
-                            if (!data?.length) return false;
-                            const isMatched = data.some((data) => data._id === val);
-                            if (isMatched) return true;
-                            else return false;
-                        },
-                        { message: 'invalid parent category' }
-                    ),
-                isActive: z.boolean(),
-                icon: z.string().optional(),
-            }),
+            z
+                .object({
+                    name: z.string().trim().min(1, 'Category name field cannot be empty'),
+                    parentId: z
+                        .string()
+                        .optional()
+                        .refine(
+                            (val) => {
+                                if (!val) return true;
+                                if (!data?.length) return false;
+                                const isMatched = data.some((data) => data._id === val);
+                                if (isMatched) return true;
+                                else return false;
+                            },
+                            { message: 'Invalid parent category' }
+                        ),
+                    icon: z.string(),
+                    isActive: z.boolean(),
+                })
+                .refine(
+                    (val) => {
+                        if (!val.parentId && !val.icon) {
+                            return false;
+                        }
+                        return true;
+                    },
+                    {
+                        message: "Icon shouldn't be empty for Main category",
+                        path: ['icon'],
+                    }
+                ),
         [data]
     );
 
@@ -98,6 +90,7 @@ function CategoryManagement() {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
         watch,
         reset,
     } = useForm<ICategorySchema>({
@@ -105,7 +98,13 @@ function CategoryManagement() {
         resolver: zodResolver(categorySchema),
     });
 
-    const watchParent = watch('parentId');
+    const [watchParent, watchIcon] = watch(['parentId', 'icon']);
+
+    useEffect(() => {
+        if (watchParent) {
+            setValue('icon', '');
+        }
+    }, [watchParent]);
 
     const {
         mutateAsync,
@@ -129,9 +128,14 @@ function CategoryManagement() {
         },
         onError: (data: any) => {
             const errorMsg = data?.response?.data ?? data.message;
-            showAlert('error', "Something went wrong!. Please check again");
+            showAlert('error', errorMsg ?? 'Something went wrong!. Please check again');
         },
     });
+
+    const handleSelectIcon = (val: string) => {
+        if (!val) return;
+        setValue('icon', val, { shouldValidate: true });
+    };
 
     const onSubmit: SubmitHandler<ICategorySchema> = async (data: ICategorySchema) => {
         if (!data.parentId) delete data.parentId;
@@ -224,7 +228,7 @@ function CategoryManagement() {
                                         >
                                             <Dialog.Panel className="panel my-8 w-full max-w-sm overflow-hidden rounded-lg border-0 py-1 px-4 text-black dark:text-white-dark">
                                                 <div className="flex items-center justify-between m-5 text-lg font-semibold dark:text-white">
-                                                    <h5 className="font-bold">New Category</h5>
+                                                    <h5 className="font-bold">{editCategoryId ? 'Update' : 'New' } Category</h5>
                                                     <button
                                                         type="button"
                                                         onClick={() => {
@@ -254,40 +258,6 @@ function CategoryManagement() {
                                                                     {...register('name')}
                                                                 />
                                                                 {errors.name && <span className="text-danger text-xs">{errors.name.message}</span>}
-                                                            </div>
-                                                            {/* <>
-                                                                <label htmlFor="disSelect" className="text-sm font-bold">
-                                                                    Choose icon
-                                                                </label>
-                                                                <Select
-                                                                styles={customStyles}
-                                                                     id='icon'
-                                                                        {...register('icon')}
-                                                                    value={categoryOptions}
-                                                                    // onChange={this.handleChange}
-                                                                    options={categoryOptions}
-                                                                />
-                                                            </> */}
-                                                            <div>
-                                                                <label htmlFor="disSelect" className="text-sm font-bold">
-                                                                    Select icon
-                                                                </label>
-                                                                <select
-                                                                    id="icon"
-                                                                    {...register('icon')}
-                                                                    className={`form-select !appearance-none disabled:pointer-events-none ${
-                                                                        !watchParent && 'rgb(14 23 38 / var(--tw-text-opacity))'
-                                                                    } disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b] appearance-none empty:text-white`}
-                                                                >
-                                                                    <option className="" value="">
-                                                                        None
-                                                                    </option>
-                                                                    {categoryOptions?.map((icon) => (
-                                                                        <option key={icon.value} value={icon.value} className="text-dark">
-                                                                            {icon.value}
-                                                                        </option>
-                                                                    ))}
-                                                                </select>
                                                             </div>
 
                                                             <div>
@@ -334,6 +304,10 @@ function CategoryManagement() {
                                                                     {errors.parentId ? errors.parentId?.message : 'If this category is a subcategory, select its parent category'}
                                                                 </span>
                                                             </div>
+
+                                                            <DynamicIconPicker onIconSelect={handleSelectIcon} disabled={Boolean(watchParent)} selectedIcon={watchIcon} />
+                                                            {errors.icon && <span className="text-danger text-xs">{errors.icon.message}</span>}
+
                                                             <div>
                                                                 <label className="flex w-fit items-center gap-2">
                                                                     <div className="w-9 h-5 relative shrink-0">
@@ -419,10 +393,10 @@ function CategoryManagement() {
                                                     <button
                                                         type="button"
                                                         disabled={category.subcategories.length < 1}
-                                                        className={`${subcategoryView.includes(category._id) ? 'active' : ''} flex items-center justify-center`}
+                                                        className={`${subcategoryView.includes(category._id) ? 'active' : ''} disabled:text-gray-500 text-primary flex items-center justify-center`}
                                                         onClick={() => toggleSubcategory(category._id)}
                                                     >
-                                                        <IconCaretDown className={`w-5 h-5 text-primary inline ltr:mr-2 rtl:ml-2 ${subcategoryView.includes(category._id) && 'rotate-180'}`} />
+                                                        <IconCaretDown className={`w-5 h-5 inline ltr:mr-2 rtl:ml-2 ${subcategoryView.includes(category._id) && 'rotate-180'}`} />
                                                     </button>
                                                 </td>
                                                 <td className="truncate">{category.name}</td>
@@ -474,6 +448,7 @@ function CategoryManagement() {
                                                                 {
                                                                     name: category.name,
                                                                     isActive: category.isActive,
+                                                                    icon: category.icon,
                                                                 },
                                                                 { keepDefaultValues: true }
                                                             );

@@ -3,6 +3,7 @@ export interface ICategory {
     name: string;
     parentId: string;
     isActive: boolean;
+    icon: string;
     isPending: boolean;
     isShowOnHomePage: boolean;
 }

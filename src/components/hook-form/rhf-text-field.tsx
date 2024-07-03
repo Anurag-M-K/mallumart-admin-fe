@@ -32,7 +32,7 @@ export default function RHFTextField({ name, type, helperText, label, className,
                         className={'form-input ' + className}
                         {...other}
                     />
-                    {helperText || (error && <span className={`text-xs text-white-dark ${error.message && '!text-danger'}`}>{error.message || helperText}</span>)}
+                    {(helperText || error?.message) && <span className={`text-xs text-white-dark ${error?.message && '!text-danger'}`}>{error?.message || helperText}</span>}
                 </div>
             )}
         />
