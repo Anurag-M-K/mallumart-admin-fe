@@ -19,11 +19,11 @@ import { Spinner } from 'flowbite-react';
 
 const LoginBoxed = ({ role }: { role: string }) => {
     const dispatch = useDispatch();
-    const [loading,setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false);
     const admin: any = useSelector((state: any) => state.admin);
     if (admin?.isAuthenticated) {
-        return <Navigate to="/admin"  replace />;
-      }
+        return <Navigate to="/admin" replace />;
+    }
     useEffect(() => {
         dispatch(setPageTitle('Login Boxed'));
     });
@@ -32,22 +32,21 @@ const LoginBoxed = ({ role }: { role: string }) => {
 
     const onSubmit = async (values: any) => {
         try {
-            setLoading(true)
-            const login:any = await adminLogin(values);
-            console.log("login ",login)
-            localStorage.setItem('adminToken', login?.data?.token);
-    
-            dispatch(setAdminDetails(login?.data));
-            if(login?.response?.data?.message){
-                toast.error(login?.response?.data?.message)
+            setLoading(true);
+            const login: any = await adminLogin(values);
+
+            if (login?.response?.data?.message) {
+                toast.error(login?.response?.data?.message);
             }
-            if (login?.data?.email === import.meta.env.VITE_APP_ADMIN_EMAIL) {
+            if (login?.data?.email === import.meta.env.VITE_APP_ADMIN_EMAIL && login?.status === 200) {
+                localStorage.setItem('adminToken', login?.data?.token);
+                dispatch(setAdminDetails(login?.data));
                 navigate('/admin');
             }
-            setLoading(false)
+            setLoading(false);
         } catch (error) {
-            setLoading(false)
-            console.log("error ",error)
+            setLoading(false);
+            console.log('error ', error);
         }
     };
 
@@ -107,7 +106,7 @@ const LoginBoxed = ({ role }: { role: string }) => {
                                         </div>
 
                                         <button type="submit" className="btn btn-gradient  !mt-6 w-full border py-3 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
-                                         {loading ? <Spinner /> : " Sign in " }  
+                                            {loading ? <Spinner /> : ' Sign in '}
                                         </button>
                                     </form>
                                 )}
@@ -116,7 +115,7 @@ const LoginBoxed = ({ role }: { role: string }) => {
                     </div>
                 </div>
             </div>
-            <Toaster  position="bottom-right"/>
+            <Toaster position="bottom-right" />
         </div>
     );
 };

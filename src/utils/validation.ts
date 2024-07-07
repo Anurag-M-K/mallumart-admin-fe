@@ -7,8 +7,6 @@ export const validation_required = (value: string | number | undefined) => {
   };
 
   export const password_check =(values:any) =>{
-    console.log("newPassword ",values.newPassword)
-    console.log("reEnterPassword ",values.reEnterPassword)
     if(values?.newPassword == values.reEnterPassword){
       return undefined
     }else{
@@ -37,4 +35,11 @@ export const validation_required = (value: string | number | undefined) => {
     }
     // Validation passed
     return null;
+};
+
+export const validation_phone = (value: any) => {
+  if (value && value.match(/^\+?\d{1,4}?[-.\s]?(\(?\d{1,3}?\)?[-.\s]?)?\d{9,}$/)) {
+      return undefined;
+  }
+  return "Invalid phone number";
 };

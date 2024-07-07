@@ -31,7 +31,9 @@ const StaffAccount = lazy(()=>import('../pages/staff/account/Account'))
 const Advertisment = lazy(()=>import("../pages/Admin/advertisement-management/AdvertisementManagement"))
 const AdvertismentStoreSide = lazy(()=>import("../pages/storeOwner/advertisement-management/AdvertisementManagement"))
 const Landing = lazy(()=>import("../pages/Index"))
-
+const ForgotPasswordPhoneField = lazy(()=>import("../pages/staff/Authentication/ForgotPasswordPhoneFieldPage"))
+const OtpVerifying = lazy(()=>import("../pages/staff/Authentication/OtpVerifyingStaff"))
+const ChangePassword = lazy(()=>import("../pages/staff/Authentication/ChangePasswordPage"))
 const routes = [
 
 {
@@ -99,6 +101,7 @@ layout:"blank"
         element: <StaffLogin role={'Staff'} />,
         layout: 'blank',
     },
+   
     {
         path: '/staff',
         element: <ProtectedRouteStaff><StaffDashboard /></ProtectedRouteStaff>,
@@ -165,6 +168,22 @@ layout:"blank"
         path: '/store/contact-us',
         element: <ProtectedRouteStore><h1>Contact us</h1></ProtectedRouteStore>,
         layout: 'storeLayout',
+    },
+    // common
+    {
+        path: '/forgot-password',
+        element: <ForgotPasswordPhoneField />,
+        layout: 'blank',
+    },
+    {
+        path: '/otp-verify/:id',
+        element: <OtpVerifying  />,
+        layout: 'blank',
+    },
+    {
+        path: '/change-password',
+        element: <ChangePassword  />,
+        layout: 'blank',
     },
     // 404 page
     {

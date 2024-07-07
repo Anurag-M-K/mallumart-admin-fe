@@ -1,5 +1,5 @@
 import { Button, FileInput, Label, ToggleSwitch, Tooltip } from 'flowbite-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FieldRenderProps } from 'react-final-form';
 import { IoInformationCircle } from 'react-icons/io5';
 import ValidationError from '../ValidationError';
@@ -350,3 +350,79 @@ export const WrappedLocation: React.FC<IWrappedLocationProps> = ({ input, meta, 
         </div>
     );
 };
+
+
+interface WrappedInputProps extends FieldRenderProps<string, HTMLElement> {
+    label: string;
+    placeholder?: string;
+    type?: string;
+  }
+  
+  export const wrappedOtp: React.FC<WrappedInputProps> = ({ label, placeholder, meta, input }) => {
+    const [otp, setOtp] = useState(['', '', '', '', '', '']);
+    const inputsRef = useRef<any[]>([]);
+  
+    const handleChange = (element: HTMLInputElement, index: number) => {
+      if (/^\d$/.test(element.value) || element.value === '') {
+        const newOtp = [...otp];
+        newOtp[index] = element.value;
+        setOtp(newOtp);
+        input.onChange(newOtp.join(''));
+  
+        // Focus the next input
+        if (element.value !== '' && index < 5) {
+          inputsRef.current[index + 1].focus();
+        }
+      }
+    };
+  
+    const handleKeyDown = (event: React.KeyboardEvent, index: number) => {
+      if (event.key === 'Backspace' && otp[index] === '') {
+        if (index > 0) {
+          inputsRef.current[index - 1].focus();
+        }
+      }
+    };
+  
+    const handlePaste = (event: React.ClipboardEvent) => {
+      const pasteData = event.clipboardData.getData('text').slice(0, 6).split('');
+      if (pasteData.every(char => /^\d$/.test(char))) {
+        const newOtp = [...otp];
+        pasteData.forEach((char, index) => {
+          newOtp[index] = char;
+        });
+        setOtp(newOtp);
+        input.onChange(newOtp.join(''));
+        if (pasteData.length < 6) {
+          inputsRef.current[pasteData.length].focus();
+        } else {
+          inputsRef.current[5].blur();
+        }
+      }
+    };
+  
+    return (
+      <div>
+        <label className="text-black">{label}</label>
+        <div className="flex space-x-2">
+          {otp.map((value, index) => (
+            <input
+              key={index}
+              type="text"
+              inputMode="numeric"
+              maxLength={1}
+              value={value}
+              ref={el => (inputsRef.current[index] = el)}
+              onChange={e => handleChange(e.target, index)}
+              onKeyDown={e => handleKeyDown(e, index)}
+              onPaste={handlePaste}
+              className="w-10 h-10 text-center border border-gray-300 rounded"
+            />
+          ))}
+        </div>
+        {meta.error && meta.touched && <span className="text-red-500">{meta.error}</span>}
+      </div>
+    );
+  };
+  
+ 

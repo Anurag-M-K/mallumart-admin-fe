@@ -9,7 +9,7 @@ export const storeLogin = async (payload: any) => {
         });
         return res.data;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };
 

@@ -15,7 +15,7 @@ import { addStaff, getStaffs } from '../../../api/adminApi';
 import { Spinner } from 'flowbite-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStaffDetails } from '../../../store/staffManagementSlice';
-import { validation_email, validation_required } from '../../../utils/validation';
+import { validation_email, validation_phone, validation_required } from '../../../utils/validation';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 import IconPlus from '../../../components/Icon/IconPlus';
 
@@ -122,6 +122,17 @@ function StaffManagement() {
                                                                 className="form-input ps-10 placeholder:text-white-dark"
                                                                 name="email"
                                                                 validate={validation_email}
+                                                            />
+                                                        </div>
+                                                        <div className="relative my-5 text-white-dark">
+                                                            <Field
+                                                                id="phone"
+                                                                type="text"
+                                                                placeholder="Enter Staff phone"
+                                                                component={WrappedInput}
+                                                                className="form-input ps-10 placeholder:text-white-dark"
+                                                                name="phone"
+                                                                validate={validation_phone}
                                                             />
                                                         </div>
                                                         <div className="relative my-5 text-white-dark">

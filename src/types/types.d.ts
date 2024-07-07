@@ -82,3 +82,14 @@ type TSearchedProducts = {
     productName:string;
     searchCount:number;
 }
+type TForgotPasswordPhoneField = {
+    phone:string;
+}
+type TOtp = {
+    otp:string
+}
+
+type TConfirmPassword = {
+    newPassword:string;
+    confirmPassword:string;
+}

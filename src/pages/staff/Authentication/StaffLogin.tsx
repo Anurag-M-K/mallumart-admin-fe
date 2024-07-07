@@ -25,19 +25,19 @@ const LoginBoxed = ({ role }: { role: string }) => {
     useEffect(() => {
         dispatch(setPageTitle('Login Boxed'));
     });
-    
+
     const navigate = useNavigate();
-    
+
     const onSubmit = async (values: any) => {
         try {
             setLoading(true);
             const login = await staffLogin(values);
             localStorage.setItem('staffToken', login?.token);
-            dispatch(setStaffData(login));
             if (login.status === 'ok') {
+                dispatch(setStaffData(login));
                 navigate('/staff');
             }
-            
+
             toast.error(login.response.data.message);
             setLoading(false);
         } catch (error) {
@@ -45,10 +45,10 @@ const LoginBoxed = ({ role }: { role: string }) => {
             console.log(error);
         }
     };
-    
+
     if (staff?.isAuthenticated) {
-        return <Navigate to="/staff"  replace />;
-      }
+        return <Navigate to="/staff" replace />;
+    }
     return (
         <div>
             <div className="absolute inset-0">
@@ -98,9 +98,11 @@ const LoginBoxed = ({ role }: { role: string }) => {
                                                     component={WrappedInput}
                                                     className="form-input ps-10 placeholder:text-white-dark"
                                                 />
-                                        
                                             </div>
                                         </div>
+                                        <Link className="mt-4 hover:text-blue-600 text-sm " to={'/forgot-password'}>
+                                            <p className="mt-2">Forgot password?</p>
+                                        </Link>
 
                                         <button type="submit" className="btn btn-gradient  !mt-6 w-full border py-3 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
                                             {loading ? <Spinner /> : ' Sign in '}

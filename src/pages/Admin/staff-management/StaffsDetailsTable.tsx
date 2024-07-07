@@ -133,6 +133,10 @@ const StaffDetailsTable = () => {
                         accessor: 'email',
                     },
                     {
+                        title: 'Phone',
+                        accessor: 'phone',
+                    },
+                    {
                         title: 'Status',
                         accessor: 'status',
                     },

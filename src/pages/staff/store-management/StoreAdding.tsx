@@ -67,7 +67,6 @@ function StoreAdding() {
                     padding: '10px 20px',
                 });
             };
-            console.log("Res[opnse ",response)
             if (response?.status == 201) {
                 const res = await fetchAllStore(staffData?.staffToken);
                 dispatch(setStoreData(res?.data));
@@ -78,7 +77,6 @@ function StoreAdding() {
             }else{
                 showAlert('error',response?.response?.data?.message)
                 setLoading(false);
-                // toast.error(response.data.message);
             }
         } catch (error) {
             toast.error('Something went wrong, please try again');
