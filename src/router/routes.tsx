@@ -32,8 +32,11 @@ const Advertisment = lazy(()=>import("../pages/Admin/advertisement-management/Ad
 const AdvertismentStoreSide = lazy(()=>import("../pages/storeOwner/advertisement-management/AdvertisementManagement"))
 const Landing = lazy(()=>import("../pages/Index"))
 const ForgotPasswordPhoneField = lazy(()=>import("../pages/staff/Authentication/ForgotPasswordPhoneFieldPage"))
+const StoreForgotPasswordPhoneField = lazy(()=>import("../pages/storeOwner/authentication/ForgotPasswordPhoneFieldPage"))
 const OtpVerifying = lazy(()=>import("../pages/staff/Authentication/OtpVerifyingStaff"))
+const StoreOtpVerifying = lazy(()=>import("../pages/storeOwner/authentication/OtpVerifyingStore"))
 const ChangePassword = lazy(()=>import("../pages/staff/Authentication/ChangePasswordPage"))
+const StoreChangePassword = lazy(()=>import("../pages/storeOwner/authentication/ChangePasswordPage"))
 const routes = [
 
 {
@@ -101,6 +104,21 @@ layout:"blank"
         element: <StaffLogin role={'Staff'} />,
         layout: 'blank',
     },
+    {
+        path: '/forgot-password',
+        element: <ForgotPasswordPhoneField />,
+        layout: 'blank',
+    },
+    {
+        path: '/otp-verify/:id',
+        element: <OtpVerifying  />,
+        layout: 'blank',
+    },
+    {
+        path: '/change-password',
+        element: <ChangePassword  />,
+        layout: 'blank',
+    },
    
     {
         path: '/staff',
@@ -145,6 +163,21 @@ layout:"blank"
         layout: 'blank',
     },
     {
+        path: '/store/forgot-password',
+        element: <StoreForgotPasswordPhoneField />,
+        layout: 'blank',
+    },
+    {
+        path: '/store/otp-verify/:id',
+        element: <StoreOtpVerifying  />,
+        layout: 'blank',
+    },
+    {
+        path: '/store/change-password',
+        element: <StoreChangePassword  />,
+        layout: 'blank',
+    },
+    {
         path: '/store',
         element: <ProtectedRouteStore><StoreOwnerLanding /></ProtectedRouteStore>,
         layout: 'storeLayout',
@@ -170,21 +203,7 @@ layout:"blank"
         layout: 'storeLayout',
     },
     // common
-    {
-        path: '/forgot-password',
-        element: <ForgotPasswordPhoneField />,
-        layout: 'blank',
-    },
-    {
-        path: '/otp-verify/:id',
-        element: <OtpVerifying  />,
-        layout: 'blank',
-    },
-    {
-        path: '/change-password',
-        element: <ChangePassword  />,
-        layout: 'blank',
-    },
+  
     // 404 page
     {
         path: '/*',
