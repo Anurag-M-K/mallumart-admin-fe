@@ -221,7 +221,7 @@ function NewProduct({ handleCancel, id, editDefaultValues }: { handleCancel: () 
                                                     }}
                                                     isLoading={isPending}
                                                     options={(data ?? []).map(({ _id, name }) => ({ value: _id, label: name }))}
-                                                    placeholder="Select Category"
+                                                    placeholder="Select Category or Type New Category"
                                                     formatCreateLabel={(userInput) => `Request '${userInput}'`}
                                                 />
                                                 <span className={`text-xs text-white-dark ${error?.message && '!text-danger'}`}>
