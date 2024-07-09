@@ -3,7 +3,7 @@ import { getCategory } from '../../api/categoryApi';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllStore, updateStore } from '../../api/staffApi';
 import { setStoreData } from '../../store/storeSlice';
-import toast from 'react-hot-toast';
+import toast, { Toaster }  from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,15 +15,17 @@ import { Spinner } from 'flowbite-react';
 export default function EditViewStoreForm() {
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
-    const storeData = useSelector((state: any) => state.stores.storeData);
+    const storeData = useSelector((state: any) => state?.stores?.storeData);
     const storeId: string | undefined = window.location.pathname.split('/').pop();
-    const singleStore = storeData?.filter((item: any) => item._id === storeId);
+    console.log("storeDaa ",storeData)
+    const singleStore = storeData?.filter((item: any) => item?._id === storeId);
     const [isFormEdited, setIsFormEdited] = useState(false);
     const adminDetails = useSelector((state: any) => state.admin.adminDetails);
     const navigate = useNavigate();
     const staffData = useSelector((state: any) => state.staff);
 
     const onSubmit = async (values: TStoreValues) => {
+        console.log("values ",values)
         const changedFields: Partial<TStoreValues> = {};
         Object.keys(values).forEach((key) => {
             if (values[key] !== singleStore[0][key]) {
@@ -31,15 +33,15 @@ export default function EditViewStoreForm() {
             }
         });
         changedFields.storeId = storeId;
-        console.log("changefield ",changedFields)
         try {
             setLoading(true);
             const response: any = await updateStore(staffData?.staffToken, changedFields);
             const res: any = await fetchAllStore(staffData?.staffToken);
-
+            
             dispatch(setStoreData(res?.data));
             toast.success('Store updated');
-            navigate('/staff/stores');
+            // navigate('/staff/stores');
+            setLoading(false);
         } catch (error) {
             setLoading(false);
             console.log(error);
@@ -55,8 +57,8 @@ export default function EditViewStoreForm() {
         label: category?.name,
         value: category?._id,
     }));
+    console.log("single store ",singleStore)
 
-    console.log("singleStore ",singleStore)
     return (
         <Form
             initialValues={
@@ -139,24 +141,24 @@ export default function EditViewStoreForm() {
                             />
                             <div className="flex border-none text-white-dark">
                                 <Field
-                                    initialValue={singleStore[0].wholeSale ?? false}
+                                    initialValue={singleStore[0]?.wholeSale ?? false}
                                     id="wholeSale"
                                     type="checkbox"
                                     className="placeholder:text-white-dark"
                                     name="wholeSale"
                                     label="Whole sale"
                                     component={WrappedCheckbox}
-                                    value={singleStore[0].wholeSale ?? false}
+                                    value={singleStore[0]?.wholeSale ?? false}
                                 />
                                 <Field
-                                    initialValue={singleStore[0].retail ?? false}
+                                    initialValue={singleStore[0]?.retail ?? false}
                                     id="retail"
                                     type="checkbox"
                                     label="Retail"
                                     component={WrappedCheckbox}
                                     className="placeholder:text-white-dark"
                                     name="retail"
-                                    value={singleStore[0].retail ?? false}
+                                    value={singleStore[0]?.retail ?? false}
 
                                 />
                             </div>
@@ -165,12 +167,12 @@ export default function EditViewStoreForm() {
                     <div className="col-span-6">
                         <div className="flex flex-col gap-4">
                             <Field
-                                initialValue={singleStore[0].category}
+                                initialValue={singleStore?.[0]?.category}
                                 id="category"
                                 // validate={validation_required}
                                 type="text"
                                 label={"Category"}
-                                placeholder={singleStore[0].category ?? "Category"}
+                                placeholder={singleStore?.[0]?.category ?? "Category"}
                                 options={categoryOptions}
                                 component={WrappedSelect}
                                 className="form-input ps-10 placeholder:text-white-dark"
@@ -214,6 +216,7 @@ export default function EditViewStoreForm() {
                             {loading ? <Spinner color={'info'} /> : 'Save'}
                         </button>
                     </div>
+                    <Toaster position="bottom-right" />
                 </form>
             )}
         />

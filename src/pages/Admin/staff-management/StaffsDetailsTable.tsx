@@ -314,7 +314,7 @@ const StaffDetailsTable = () => {
                     </div>
                 </Dialog>
             </Transition>
-            <Toaster />
+            <Toaster  position="bottom-right"/>
         </div>
     );
 };

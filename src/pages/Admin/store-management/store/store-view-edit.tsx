@@ -63,7 +63,6 @@ function StoreViewEdit() {
         label: category?.name,
         value: category?._id,
     }));
-    console.log("singleStore ",singleStore)
     return (
         <div>
             <Breadcrumbs heading="Stores" links={[{ name: 'Dashboard', href: '/admin' }, { name: 'Stores', href: '/admin/stores' }, { name: 'Store Name' }]} />
@@ -228,7 +227,7 @@ function StoreViewEdit() {
                     )}
                 />
             </div>
-            <Toaster />
+            <Toaster position="bottom-right" />
         </div>
     );
 }

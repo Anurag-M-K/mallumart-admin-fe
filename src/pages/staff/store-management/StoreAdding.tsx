@@ -220,7 +220,7 @@ function StoreAdding() {
                     )}
                 />
             </div>
-            <Toaster />
+            <Toaster position="bottom-right" />
         </div>
     );
 }

@@ -4,7 +4,6 @@ import IconHome from '../../../../components/Icon/IconHome';
 import { useState } from 'react';
 import IconUser from '../../../../components/Icon/IconUser';
 import IconBox from '../../../../components/Icon/IconBox';
-import { Toaster } from 'react-hot-toast';
 import EditViewStoreForm from '../../../../components/shop-sections/edit-view-form';
 import ProductView from '../../../../components/shop-sections/product-view';
 import SubscriptionManage from '../../../../components/shop-sections/SubscriptionManage';
@@ -62,7 +61,7 @@ function StoreViewEdit({ admin = false }: { admin?: boolean }) {
             ) : (
                 <SubscriptionManage />
             )}
-            <Toaster />
+            {/* <Toaster position="bottom-right" /> */}
         </div>
     );
 }
