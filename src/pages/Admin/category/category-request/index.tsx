@@ -98,15 +98,15 @@ export default function CategoryRequests() {
                             </thead>
                             <tbody>
                                 {data?.map((category) => (
-                                    <tr key={category._id} className={`sub-category`}>
-                                        <td className="truncate">{category.name}</td>
-                                        <td className="truncate">{category.parentId.name}</td>
+                                    <tr key={category?._id} className={`sub-category`}>
+                                        <td className="truncate">{category?.name}</td>
+                                        <td className="truncate">{category?.parentId?.name}</td>
                                         <td className="text-center">
                                             <button
                                                 type="button"
                                                 className="btn btn-primary btn-sm"
                                                 onClick={() => {
-                                                    toggleStatus('Are you sure want to accept this category', 'Yes, Accept', category._id);
+                                                    toggleStatus('Are you sure want to accept this category', 'Yes, Accept', category?._id);
                                                 }}
                                             >
                                                 Accept
