@@ -128,7 +128,7 @@ console.log("staffData  ",staffData)
                     </div>
                 </div>
                {
-                staffData.target ? (
+                staffData?.target ? (
                     <div className="panel bg-gradient-to-r from-fuchsia-500 to-fuchsia-400">
                     <div className="flex justify-between">
                         <div className="ltr:mr-1 rtl:ml-1 text-md font-semibold">Your Target : {staffData?.target}</div>

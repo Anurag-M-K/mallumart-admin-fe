@@ -50,14 +50,33 @@ function StoreListing() {
     });
     const navigate = useNavigate();
 
+    console.log('staffData ', staffData);
+    console.log('Storedata ', storeData);
+
     // Fetching all store data
-    const { isLoading, error, data } = useQuery({
-        queryKey: ['store'],
-        queryFn: () =>
-            fetchAllStore(staffData?.staffToken).then((res) => {
-                dispatch(setStoreData(res?.data));
-            }),
-    });
+    // const { isLoading, error, data } = useQuery({
+    //     queryKey: ['store'],
+    //     queryFn: () => fetchAllStore(staffData?.staffToken)
+    //        .then((res) => {
+    //             dispatch(setStoreData(res?.data));
+    //         }),
+
+    // });
+
+    const fetchWholeStore = async () => {
+        try {
+            const data: any = await fetchAllStore(staffData?.staffToken);
+            dispatch(setStoreData(data?.data));
+            setInitialRecords(sortBy(data?.data, 'store'));
+            setRecordsData(sortBy(data?.data, 'store').slice(0, pageSize));
+        } catch (error) {
+            console.log('error while fetching stores ', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchWholeStore();
+    }, []);
 
     useEffect(() => {
         setPage(1);
@@ -85,7 +104,7 @@ function StoreListing() {
 
     useEffect(() => {
         const data = sortBy(initialRecords, sortStatus.columnAccessor);
-        setInitialRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
+        setInitialRecords(sortStatus?.direction === 'desc' ? data.reverse() : data);
         setPage(1);
     }, [sortStatus]);
 

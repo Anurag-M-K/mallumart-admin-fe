@@ -21,7 +21,7 @@ import { Spinner } from 'flowbite-react';
 const LoginBoxed = ({ role }: { role: string }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false);
-    const staff: any = useSelector((state: any) => state.staff);
+    const staff: any = useSelector((state: any) => state?.staff);
     useEffect(() => {
         dispatch(setPageTitle('Login Boxed'));
     });
@@ -33,12 +33,12 @@ const LoginBoxed = ({ role }: { role: string }) => {
             setLoading(true);
             const login = await staffLogin(values);
             localStorage.setItem('staffToken', login?.token);
-            if (login.status === 'ok') {
+            if (login?.status === 'ok') {
                 dispatch(setStaffData(login));
                 navigate('/staff');
             }
 
-            toast.error(login.response.data.message);
+            toast.error(login?.response?.data?.message);
             setLoading(false);
         } catch (error) {
             setLoading(false);
