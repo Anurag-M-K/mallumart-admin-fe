@@ -54,7 +54,7 @@ function StoreViewEdit({ admin = false }: { admin?: boolean }) {
             </div>
             {tabs === 'storeInfo' ? (
                 <div className="p-2 md:p-10">
-                    <EditViewStoreForm />
+                    <EditViewStoreForm admin={admin} />
                 </div>
             ) : tabs === 'products' ? (
                 <ProductView />

@@ -1,7 +1,8 @@
 import { Field, Form } from 'react-final-form';
 import { getCategory } from '../../api/categoryApi';
 import { useQuery } from '@tanstack/react-query';
-import { fetchAllStore, updateStore } from '../../api/staffApi';
+import {  updateStore } from '../../api/staffApi';
+// import { fetchAllStore } from '../../api/staffApi';
 import { setStoreData } from '../../store/storeSlice';
 import toast, { Toaster }  from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,8 +12,9 @@ import WrappedInput from '../wrappedComponents/WrappedInputField';
 import WrappedSelect, { WrappedCheckbox, WrappedInputForUniqueName, WrappedLocation, wrapidQuill } from '../wrappedComponents/wrappedComponent';
 import { districts } from '../../constants/store';
 import { Spinner } from 'flowbite-react';
+import { fetchAllStore } from '../../api/commonApi';
 
-export default function EditViewStoreForm() {
+export default function EditViewStoreForm({admin}:{admin:boolean}) {
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const storeData = useSelector((state: any) => state?.stores?.storeData);
@@ -20,10 +22,11 @@ export default function EditViewStoreForm() {
     console.log("storeDaa ",storeData)
     const singleStore = storeData?.filter((item: any) => item?._id === storeId);
     const [isFormEdited, setIsFormEdited] = useState(false);
-    const adminDetails = useSelector((state: any) => state.admin.adminDetails);
+    const adminDetails = useSelector((state: any) => state?.admin?.adminDetails);
     const navigate = useNavigate();
-    const staffData = useSelector((state: any) => state.staff);
+    const staffData = useSelector((state: any) => state?.staff);
 
+    console.log("admin  ",admin)
     const onSubmit = async (values: TStoreValues) => {
         console.log("values ",values)
         const changedFields: Partial<TStoreValues> = {};
@@ -35,10 +38,16 @@ export default function EditViewStoreForm() {
         changedFields.storeId = storeId;
         try {
             setLoading(true);
-            const response: any = await updateStore(staffData?.staffToken, changedFields);
-            const res: any = await fetchAllStore(staffData?.staffToken);
+            const response: any = await updateStore( admin ? adminDetails?.token :  staffData?.staffToken, changedFields,admin ? "admin":"staff");
+            if(!admin){
+
+                const res: any = await fetchAllStore(staffData?.staffToken,"staff");
+                dispatch(setStoreData(res?.data));
+            }else{
+                const res :any = await fetchAllStore(adminDetails?.token,"admin")
+                dispatch(setStoreData(res?.data));
+            }
             
-            dispatch(setStoreData(res?.data));
             toast.success('Store updated');
             // navigate('/staff/stores');
             setLoading(false);

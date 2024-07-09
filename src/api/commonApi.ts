@@ -76,3 +76,18 @@ export const UpdatePassword = async (role:string,newPassword:string,token:string
         console.log(error)
     }
 }
+
+export const fetchAllStore = async (token:string,role:string) => {
+    try {
+       const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/${role}/store`,
+            method:"GET",
+            headers:{
+                Authorization:token
+            }
+        })
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

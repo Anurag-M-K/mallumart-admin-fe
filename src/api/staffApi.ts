@@ -76,10 +76,10 @@ export const updateStoreStatus = async (staffToken:string,storeId:string) => {
     }
 }
 
-export const updateStore = async (staffToken:string,payload:any) => {
+export const updateStore = async (staffToken:string,payload:any,role:string) => {
     try {
         const res = await instance({
-            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/staff/store/${payload.storeId}`,
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/${role}/store/${payload.storeId}`,
             method:"PUT",
             data:payload,
             headers:{
