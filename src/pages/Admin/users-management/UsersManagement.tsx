@@ -94,7 +94,7 @@ const UsersManageMent = () => {
                                 accessor: 'phone',
                                 title: 'Contact',
                                 sortable: true,
-                                render: (user: TUsers) => (
+                                render: (user: any) => (
                                     <div className="w-max">
                                         <h2>{user?.phone}</h2>
                                         <small>{user?.email}</small>
@@ -106,7 +106,7 @@ const UsersManageMent = () => {
                                 accessor: 'status',
                                 title: 'Status',
                                 sortable: false,
-                                render: (user: TUsers) => (
+                                render: (user: any) => (
                                     <span onClick={() => updateStatus(user?._id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
                                         {user?.isBlocked ? 'Blocked' : 'Active'}
                                     </span>
@@ -116,7 +116,7 @@ const UsersManageMent = () => {
                                 accessor: '_id',
                                 title: 'Action',
                                 titleClassName: '!text-center',
-                                render: (user: TUsers) => (
+                                render: (user: any) => (
                                     <div className="flex items-center w-max mx-auto gap-2">
                                         <Tippy content="Delete ">
                                             <div className="flex gap-x-2 items-center justify-center">
