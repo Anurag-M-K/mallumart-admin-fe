@@ -93,3 +93,16 @@ type TConfirmPassword = {
     newPassword:string;
     confirmPassword:string;
 }
+type TUsers = {
+     email:string;
+     fullName:string;
+     phone:string;
+     _id:string;
+     isVerified:string;
+     isBlocked:boolean;
+}
+
+type TResponseUsers = {
+    users:Array<TUsers>;
+    total:number;
+}

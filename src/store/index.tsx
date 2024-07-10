@@ -9,6 +9,7 @@ import storeSlice from './storeSlice';
 import storeOwnerSlice from './storeOwnerSlice';
 import userSlice from './userSlice';
 import advertisementSlice from './advertisementSlice';
+import usersManagementSlice from './usersManagementSlice';
 
 const persistConfig = {
     key: 'root',
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
     stores: storeSlice,
     storeOwner: storeOwnerSlice,
     user: userSlice,
-    advertisement:advertisementSlice
+    advertisement:advertisementSlice,
+    users:usersManagementSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

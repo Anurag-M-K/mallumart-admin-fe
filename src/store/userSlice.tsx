@@ -20,7 +20,6 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setuserDetails: (state, action: PayloadAction<any[]>) => {
-            console.log("action  payload in user store ",action.payload)
             state.userDetails = action.payload;
         },
         setUserLogout(state){

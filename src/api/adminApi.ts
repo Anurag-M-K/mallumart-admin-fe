@@ -256,3 +256,49 @@ export const deleteStoreById = async (adminToken: string, storeId:string) => {
         console.log(error);
     }
 };
+
+export const fetchAllUsers = async (adminToken:string,page:any,limit:any,search:string) => {
+    try {
+       const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/fetch-all-users?page=${page}&limit=${limit}&search=${search}`,
+            method:"GET",
+            headers:{
+                Authorization:adminToken
+            }
+        })
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const changeUserStatus = async (adminToken:string,userId:string) => {
+    try {
+       const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/change-user-status`,
+            method:"PUT",
+            headers:{
+                Authorization:adminToken
+            },
+            data:{
+                userId
+            }
+        })
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const deleteUser = async (adminToken:string,userId:string) => {
+    try {
+       const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/delete-user/${userId}`,
+            method:"DELETE",
+            headers:{
+                Authorization:adminToken
+            }
+        })
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
