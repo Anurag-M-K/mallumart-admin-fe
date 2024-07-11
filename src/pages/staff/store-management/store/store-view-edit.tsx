@@ -1,24 +1,44 @@
-import { Tab } from '@headlessui/react';
+import { useState } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+
 import { Breadcrumbs } from '../../../../components/breadcrumbs/breadcrumbs';
 import IconHome from '../../../../components/Icon/IconHome';
-import { useState } from 'react';
 import IconUser from '../../../../components/Icon/IconUser';
-import IconBox from '../../../../components/Icon/IconBox';
-import EditViewStoreForm from '../../../../components/shop-sections/edit-view-form';
 import ProductView from '../../../../components/shop-sections/product-view';
 import SubscriptionManage from '../../../../components/shop-sections/SubscriptionManage';
+import IconBox from '../../../../components/Icon/IconBox';
+import EditViewStoreForm from './store-view-edit-new';
 
-function StoreViewEdit({ admin = false }: { admin?: boolean }) {
+import { getStaffStore } from '../../../../api/staffApi';
+
+const StoreViewEdit = ({ admin = false }: { admin?: boolean }) => {
     const [tabs, setTabs] = useState<string>('storeInfo');
+    const { id } = useParams();
+
     const toggleTabs = (name: string) => {
         setTabs(name);
     };
+
+    const { data, isPending } = useQuery({
+        queryKey: ['store', 'staff', id],
+        queryFn: () => getStaffStore(id!),
+    });
+
+    if (isPending) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
 
     return (
         <div>
             <Breadcrumbs
                 heading="Stores"
-                links={[{ name: 'Dashboard', href: admin ? '/admin' : '/staff' }, { name: 'Stores', href: admin ? '/admin/stores' : '/staff/stores' }, { name: 'Store Name' }]}
+                links={[{ name: 'Dashboard', href: admin ? '/admin' : '/staff' }, { name: 'Stores', href: admin ? '/admin/stores' : '/staff/stores' }, { name: data?.storeName }]}
             />
 
             <div>
@@ -54,16 +74,16 @@ function StoreViewEdit({ admin = false }: { admin?: boolean }) {
             </div>
             {tabs === 'storeInfo' ? (
                 <div className="p-2 md:p-10">
-                    <EditViewStoreForm admin={admin} />
+                    <EditViewStoreForm editDefaultValues={data} />
                 </div>
             ) : tabs === 'products' ? (
                 <ProductView />
             ) : (
                 <SubscriptionManage />
             )}
-            {/* <Toaster position="bottom-right" /> */}
+            <Toaster />
         </div>
     );
-}
+};
 
 export default StoreViewEdit;

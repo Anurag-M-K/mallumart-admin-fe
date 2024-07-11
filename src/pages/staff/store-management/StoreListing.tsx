@@ -1,32 +1,28 @@
-import React, { useEffect, useState, Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { Field, Form } from 'react-final-form';
-import WrappedInput from '../../../components/wrappedComponents/WrappedInputField';
+
+import 'tippy.js/dist/tippy.css';
+import { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addStore, fetchAllStore, updateStoreStatus } from '../../../api/staffApi';
-import toast, { Toaster } from 'react-hot-toast';
-import { validation_required } from '../../../utils/validation';
+import { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import {} from 'react';
 import sortBy from 'lodash/sortBy';
 import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
-import { setPageTitle } from '../../../store/themeConfigSlice';
-import IconTrashLines from '../../../components/Icon/IconTrashLines';
-import IconCircleCheck from '../../../components/Icon/IconCircleCheck';
-import IconEye from '../../../components/Icon/IconEye';
-import { storeStatus } from '../../../constants/store';
-import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 import { Link } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { setStoreData } from '../../../store/storeSlice';
-import IconEdit from '../../../components/Icon/IconEdit';
-import { Button } from 'flowbite-react';
-import IconPlus from '../../../components/Icon/IconPlus';
-import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
+import Swal from 'sweetalert2';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { setPageTitle } from '../../../store/themeConfigSlice';
+import { setStoreData } from '../../../store/storeSlice';
+
+import { fetchAllStore, updateStoreStatus } from '../../../api/staffApi';
 import { deleteStoreById } from '../../../api/commonApi';
+
+import IconCircleCheck from '../../../components/Icon/IconCircleCheck';
+import IconPlus from '../../../components/Icon/IconPlus';
+import IconEye from '../../../components/Icon/IconEye';
+import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
+
 
 function StoreListing() {
     const [page, setPage] = useState(1);
@@ -49,9 +45,6 @@ function StoreListing() {
         dispatch(setPageTitle('Stores'));
     });
     const navigate = useNavigate();
-
-    console.log('staffData ', staffData);
-    console.log('Storedata ', storeData);
 
     // Fetching all store data
     // const { isLoading, error, data } = useQuery({
@@ -107,22 +100,6 @@ function StoreListing() {
         setInitialRecords(sortStatus?.direction === 'desc' ? data.reverse() : data);
         setPage(1);
     }, [sortStatus]);
-
-    const onSubmit = async (values: any) => {
-        try {
-            setLoading(true);
-            const response: any = await addStore(values, staffData?.staffToken);
-            if (response?.status === 201) {
-                toast.success('Store added successfully');
-                setLoading(false);
-                setStoreAddingModal(false);
-            }
-        } catch (error) {
-            toast.error('Something went wrong, please try again');
-            setLoading(false);
-            console.log(error);
-        }
-    };
 
     const updateStatus = async (id: string) => {
         const res = await updateStoreStatus(staffData?.staffToken, id);
@@ -194,10 +171,10 @@ function StoreListing() {
                             ),
                         },
                         {
-                            accessor: 'wholeSale',
-                            title: 'wholeSale',
+                            accessor: 'wholesale',
+                            title: 'wholesale',
                             sortable: false,
-                            render: ({ wholeSale }) => wholeSale && <IconCircleCheck className="w-6 h-6" />,
+                            render: ({ wholesale }) => wholesale && <IconCircleCheck className="w-6 h-6" />,
                         },
                         { accessor: 'retail', title: 'Retail', sortable: false, render: ({ retail }) => retail && <IconCircleCheck className="w-6 h-6" /> },
                         {

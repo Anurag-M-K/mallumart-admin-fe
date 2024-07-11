@@ -1,11 +1,12 @@
 import instance from '../config/axiosInstance';
 import { ICategory, ICategoryFormatted, ICategorySelectOptions, ISubCategoryPending } from '../types/question';
 
-export const getCategory = async () => {
+export const getCategory = async (params?: { isActive: boolean }) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/category`,
             method: 'GET',
+            params,
         });
         return res.data as ICategoryFormatted[];
     } catch (error) {

@@ -6,7 +6,7 @@ import { toggleSidebar } from '../../store/themeConfigSlice';
 import AnimateHeight from 'react-animate-height';
 import { IRootState } from '../../store';
 import { useState, useEffect } from 'react';
-import { FaAdversal, FaUser, FaUsers, FaUsersCog } from 'react-icons/fa';
+import { FaAdversal, FaUsers, FaUsersCog } from 'react-icons/fa';
 import { MdLocalGroceryStore, MdLocalSee } from 'react-icons/md';
 import IconCaretDown from '../Icon/IconCaretDown';
 

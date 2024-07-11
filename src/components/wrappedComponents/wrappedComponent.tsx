@@ -2,26 +2,18 @@ import { Button, FileInput, Label, ToggleSwitch, Tooltip } from 'flowbite-react'
 import React, { useEffect, useRef, useState } from 'react';
 import { FieldRenderProps } from 'react-final-form';
 import { IoInformationCircle } from 'react-icons/io5';
-import ValidationError from '../ValidationError';
 import { BiImageAdd } from 'react-icons/bi';
 import { MdClose } from 'react-icons/md';
 import ReactQuill from 'react-quill';
-import { formats, modules } from '../quill';
 import 'react-quill/dist/quill.snow.css';
 import Compressor from 'compressorjs';
 // import Editor from "react-quill/lib/toolbar";
-import { Link } from 'react-router-dom';
-import CodeHighlight from '../../components/Highlight';
 import 'react-quill/dist/quill.snow.css';
-import { setPageTitle } from '../../store/themeConfigSlice';
-import { useDispatch } from 'react-redux';
-import IconBell from '../../components/Icon/IconBell';
-import IconCode from '../../components/Icon/IconCode';
 import debounce from 'lodash/debounce';
 
-import ImageUploading, { ImageListType } from 'react-images-uploading';
-import IconX from '../../components/Icon/IconX';
-import { searchUniqueNameExitst } from '../../api/staffApi';
+import ValidationError from '../ValidationError';
+
+import { searchUniqueNameExist } from '../../api/staffApi';
 
 interface WrappedSelectProps extends FieldRenderProps<string, HTMLElement> {
     label: string;
@@ -250,7 +242,7 @@ export const WrappedInputForUniqueName: React.FC<WrappedInputForUniqueNameProps>
 
     useEffect(() => {
         const debouncedSearch = debounce(async () => {
-            const response: any = await searchUniqueNameExitst(query);
+            const response: any = await searchUniqueNameExist(query);
             setIsUnique(response.data.isUnique);
         }, 300);
 

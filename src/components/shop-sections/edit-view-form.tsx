@@ -1,10 +1,10 @@
 import { Field, Form } from 'react-final-form';
 import { getCategory } from '../../api/categoryApi';
 import { useQuery } from '@tanstack/react-query';
-import {  updateStore } from '../../api/staffApi';
+import { updateStore } from '../../api/staffApi';
 // import { fetchAllStore } from '../../api/staffApi';
 import { setStoreData } from '../../store/storeSlice';
-import toast, { Toaster }  from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,21 +14,18 @@ import { districts } from '../../constants/store';
 import { Spinner } from 'flowbite-react';
 import { fetchAllStore } from '../../api/commonApi';
 
-export default function EditViewStoreForm({admin}:{admin:boolean}) {
+export default function EditViewStoreForm({ admin }: { admin: boolean }) {
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const storeData = useSelector((state: any) => state?.stores?.storeData);
     const storeId: string | undefined = window.location.pathname.split('/').pop();
-    console.log("storeDaa ",storeData)
     const singleStore = storeData?.filter((item: any) => item?._id === storeId);
     const [isFormEdited, setIsFormEdited] = useState(false);
     const adminDetails = useSelector((state: any) => state?.admin?.adminDetails);
     const navigate = useNavigate();
     const staffData = useSelector((state: any) => state?.staff);
 
-    console.log("admin  ",admin)
     const onSubmit = async (values: TStoreValues) => {
-        console.log("values ",values)
         const changedFields: Partial<TStoreValues> = {};
         Object.keys(values).forEach((key) => {
             if (values[key] !== singleStore[0][key]) {
@@ -38,16 +35,15 @@ export default function EditViewStoreForm({admin}:{admin:boolean}) {
         changedFields.storeId = storeId;
         try {
             setLoading(true);
-            const response: any = await updateStore( admin ? adminDetails?.token :  staffData?.staffToken, changedFields,admin ? "admin":"staff");
-            if(!admin){
-
-                const res: any = await fetchAllStore(staffData?.staffToken,"staff");
+            const response: any = await updateStore(admin ? adminDetails?.token : staffData?.staffToken /*, changedFields,admin ? "admin":"staff" */);
+            if (!admin) {
+                const res: any = await fetchAllStore(staffData?.staffToken, 'staff');
                 dispatch(setStoreData(res?.data));
-            }else{
-                const res :any = await fetchAllStore(adminDetails?.token,"admin")
+            } else {
+                const res: any = await fetchAllStore(adminDetails?.token, 'admin');
                 dispatch(setStoreData(res?.data));
             }
-            
+
             toast.success('Store updated');
             // navigate('/staff/stores');
             setLoading(false);
@@ -66,36 +62,34 @@ export default function EditViewStoreForm({admin}:{admin:boolean}) {
         label: category?.name,
         value: category?._id,
     }));
-    console.log("single store ",singleStore)
+    console.log('single store ', singleStore);
 
     return (
         <Form
             initialValues={
                 singleStore
-                    ?      
-                    { shopImgUrl: singleStore[0]?.shopImgUrl,
-                    storeName: singleStore[0]?.storeName,
-                    uniqueName: singleStore[0]?.uniqueName,
-                    district: singleStore[0]?.district,
-                    location: singleStore[0]?.location,
-                    email: singleStore[0]?.email,
-                    wholeSale: singleStore[0]?.wholeSale ?? false,
-                    retail: singleStore[0]?.retail ?? false,
-                    category: singleStore[0]?.category,
-                    address: singleStore[0]?.address,
-                    phone: singleStore[0]?.phone,
-                    storeOwnerName: singleStore[0]?.storeOwnerName,
-                    bio: singleStore[0]?.bio,
-                    status: singleStore[0].status,}
-                    : {
-                    
+                    ? {
+                          shopImgUrl: singleStore[0]?.shopImgUrl,
+                          storeName: singleStore[0]?.storeName,
+                          uniqueName: singleStore[0]?.uniqueName,
+                          district: singleStore[0]?.district,
+                          location: singleStore[0]?.location,
+                          email: singleStore[0]?.email,
+                          wholeSale: singleStore[0]?.wholeSale ?? false,
+                          retail: singleStore[0]?.retail ?? false,
+                          category: singleStore[0]?.category,
+                          address: singleStore[0]?.address,
+                          phone: singleStore[0]?.phone,
+                          storeOwnerName: singleStore[0]?.storeOwnerName,
+                          bio: singleStore[0]?.bio,
+                          status: singleStore[0].status,
                       }
+                    : {}
             }
             reloadOnSubmit={false}
             onSubmit={(values: TStoreValues) => onSubmit(values)}
             render={({ handleSubmit, values }) => (
                 <form onSubmit={handleSubmit} className="md:grid md:grid-cols-12 gap-4">
-                  
                     <div className="col-span-6">
                         <div className="flex flex-col gap-4">
                             <Field
@@ -168,7 +162,6 @@ export default function EditViewStoreForm({admin}:{admin:boolean}) {
                                     className="placeholder:text-white-dark"
                                     name="retail"
                                     value={singleStore[0]?.retail ?? false}
-
                                 />
                             </div>
                         </div>
@@ -180,8 +173,8 @@ export default function EditViewStoreForm({admin}:{admin:boolean}) {
                                 id="category"
                                 // validate={validation_required}
                                 type="text"
-                                label={"Category"}
-                                placeholder={singleStore?.[0]?.category ?? "Category"}
+                                label={'Category'}
+                                placeholder={singleStore?.[0]?.category ?? 'Category'}
                                 options={categoryOptions}
                                 component={WrappedSelect}
                                 className="form-input ps-10 placeholder:text-white-dark"
