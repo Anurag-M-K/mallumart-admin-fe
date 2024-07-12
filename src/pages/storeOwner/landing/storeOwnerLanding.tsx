@@ -40,10 +40,8 @@ function StoreOwnerLanding() {
         const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
         return daysLeft;
     };
-    console.log("storeOwnerData ",storeOwnerData)
 
     const daysleft = calculateDaysLeft(storeOwnerData?.subscriptionExpiresAt);
-console.log("daysleft ",daysleft)
 
         const whatsappNumber = import.meta.env.VITE_APP_ADMIN_PHONE_NUMBER
         const message = "Hi, I want to upgrade my store plan.";
@@ -52,13 +50,10 @@ console.log("daysleft ",daysleft)
             <div className="panel shadow-md">
                 <div className="flex items-center justify-center    stify-between mb-5">
                     <h5 className="font-semibold text-lg dark:text-white-light">Profile</h5>
-                    {/* <div className="ltr:ml-auto rtl:mr-auto btn btn-primary p-2 rounded-full">
-                        <IconPencilPaper />
-                    </div> */}
                 </div>
                 <div className="mb-5">
                     <div className="flex flex-col justify-center items-center">
-                        <img src={storeOwnerData?.shopImgUrl} alt="img" className="w-24 h-24 rounded-full object-cover  mb-5" />
+                        <img src={`${import.meta.env.VITE_APP_S3_STORAGE_BASE_URL}/${storeOwnerData?.shopImgUrl}`} alt="img" className="w-24 h-24 rounded-full object-cover  mb-5" />
                         <p className="font-semibold text-primary text-xl">{storeOwnerData?.storeName}</p>
                     </div>
                     <ul className="mt-5 flex flex-col max-w-[160px] m-auto space-y-4 font-semibold text-white-dark">
