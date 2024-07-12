@@ -58,7 +58,6 @@ function Dashboard({ role }: { role: string }) {
         queryFn:()=> fetchMostSearchedProducts(adminDetails.token)
       })
 
-      console.log('most searched products ',mostSearchedProducts)
     if (import.meta.env.VITE_APP_ADMIN_EMAIL !== adminDetails?.email && !token) {
         return (
             <div className="flex justify-center items-center   ">
@@ -218,7 +217,6 @@ function Dashboard({ role }: { role: string }) {
         },
     };
 
-    console.log("totalStores ",totalStores)
 
 
     return (
