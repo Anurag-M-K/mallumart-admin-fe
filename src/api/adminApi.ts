@@ -302,3 +302,19 @@ export const deleteUser = async (adminToken:string,userId:string) => {
         console.log(error);
     }
 }
+
+
+export const fetchUsersCount = async (adminToken:string) => {
+    try {
+       const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/users-count`,
+            method:"GET",
+            headers:{
+                Authorization:adminToken
+            }
+        })
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

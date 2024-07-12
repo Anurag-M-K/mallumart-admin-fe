@@ -8,7 +8,7 @@ import IconArrowLeft from '../../../components/Icon/IconArrowLeft';
 import { Link } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useQuery } from '@tanstack/react-query';
-import { fetchMostSearchedProducts, fetchStoreCountByCategory } from '../../../api/adminApi';
+import { fetchMostSearchedProducts, fetchStoreCountByCategory, fetchUsersCount } from '../../../api/adminApi';
 import Dropdown from '../../../components/Dropdown';
 import IconHorizontalDots from '../../../components/Icon/IconHorizontalDots';
 import IconEye from '../../../components/Icon/IconEye';
@@ -43,8 +43,15 @@ function Dashboard({ role }: { role: string }) {
     });
     const { isLoading: isLoadingCategory, error: errorCategory, data: categoryData } = useQuery({
         queryKey: ['category'],
-        queryFn: getCategory
+        queryFn:()=> getCategory()
       });
+
+      const {isLoading:fetchUsersCountLoading, data:fetchUsersCountData} = useQuery({
+        queryKey:['users-count'],
+        queryFn:()=> fetchUsersCount(adminDetails?.token)
+      })
+
+      console.log("fetchUsersCountData ",fetchUsersCountData)
 
       const  {isLoading:isLoadingMostSearchedProduct,error:mostSearchedErroe,data:mostSearchedProducts} = useQuery({
         queryKey:['most-searched-products'],
@@ -261,7 +268,7 @@ function Dashboard({ role }: { role: string }) {
                         </div>
                     </div>
                     <div className="flex items-center mt-5">
-                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 0 </div>
+                        <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{fetchUsersCountData?.data}</div>
                         {/* <div className="badge bg-white/30">- 2.35% </div> */}
                     </div>
                     <div className="flex cursor-pointer items-center font-semibold mt-5">
@@ -342,7 +349,7 @@ function Dashboard({ role }: { role: string }) {
                         </div>
                     </div>
                 </div>
-                <div className="panel h-full p-0">
+                {/* <div className="panel h-full p-0">
                     <div className="flex items-center justify-between w-full p-5 absolute">
                         <div className="relative">
                             <div className="text-success dark:text-success-light bg-success-light dark:bg-success w-11 h-11 rounded-lg flex items-center justify-center">
@@ -355,7 +362,6 @@ function Dashboard({ role }: { role: string }) {
                         </h5>
                     </div>
                     <div className="bg-transparent rounded-lg overflow-hidden">
-                        {/* loader */}
                         {loading ? (
                             <div className="min-h-[325px] grid place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                 <span className="animate-spin border-2 border-black dark:border-white !border-l-transparent  rounded-full w-5 h-5 inline-flex"></span>
@@ -364,7 +370,7 @@ function Dashboard({ role }: { role: string }) {
                             <ReactApexChart series={totalOrders.series} options={totalOrders.options} type="area" height={500} />
                         )}
                     </div>
-                </div>
+                </div> */}
                 <div id='most_searched_list' className="panel h-full sm:col-span-2 xl:col-span-1 pb-0">
                     <h5 className="font-semibold text-lg dark:text-white-light mb-5">Most Searched top 10 Products</h5>
                     <PerfectScrollbar className="relative h-[290px] ltr:pr-3 rtl:pl-3 ltr:-mr-3 rtl:-ml-3 mb-4">
