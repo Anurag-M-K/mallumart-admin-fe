@@ -16,19 +16,21 @@ import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { deleteStoreById } from '../../../api/commonApi';
 const StoreListingDup = () => {
-    useEffect(() => {
-        fetchStore();
-    }, []);
+    // useEffect(() => {
+    //     console.log("in useeefect ")
+    //     fetchStore();
+    // }, []);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setPageTitle('Stores'));
+        fetchStore();
     }, [dispatch]);
 
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
-    const storeData = useSelector((state: any) => state.stores.storeData);
+    const storeData = useSelector((state: any) => state?.stores?.storeData) || [];
     const [initialRecords, setInitialRecords] = useState<any>(sortBy(storeData, 'store'));
     const [recordsData, setRecordsData] = useState<any>(initialRecords);
 
@@ -45,14 +47,6 @@ const StoreListingDup = () => {
         setInitialRecords(res?.data);
     };
 
-    // Fetching all store data
-    const { isLoading, error, data } = useQuery({
-        queryKey: ['store'],
-        queryFn: () =>
-            fetchAllStore(adminDetails?.token).then((res) => {
-                dispatch(setStoreData(res?.data));
-            }),
-    });
 
     useEffect(() => {
         setPage(1);
