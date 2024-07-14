@@ -34,3 +34,16 @@ export const deleteProduct = async (id: string) => {
 export const fetchOneProductDetails = async (id: string) => {
     return await instance.get(`/api/product/store/${id}`);
 };
+
+export const addProductImages = async (formData: FormData) => {
+    const storetoken = localStorage.getItem('storeToken');
+
+    return await instance({
+        url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/product/images/upload`,
+        method: 'POST',
+        data: formData,
+        headers: {
+            Authorization: storetoken,
+        },
+    });
+};

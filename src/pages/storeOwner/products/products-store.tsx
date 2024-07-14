@@ -19,7 +19,7 @@ export default function ProductView() {
     const { _id: id } = storeOwnerData;
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
-    const { isPending, error, data } = useQuery({
+    const { data, isPending, error } = useQuery({
         queryKey: ['products', id],
         queryFn: () => fetchAllProductsOfAStore(id as string),
     });
@@ -108,7 +108,7 @@ export default function ProductView() {
             const response = await fetchOneProductDetails(id);
             setEditDefaultValues(response.data);
             setAddNewProduct(true);
-        } catch (error:any) {
+        } catch (error: any) {
             const errorMsg = error?.response?.data?.message ?? error.message;
             showAlert('error', errorMsg);
         }
@@ -136,7 +136,7 @@ export default function ProductView() {
                                     accessor: 'images',
                                     title: 'image',
                                     render: ({ images }: { images: string[] }) => {
-                                        return <img src={images[0]} alt="product image" className="w-10 h-10 rounded-full object-cover" />;
+                                        return <img src={`${import.meta.env.VITE_APP_S3_STORAGE_BASE_URL}/${images[0]}`} alt="product image" className="w-10 h-10 rounded-full object-cover" />;
                                     },
                                 },
                                 {
@@ -157,14 +157,11 @@ export default function ProductView() {
                                     accessor: 'isActive',
                                     title: 'Status',
                                     sortable: false,
-                                    render: (record: { images: string[]; isActive?: boolean; isPending?: boolean; }, index: number) => (
+                                    render: (record: { images: string[]; isActive?: boolean; isPending?: boolean }, index: number) => (
                                         <span className={`uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500`}>
                                             {record.isPending ? 'Pending' : record.isActive ? 'Active' : 'Inactive'}
                                         </span>
                                     ),
-                                    
-                                    
-                                    
                                 },
                                 // {
                                 //     accessor: 'status',
@@ -176,7 +173,7 @@ export default function ProductView() {
                                     accessor: 'id',
                                     title: 'Action',
                                     titleClassName: '!text-center',
-                                    render: (_id:any) => {
+                                    render: ({ _id }: any) => {
                                         return (
                                             <div className="flex items-center w-max mx-auto gap-2">
                                                 <button onClick={() => handleEdit(_id)} type="button">

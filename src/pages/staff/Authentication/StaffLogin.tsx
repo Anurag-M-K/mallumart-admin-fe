@@ -3,15 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { setPageTitle } from '../../../store/themeConfigSlice';
-import IconMail from '../../../components/Icon/IconMail';
-import IconLockDots from '../../../components/Icon/IconLockDots';
-import IconInstagram from '../../../components/Icon/IconInstagram';
-import IconFacebookCircle from '../../../components/Icon/IconFacebookCircle';
-import IconTwitter from '../../../components/Icon/IconTwitter';
-import IconGoogle from '../../../components/Icon/IconGoogle';
 import { Form, Field } from 'react-final-form';
 import WrappedInput from '../../../components/wrappedComponents/WrappedInputField';
-import { setAdminDetails } from '../../../store/adminSlice';
 import { staffLogin } from '../../../api/staffApi';
 import { setStaffData } from '../../../store/staffSlice';
 import { validation_email } from '../../../utils/validation';
@@ -23,7 +16,7 @@ const LoginBoxed = ({ role }: { role: string }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const staff: any = useSelector((state: any) => state?.staff);
     useEffect(() => {
-        dispatch(setPageTitle('Login Boxed'));
+        dispatch(setPageTitle('Login Staff'));
     });
 
     const navigate = useNavigate();

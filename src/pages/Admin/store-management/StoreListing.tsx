@@ -9,16 +9,16 @@ import IconCircleCheck from '../../../components/Icon/IconCircleCheck';
 import IconEye from '../../../components/Icon/IconEye';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 import { Link } from 'react-router-dom';
-import {  fetchAllStore, updateStoreStatus } from '../../../api/adminApi';
+import { fetchAllStore, updateStoreStatus } from '../../../api/adminApi';
 import { useQuery } from '@tanstack/react-query';
 import { setStoreData } from '../../../store/storeSlice';
-import { MdOutlineDeleteOutline } from "react-icons/md";
+import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { deleteStoreById } from '../../../api/commonApi';
 const StoreListingDup = () => {
-    useEffect(()=>{
-        fetchStore()
-    },[])
+    useEffect(() => {
+        fetchStore();
+    }, []);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -39,12 +39,11 @@ const StoreListingDup = () => {
     });
     const adminDetails = useSelector((state: any) => state.admin.adminDetails);
 
-    const fetchStore = async() =>{
-       const res = await fetchAllStore(adminDetails?.token)
-            dispatch(setStoreData(res?.data));
-            setInitialRecords(res?.data)
-    }
-
+    const fetchStore = async () => {
+        const res = await fetchAllStore(adminDetails?.token);
+        dispatch(setStoreData(res?.data));
+        setInitialRecords(res?.data);
+    };
 
     // Fetching all store data
     const { isLoading, error, data } = useQuery({
@@ -67,9 +66,7 @@ const StoreListingDup = () => {
 
     useEffect(() => {
         setInitialRecords(() => {
-            return storeData?.filter((item: {
-                status: any; storeName: string; category: string; phone: { toString: () => string; }; email: string; 
-            }) => {
+            return storeData?.filter((item: { status: any; storeName: string; category: string; phone: { toString: () => string }; email: string }) => {
                 return (
                     item?.storeName.toLowerCase().includes(search.toLowerCase()) ||
                     item.category.toLowerCase().includes(search.toLowerCase()) ||
@@ -104,7 +101,7 @@ const StoreListingDup = () => {
         const response: any = await fetchAllStore(adminDetails?.token);
         dispatch(setStoreData(response?.data));
         setInitialRecords(response.data);
-    }
+    };
 
     const showAlert = async (icon: SweetAlertIcon, title: string) => {
         const toast = Swal.mixin({
@@ -120,35 +117,33 @@ const StoreListingDup = () => {
         });
     };
 
-const deleteStore = async (storeId:string) => {
+    const deleteStore = async (storeId: string) => {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Do you want to delete store permenently?',
+            text: 'Please verify store, it cant be take back',
+            showCancelButton: true,
+            // confirmButtonText,
+            padding: '2em',
+            customClass: 'sweet-alerts',
+        }).then(async (result) => {
+            if (result.value) {
+                await deleteStoreById(adminDetails?.token, storeId, 'admin');
+                const response: any = await fetchAllStore(adminDetails?.token);
+                dispatch(setStoreData(response?.data));
+                setInitialRecords(response.data);
 
-
-    Swal.fire({
-        icon: 'warning',
-        title: 'Do you want to delete store permenently?',
-        text: "Please verify store, it cant be take back",
-        showCancelButton: true,
-        // confirmButtonText,
-        padding: '2em',
-        customClass: 'sweet-alerts',
-    }).then(async (result) => {
-        if (result.value) {
-            await deleteStoreById(adminDetails?.token, storeId,"admin");
-            const response: any = await fetchAllStore(adminDetails?.token);
-            dispatch(setStoreData(response?.data));
-            setInitialRecords(response.data);
-
-            // setEditCategoryId(id);
-            // await mutateAsync(field);
-            // if (isError) {
+                // setEditCategoryId(id);
+                // await mutateAsync(field);
+                // if (isError) {
                 //     showAlert('error', 'status update fail');
                 // } else {
-                    //     showAlert('success', 'status updated');
-                    // }
-                }
-            });
-        }
-            return (
+                //     showAlert('success', 'status updated');
+                // }
+            }
+        });
+    };
+    return (
         <div>
             <Breadcrumbs heading="Stores" links={[{ name: 'Dashboard', href: '/admin' }, { name: 'Stores' }]} />
             <div className="panel mt-6">
@@ -187,10 +182,10 @@ const deleteStore = async (storeId:string) => {
                                 ),
                             },
                             {
-                                accessor: 'wholeSale',
+                                accessor: 'wholesale',
                                 title: 'Wholesale',
                                 sortable: false,
-                                render: (store: any) => (store.wholeSale ? <IconCircleCheck className="w-6 h-6" /> : null),
+                                render: (store: any) => (store.wholesale ? <IconCircleCheck className="w-6 h-6" /> : null),
                             },
                             {
                                 accessor: 'retail',
@@ -203,8 +198,8 @@ const deleteStore = async (storeId:string) => {
                                 title: 'Status',
                                 sortable: false,
                                 render: (store: any) => (
-                                    <span onClick={() => updateStatus(store?._id)} className='uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500'>
-                                        {store?.status}
+                                    <span onClick={() => updateStatus(store?._id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
+                                        {store?.isActive ? 'active' : 'inactive'}
                                     </span>
                                 ),
                             },
@@ -214,16 +209,14 @@ const deleteStore = async (storeId:string) => {
                                 titleClassName: '!text-center',
                                 render: (store: any) => (
                                     <div className="flex items-center w-max mx-auto gap-2">
-                                        <Tippy content="view">
-                                            <div className='flex gap-x-2 items-center justify-center'>
-
-                                            <Link to={`/admin/stores/${store._id}`} type="button">
-                                                <IconEye />
-
-                                            </Link>
-                                                <MdOutlineDeleteOutline onClick={()=>deleteStore(store?._id)} className='cursor-pointer' color='red' size={20}/>
-                                            </div>
-                                        </Tippy>
+                                        <div className="flex gap-x-2 items-center justify-center">
+                                            <Tippy content="view and edit">
+                                                <Link to={`/admin/stores/${store._id}`} type="button">
+                                                    <IconEye />
+                                                </Link>
+                                            </Tippy>
+                                            <MdOutlineDeleteOutline onClick={() => deleteStore(store?._id)} className="cursor-pointer" color="red" size={20} />
+                                        </div>
                                     </div>
                                 ),
                             },

@@ -9,8 +9,6 @@ import Select from 'react-select';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-import { compressImage, isValidImage } from '../../../../utils/util-functions';
-
 import IconX from '../../../../components/Icon/IconX';
 import RHFTextField from '../../../../components/hook-form/rhf-text-field';
 import FormProvider from '../../../../components/hook-form/form-provider';
@@ -26,6 +24,8 @@ import { getCategory } from '../../../../api/categoryApi';
 import { addStore, updateStore, checkPhoneAndUniquenameAndSendOtp, searchUniqueNameExist } from '../../../../api/staffApi';
 import { uploadImage } from '../../../../api/utilsApi';
 import { getSubsciptionPlans } from '../../../../api/subscriptionApi';
+
+import { compressImage, isValidImage } from '../../../../utils/image-upload';
 
 const URL_REGEX = /^[a-z0-9-_]+$/;
 const numericRegex = /^\d+$/;
@@ -246,7 +246,6 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
                 const compressedDataURL = await compressImage(file, 0.6, 1920, 1080);
                 const formData = new FormData();
                 formData.append('file', compressedDataURL, file.name);
-                console.log('🚀 ~ handleOtp ~ compressedDataURL:', compressedDataURL);
 
                 // Upload the image
                 const uploadImageResponse = await uploadImage(formData);

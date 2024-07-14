@@ -1,4 +1,3 @@
-
 import 'tippy.js/dist/tippy.css';
 import { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +22,6 @@ import IconPlus from '../../../components/Icon/IconPlus';
 import IconEye from '../../../components/Icon/IconEye';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 
-
 function StoreListing() {
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
@@ -37,8 +35,6 @@ function StoreListing() {
         columnAccessor: 'store',
         direction: 'asc',
     });
-    const [storeAddingModal, setStoreAddingModal] = useState(false);
-    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const staffData = useSelector((state: any) => state.staff);
     useEffect(() => {
@@ -178,15 +174,14 @@ function StoreListing() {
                         },
                         { accessor: 'retail', title: 'Retail', sortable: false, render: ({ retail }) => retail && <IconCircleCheck className="w-6 h-6" /> },
                         {
-                            accessor: 'status',
+                            accessor: 'isActive',
                             title: 'Status',
                             sortable: false,
-                            render: (store: any) =>
-                                store.status && (
-                                    <span onClick={() => updateStatus(store?._id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
-                                        {store?.status}
-                                    </span>
-                                ),
+                            render: (store: any) => (
+                                <span onClick={() => updateStatus(store?._id)} className="uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500">
+                                    {store?.isActive ? 'active' : 'inactive'}
+                                </span>
+                            ),
                         },
 
                         {
@@ -196,14 +191,14 @@ function StoreListing() {
                             render: (store: any) => {
                                 return (
                                     <div className="flex items-center w-max mx-auto gap-2">
-                                        <Tippy content="view">
-                                            <div className="flex gap-x-3 justify-center items-center">
+                                        <div className="flex gap-x-3 justify-center items-center">
+                                            <Tippy content="view and edit">
                                                 <Link to={`/staff/stores/${store?._id}`} type="button">
                                                     <IconEye />
                                                 </Link>
-                                                <MdOutlineDeleteOutline onClick={() => deleteStore(store?._id)} className="cursor-pointer" color="red" size={20} />
-                                            </div>
-                                        </Tippy>
+                                            </Tippy>
+                                            <MdOutlineDeleteOutline onClick={() => deleteStore(store?._id)} className="cursor-pointer" color="red" size={20} />
+                                        </div>
                                     </div>
                                 );
                             },

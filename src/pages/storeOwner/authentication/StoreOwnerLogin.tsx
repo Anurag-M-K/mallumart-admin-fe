@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { setPageTitle } from '../../../store/themeConfigSlice';
-import IconLockDots from '../../../components/Icon/IconLockDots';
 import { Form, Field } from 'react-final-form';
 import WrappedInput from '../../../components/wrappedComponents/WrappedInputField';
-import IconPhone from '../../../components/Icon/IconPhone';
 import { storeLogin } from '../../../api/storeApi';
 import { setstoreOwnerData, setstoreOwnerToken } from '../../../store/storeOwnerSlice';
 import { Spinner } from 'flowbite-react';
@@ -21,7 +19,7 @@ const StoreOwnerLogin = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        dispatch(setPageTitle('Login Boxed'));
+        dispatch(setPageTitle('Login Store'));
     });
 
     const navigate = useNavigate();
