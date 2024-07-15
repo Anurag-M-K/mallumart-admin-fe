@@ -79,7 +79,10 @@ const StoreViewEdit = ({ admin = false }: { admin?: boolean }) => {
             ) : tabs === 'products' ? (
                 <ProductView />
             ) : (
-                <SubscriptionManage />
+                // <SubscriptionManage />
+                <div>
+                    <h1 className='text-2xl font-bold'>We are working on new subscription page.</h1>
+                </div>
             )}
             <Toaster />
         </div>

@@ -103,16 +103,23 @@ function StoreOwnerLanding() {
 
             <div>
                 <div className="shadow-md p-5 panel">
-                    <div className="flex items-center justify-between mb-10">
+                    <div className="flex items-center justify-between mb-5">
                         <h5 className="font-semibold uppercase text-lg dark:text-white-light"> {storeOwnerData?.subscription?.plan?.name} plan</h5>
                         {daysleft < 20 && (
                             <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`} className="btn btn-primary">
                                 Renew Now
                             </a>
                         )}
+                        {
+                            storeOwnerData?.subscription?.plan?.name === 'basic' && (
+                                <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`} className="btn btn-primary">
+                                Update Plan
+                            </a>
+                            )
+                        }
                     </div>
                     <div className="group">
-                        <h1 className="list-inside list-disc text-white-dark font-semibold mb-7 ">Premium plan :</h1>
+                        <h1 className="list-inside list-disc text-white-dark font-semibold mb-2 ">Update Premium plan to get :</h1>
                         <ul className="list-inside list-disc text-white-dark font-semibold mb-7 space-y-2">
                             <li> Add upto 4 images for each product</li>
                             <li>Unlimited Reports</li>
