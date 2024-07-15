@@ -119,12 +119,18 @@ function StoreOwnerLanding() {
                         }
                     </div>
                     <div className="group">
-                        <h1 className="list-inside list-disc text-white-dark font-semibold mb-2 ">Update Premium plan to get :</h1>
+                        { storeOwnerData?.subscription?.plan?.name === 'basic' && (
+
+                            <div>
+
+                        <h1 className="list-inside list-disc text-white-dark font-semibold mb-2 ">Update to Premium plan to get :</h1>
                         <ul className="list-inside list-disc text-white-dark font-semibold mb-7 space-y-2">
                             <li> Add upto 4 images for each product</li>
                             <li>Unlimited Reports</li>
                             <li>One year time period</li>
                         </ul>
+                        </div>
+                        )}
                         {storeOwnerData?.subscription?.plan?.name === 'premium' && (
                             <>
                                 <>
