@@ -15,10 +15,12 @@ import { fetchStore } from '../../../api/storeApi';
 import { setstoreOwnerData } from '../../../store/storeOwnerSlice';
 import IconCashBanknotes from '../../../components/Icon/IconCashBanknotes';
 import { HiOutlineStatusOnline } from 'react-icons/hi';
+import IconEdit from '../../../components/Icon/IconEdit';
 
 function StoreOwnerLanding() {
-    const { storeOwnerToken } = useSelector((state: any) => state.storeOwner);
-    const { storeOwnerData } = useSelector((state: any) => state.storeOwner);
+    const { storeOwnerToken } = useSelector((state: any) => state?.storeOwner);
+    const { storeOwnerData } = useSelector((state: any) => state?.storeOwner);
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const fetchStoreData = async () => {
@@ -43,8 +45,9 @@ function StoreOwnerLanding() {
     return (
         <div className="grid grid-cols-1  md:grid-cols-3 gap-x-4">
             <div className="panel shadow-md">
+               <Link className='flex justify-end' to={`/store/${storeOwnerData?._id}`}> <IconEdit className='cursor-pointer'/></Link>
                 <div className="flex items-center justify-center    stify-between mb-5">
-                    <h5 className="font-semibold text-lg dark:text-white-light">Profile</h5>
+                    <h5 className="font-semibold me-2 text-lg dark:text-white-light">Profile</h5>
                 </div>
                 <div className="mb-5">
                     <div className="flex flex-col justify-center items-center">

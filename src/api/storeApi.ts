@@ -89,3 +89,20 @@ export const deleteAdvertisement = async (token: string, advertisementId:string)
         console.log(error);
     }
 };
+
+export const updateStore = async (token:string, payload:any ) => {
+
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/`,
+            method: 'PUT',
+            data: payload,
+            headers: {
+                Authorization: token,
+            },
+        });
+        return res;
+    } catch (error) {
+        return error;
+    }
+};

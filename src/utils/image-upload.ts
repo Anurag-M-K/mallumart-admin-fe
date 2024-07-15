@@ -50,6 +50,17 @@ export function isValidImage(file: any) {
     return true;
 }
 
+export function imageValidation(file: any) {
+    if (file.size > maxImageSize) {
+      return {message: "Image size must be less than 10 MB",status:false};
+    }
+  
+    if (!imageAllowedTypes.includes(file.type)) {
+      return {message:"File type not acceptable",status:false};
+    }
+  
+    return {status:true};
+  }
 const validateAndCompressImage = async (file: File) => {
     // Validate image size and type
     const isValid = isValidImage(file);
