@@ -60,7 +60,7 @@ const StaffHeader = () => {
     const navigate = useNavigate();
     const handleLogout = () => {
         dispatch(setStaffLogout());
-        localStorage.clear();
+        localStorage.removeItem("staffToken");
         navigate('/staff/login');
         window.location.reload();
     };

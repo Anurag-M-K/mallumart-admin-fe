@@ -56,7 +56,7 @@ const Header = () => {
     const navigate = useNavigate();
     const handleLogout = () => {
         dispatch(setAdminLogout());
-        localStorage.clear();
+        localStorage.removeItem("adminToken");
         navigate('/admin/login');
         window.location.reload();
     };

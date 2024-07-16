@@ -126,7 +126,7 @@ const StoreHeader = () => {
 
     const handleLogout = () => {
         dispatch(setStoreOwnerLogout());
-        localStorage.clear();
+        localStorage.removeItem("storeToken");
         navigate('/store/login');
         window.location.reload();
     };
