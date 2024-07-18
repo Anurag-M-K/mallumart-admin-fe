@@ -65,12 +65,12 @@ function StoreOwnerLanding() {
                 <div className="panel p-2  sm:mb-0 shadow-sm">
                     <div className="flex justify-end items-center">
                         <div className="rounded-full flex items-center mx-2 justify-center h-8 border dark:border-gray-500">
-                            <h2 className=" px-2 uppercase dark:text-white-light">{storeOwnerData?.subscription?.plan?.name}</h2>
+                            <small className=" px-2 uppercase dark:text-white-light">{storeOwnerData?.subscription?.plan?.name}</small>
                             {storeOwnerData?.subscription?.plan?.name === "premium" && (
-                                <p className="flex items-center rounded-full bg-red-500 text-white dark:text-white-dark  dark:bg-dark py-1 px-1 mx-1 text-xs  font-semibold">
-                                    <IconClock className="w-3 h-3 ltr:mr-1 text-white dark:text-white-dark rtl:ml-1" />
+                                <small className="flex items-center rounded-full bg-red-500 text-white dark:text-white-dark  dark:bg-dark py-1 px-1 mx-1 text-xs  font-semibold">
+                                    <IconClock className="w-6 font-bold h-4 ltr:mr-1 text-white dark:text-white-dark rtl:ml-1" />
                                     {daysleft} Days Left
-                                </p>
+                                </small>
                             )}
                         </div>
                         <Link className="flex justify-end" to={`/store/${storeOwnerData?._id}`}>
