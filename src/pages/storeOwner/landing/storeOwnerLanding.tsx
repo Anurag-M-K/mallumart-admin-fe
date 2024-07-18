@@ -87,7 +87,7 @@ function StoreOwnerLanding() {
                                 {storeOwnerData?.isActive ? "Live" : "Closed"}
                             </div>
                         </div>
-                        <ul className="mt-2 flex flex-col max-w-[160px] m-auto space-y-4 font-semibold text-white-dark">
+                        <ul className=" justify-center flex flex-col max-w-[160px] m-auto space-y-4 font-semibold text-white-dark">
                             {/* <li className="flex items-center gap-2">
                                 <HiOutlineStatusOnline size={20} />
                                 {storeOwnerData?.isActive ? "Live" : "Closed"}
