@@ -117,7 +117,7 @@ export default function ProductView() {
     return (
         <div>
             {!addNewProduct ? (
-                <div className="panel mt-6">
+                <div className="panel mt-3">
                     <div className="flex md:items-center md:flex-row flex-col mb-5 gap-5">
                         <div className="">
                             <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
