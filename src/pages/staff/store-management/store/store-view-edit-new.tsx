@@ -50,6 +50,16 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
         queryFn: () => getSubsciptionPlans(),
     });
 
+    const storeProvides = [
+        {
+            label: 'Product Based',
+            value: 'productBased',
+        },
+        {
+            label: 'Service Based',
+            value: 'serviceBased',
+        },
+    ];
     const storeSchema = useMemo(
         () =>
             z.object({
@@ -97,12 +107,20 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
                 ), //enum set here
                 bio: z.string().optional(),
                 image: z.array(z.any()).min(1, 'image is required').max(1, 'maximum 1 image only'),
+                storeProviding: z.object(
+                    {
+                        value: z.string(),
+                        
+                        label: z.string(),
+                    }
+                ).optional(),
             }),
         []
     );
 
     type IStoreSchema = z.infer<typeof storeSchema>;
 
+   
     const defaultValues = useMemo(
         () => ({
             storeName: editDefaultValues?.storeName || '',
@@ -122,6 +140,7 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
             subscriptionPlan: editDefaultValues?.subscription ? { value: editDefaultValues?.subscription.plan._id, label: editDefaultValues?.subscription.plan.name } : '',
             bio: editDefaultValues?.bio || '',
             image: editDefaultValues?.shopImgUrl ? [editDefaultValues?.shopImgUrl] : [],
+            storeProviding: editDefaultValues?.storeProviding  ? { value:editDefaultValues?.storeProviding ,label:editDefaultValues?.storeProviding === "productBased" ? "Product Based" : "Service Based" } : undefined,
         }),
         [editDefaultValues]
     );
@@ -233,7 +252,7 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
     });
 
     const handleOtp = async ({ otp, payload }: { otp?: string; payload?: IStoreSchema }) => {
-        const { image, category, subscriptionPlan, district, ...rest } = !editDefaultValues ? (storeData as IStoreSchema) : payload!;
+        const { image, category, subscriptionPlan,storeProviding, district, ...rest } = !editDefaultValues ? (storeData as IStoreSchema) : payload!;
         try {
             let shopImgUrl = image?.[0];
             const isNewImgUrl = editDefaultValues ? !editDefaultValues?.shopImgUrl?.includes(shopImgUrl) : true;
@@ -251,7 +270,7 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
                 const uploadImageResponse = await uploadImage(formData);
                 shopImgUrl = uploadImageResponse?.data?.filename;
             }
-            const final = { ...(otp && { otp }), shopImgUrl, category: category.value, district: district.value, subscriptionPlan: subscriptionPlan.value, ...rest };
+            const final = { ...(otp && { otp }), shopImgUrl, category: category.value, district: district.value, subscriptionPlan: subscriptionPlan.value,storeProviding:storeProviding?.value, ...rest };
             if (editDefaultValues) {
                 const result = await updateStore({ id: editDefaultValues._id, payload: final });
             } else {
@@ -285,7 +304,6 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
 
     return (
         <div>
-
             {!isSendOtp ? (
                 <FormProvider methods={methods} onSubmit={onSubmit} className="panel">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 py-3 md:py-8">
@@ -429,7 +447,7 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
                                 <RHFTextField disabled={!!editDefaultValues} name="phone" label="Phone*" placeholder="Enter Owner Phone" />
                                 <RHFTextField name="whatsapp" label="Whatsapp no*" helperText="used to take orders from customers" placeholder="Enter Shop Whatsapp" />
                                 <RHFTextField name="email" type="email" label="email" placeholder="Enter Shop email" className="col-span-full" />
-                                <div className="col-span-full z-10">
+                                <div className="col-span-full z-20">
                                     <Controller
                                         name="subscriptionPlan"
                                         control={control}
@@ -463,6 +481,47 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
                                                     isLoading={isPendingSubscriptionPlans}
                                                     options={(subscriptionPlans ?? []).map(({ _id, name }: any) => ({ value: _id, label: name }))}
                                                     placeholder="Select Subscription"
+                                                />
+                                                <span className={`text-xs text-white-dark ${error?.message && '!text-danger'}`}>{error?.message}</span>
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+                                <div className="col-span-full z-10">
+                                    <Controller
+                                        name="storeProviding"
+                                        control={control}
+                                        render={({ field, fieldState: { error } }) => (
+                                            
+                                            <div>
+                                                <label>Store Provides*</label>
+                                                <Select
+                                                    {...(field as any)}
+                                                    classNames={{
+                                                        input: () => 'dark:text-white-dark text-[#999] capi',
+                                                        control: () => 'font-semibold',
+                                                    }}
+                                                    styles={{
+                                                        input: (base) => ({
+                                                            ...base,
+                                                            'input:focus': {
+                                                                boxShadow: 'none',
+                                                            },
+                                                        }),
+                                                        control: (base, state) => ({
+                                                            ...base,
+                                                            textTransform: 'capitalize',
+                                                            height: '24px',
+                                                            fontSize: '1rem',
+                                                        }),
+                                                        menuList: (base) => ({
+                                                            ...base,
+                                                            textTransform: 'capitalize',
+                                                        }),
+                                                    }}
+                                                    // isLoading={isPendingSubscriptionPlans}
+                                                    options={storeProvides?.map(({ value, label }: any) => ({ value, label: label }))}
+                                                    placeholder="Product or service"
                                                 />
                                                 <span className={`text-xs text-white-dark ${error?.message && '!text-danger'}`}>{error?.message}</span>
                                             </div>

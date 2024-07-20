@@ -65,4 +65,6 @@ export interface IStore {
     createdAt: string;
     updatedAt: string;
     __v: number;
+    storeProviding?:'productBased' | 'serviceBased'
 }
+

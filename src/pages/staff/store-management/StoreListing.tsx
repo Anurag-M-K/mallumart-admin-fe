@@ -183,6 +183,15 @@ function StoreListing() {
                                 </span>
                             ),
                         },
+                        {
+                            accessor: 'storeProviding',
+                            title: 'Store Provides',
+                            sortable: false,
+                            render: (store: any) => (
+                               <div>{store.storeProviding === "serviceBased" ?  "Service":"Product"}</div>
+                            //    <div>{store?.storeProviding}</div>
+                            ),
+                        },
 
                         {
                             accessor: 'id',
