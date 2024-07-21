@@ -15,11 +15,9 @@ import { setStoreData } from '../../../store/storeSlice';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { deleteStoreById } from '../../../api/commonApi';
+
+
 const StoreListingDup = () => {
-    // useEffect(() => {
-    //     console.log("in useeefect ")
-    //     fetchStore();
-    // }, []);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -59,17 +57,20 @@ const StoreListingDup = () => {
     }, [page, pageSize, initialRecords]);
 
     useEffect(() => {
-        setInitialRecords(() => {
-            return storeData?.filter((item: { status: any; storeName: string; category: string; phone: { toString: () => string }; email: string }) => {
-                return (
-                    item?.storeName.toLowerCase().includes(search.toLowerCase()) ||
-                    item.category.toLowerCase().includes(search.toLowerCase()) ||
-                    item.phone.toString().toLowerCase().includes(search.toLowerCase()) ||
-                    item.email.toLowerCase().includes(search.toLowerCase()) ||
-                    item.status.toLowerCase().includes(search.toLowerCase())
-                );
+        if(Array.isArray(storeData)){
+
+            setInitialRecords(() => {
+                return storeData?.filter((item: { status: any; storeName: string; category: string; phone: { toString: () => string }; email: string }) => {
+                    return (
+                        item?.storeName.toLowerCase().includes(search.toLowerCase()) ||
+                        item.category.toLowerCase().includes(search.toLowerCase()) ||
+                        item.phone.toString().toLowerCase().includes(search.toLowerCase()) ||
+                        item.email.toLowerCase().includes(search.toLowerCase()) ||
+                        item.status.toLowerCase().includes(search.toLowerCase())
+                    );
+                });
             });
-        });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
