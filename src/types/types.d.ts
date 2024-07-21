@@ -16,6 +16,9 @@ type TStoreValues = {
         latitude: number;
         longitude: number;
     };
+    storeProviding:"productBased" | "serviceBased";
+    addedBy:string;
+
 }
 type ICategorySchema = {
     label: string;
@@ -106,3 +109,14 @@ type TResponseUsers = {
     users:Array<TUsers>;
     total:number;
 }
+
+interface Slot {
+    date: Date;
+    startTime: string;
+    endTime: string;
+    token: number;
+  }
+  
+  interface TSlot {
+    slots: Slot[];
+  }

@@ -1,49 +1,22 @@
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import { toggleSidebar } from '../../store/themeConfigSlice';
-import AnimateHeight from 'react-animate-height';
 import { IRootState } from '../../store';
 import { useState, useEffect } from 'react';
 import IconCaretsDown from '../Icon/IconCaretsDown';
-import IconCaretDown from '../Icon/IconCaretDown';
-import IconMenuDashboard from '../Icon/Menu/IconMenuDashboard';
-import IconMinus from '../Icon/IconMinus';
-import IconMenuChat from '../Icon/Menu/IconMenuChat';
-import IconMenuMailbox from '../Icon/Menu/IconMenuMailbox';
-import IconMenuTodo from '../Icon/Menu/IconMenuTodo';
-import IconMenuNotes from '../Icon/Menu/IconMenuNotes';
-import IconMenuScrumboard from '../Icon/Menu/IconMenuScrumboard';
-import IconMenuContacts from '../Icon/Menu/IconMenuContacts';
-import IconMenuInvoice from '../Icon/Menu/IconMenuInvoice';
-import IconMenuCalendar from '../Icon/Menu/IconMenuCalendar';
-import IconMenuComponents from '../Icon/Menu/IconMenuComponents';
-import IconMenuElements from '../Icon/Menu/IconMenuElements';
-import IconMenuCharts from '../Icon/Menu/IconMenuCharts';
-import IconMenuWidgets from '../Icon/Menu/IconMenuWidgets';
-import IconMenuFontIcons from '../Icon/Menu/IconMenuFontIcons';
-import IconMenuDragAndDrop from '../Icon/Menu/IconMenuDragAndDrop';
-import IconMenuTables from '../Icon/Menu/IconMenuTables';
-import IconMenuDatatables from '../Icon/Menu/IconMenuDatatables';
-import IconMenuForms from '../Icon/Menu/IconMenuForms';
-import IconMenuUsers from '../Icon/Menu/IconMenuUsers';
-import IconMenuPages from '../Icon/Menu/IconMenuPages';
-import IconMenuAuthentication from '../Icon/Menu/IconMenuAuthentication';
-import IconMenuDocumentation from '../Icon/Menu/IconMenuDocumentation';
-import { MdContactMail, MdLabelImportant, MdLocalGroceryStore, MdSubscriptions } from 'react-icons/md';
+import { MdLocalGroceryStore } from 'react-icons/md';
 import { fetchStore } from '../../api/storeApi';
 import { setStoreData } from '../../store/storeSlice';
 import { FaAdversal } from 'react-icons/fa';
 
 const StoreSidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
-    const [errorSubMenu, setErrorSubMenu] = useState(false);
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const semidark = useSelector((state: IRootState) => state.themeConfig.semidark);
+    const storeOwnerData: TStoreValues = useSelector((state: any) => state.storeOwner.storeOwnerData);
     const location = useLocation();
     const dispatch = useDispatch();
-    const { t } = useTranslation();
     const toggleMenu = (value: string) => {
         setCurrentMenu((oldValue) => {
             return oldValue === value ? '' : value;
@@ -74,17 +47,7 @@ const StoreSidebar = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
-    const handleWhatsAppClick = () => {
-        // Replace '1234567890' with the actual phone number you want to open in WhatsApp
-
-        // Create the WhatsApp URL
-        const whatsappUrl = `https://wa.me/${import.meta.env.VITE_APP_ADMIN_PHONE}`;
-
-        // Open the WhatsApp URL in a new tab
-        window.open(whatsappUrl, '_blank');
-    };
-    const storeOwnerData:any = useSelector((state: any) => state.storeOwner.storeOwnerData);
-    const storeData = useSelector((state: any) => state.stores.storeData);
+    console.log('storeOwnerdata ', storeOwnerData);
 
     useEffect(() => {
         const fetchStoreData = async () => {
@@ -100,10 +63,6 @@ const StoreSidebar = () => {
         fetchStoreData();
     }, []);
 
-    const expirationDate = new Date(storeData?.subscriptionExpiresAt);
-
-    const daysLeft = Math.round((expirationDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24));
-    const timeLeft = Math.round(daysLeft / (1000 * 3600 * 24));
     return (
         <div className={semidark ? 'dark' : ''}>
             <nav
@@ -148,26 +107,15 @@ const StoreSidebar = () => {
                             </li>
 
                             <li className="menu nav-item">
-                                <NavLink to="/store/products" className="group" onClick={() => toggleMenu('products')}>
+                                <NavLink to={`${storeOwnerData?.storeProviding === "serviceBased" ? "/store/bookings": "/store/products" }`} className="group" onClick={() => toggleMenu(`${storeOwnerData?.storeProviding === "serviceBased" ? "Bookings": "Products" }`)}>
                                     <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
                                         <div className="flex items-center">
                                             <MdLocalGroceryStore className="group-hover:!text-primary shrink-0" />
-                                            <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Products</span>
+                                            <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{storeOwnerData?.storeProviding === "serviceBased" ? "Bookings": "Products"}</span>
                                         </div>
                                     </button>
                                 </NavLink>
                             </li>
-
-                            {/* <li className="menu nav-item">
-                                <NavLink to="/store/subscription" className="group" onClick={() => toggleMenu('subscripton')}>
-                                    <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
-                                        <div className="flex items-center">
-                                            <MdSubscriptions className="group-hover:!text-primary shrink-0" />
-                                            <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Subscription</span>
-                                        </div>
-                                    </button>
-                                </NavLink>
-                            </li> */}
 
                             <li className="nav-item">
                                 <ul>
@@ -181,41 +129,6 @@ const StoreSidebar = () => {
                                     </li>
                                 </ul>
                             </li>
-
-                            {/* <li className="nav-item">
-                                <ul>
-                                    <li className="nav-item">
-                                        <NavLink to="/store/contact-us" className="group" onClick={() => toggleMenu('advertisment')}>
-                                            <div className="flex items-center">
-                                                <MdContactMail />
-                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Contact us</span>
-                                            </div>
-                                        </NavLink>
-                                    </li>
-                                </ul>
-                            </li> */}
-
-                            {/* <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
-                                <IconMinus className="w-4 h-5 flex-none hidden" />
-                                <span>{t('Subscription')}</span>
-                            </h2> */}
-                            
-                            {/* <li className="menu nav-item">
-                                <div className="flex items-center">
-                                    <MdLabelImportant className="group-hover:!text-primary shrink-0" />
-                                    <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                                        { !storeData.isSubscribed && (
-                                            <button type="button" className="nav-link">
-                                                <div className="flex items-center">
-                                                    <span className="px-1">
-                                                        You are on premium plan <span className="bg-green-400 rounded-full text-white px-2">{daysLeft} days left</span>
-                                                    </span>
-                                                </div>
-                                            </button>
-                                        )}
-                                    </span>
-                                </div>
-                            </li> */}
                         </ul>
                     </PerfectScrollbar>
                 </div>

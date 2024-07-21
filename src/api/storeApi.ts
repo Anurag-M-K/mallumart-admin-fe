@@ -106,3 +106,19 @@ export const updateStore = async (token:string, payload:any ) => {
         return error;
     }
 };
+
+export const addTimeSlot = async ( token: string,payload: TSlot) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/add-time-slot`,
+            method: 'POST',
+            data: payload,
+            headers: {
+                Authorization: token,
+            }
+        });
+        return res;
+    } catch (error) {
+        return error
+    }
+};

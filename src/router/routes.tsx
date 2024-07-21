@@ -38,7 +38,7 @@ const StoreOtpVerifying = lazy(()=>import("../pages/storeOwner/authentication/Ot
 const ChangePassword = lazy(()=>import("../pages/staff/Authentication/ChangePasswordPage"))
 const StoreChangePassword = lazy(()=>import("../pages/storeOwner/authentication/ChangePasswordPage"))
 const EditProfile = lazy(()=>import("../pages/storeOwner/profile/EditProfile"))
-
+const BookingList = lazy(()=>import("../pages/storeOwner/bookings/BookingList"))
 const routes = [
 
 {
@@ -192,6 +192,11 @@ layout:"blank"
     {
         path: '/store/products',
         element:<ProtectedRouteStore> <ProductView /></ProtectedRouteStore>,
+        layout: 'storeLayout',
+    },
+    {
+        path: '/store/bookings',
+        element:<ProtectedRouteStore> <BookingList /></ProtectedRouteStore>,
         layout: 'storeLayout',
     },
     {
