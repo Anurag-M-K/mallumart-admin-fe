@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import IconPencilPaper from '../../../components/Icon/IconPencilPaper';
-import IconCoffee from '../../../components/Icon/IconCoffee';
 import IconCalendar from '../../../components/Icon/IconCalendar';
 import IconMapPin from '../../../components/Icon/IconMapPin';
-import IconMail from '../../../components/Icon/IconMail';
 import IconPhone from '../../../components/Icon/IconPhone';
-import IconTwitter from '../../../components/Icon/IconTwitter';
-import IconDribbble from '../../../components/Icon/IconDribbble';
-import IconGithub from '../../../components/Icon/IconGithub';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import IconClock from '../../../components/Icon/IconClock';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStore } from '../../../api/storeApi';
@@ -17,6 +11,7 @@ import IconCashBanknotes from '../../../components/Icon/IconCashBanknotes';
 import { HiOutlineStatusOnline } from 'react-icons/hi';
 import IconEdit from '../../../components/Icon/IconEdit';
 import ProductView from '../products/products-store';
+import BookingList from '../bookings/BookingList';
 
 function StoreOwnerLanding() {
     const { storeOwnerToken } = useSelector((state: any) => state?.storeOwner);
@@ -24,15 +19,13 @@ function StoreOwnerLanding() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-
 
     const fetchStoreData = async () => {
         try {
             setLoading(true);
             const res = await fetchStore(storeOwnerToken);
             dispatch(setstoreOwnerData(res?.data));
-        } catch (err:any) {
+        } catch (err: any) {
             setError(err);
         } finally {
             setLoading(false);
@@ -50,23 +43,20 @@ function StoreOwnerLanding() {
         return daysleft;
     };
 
-    const daysleft = calculateDaysleftdaysleft(storeOwnerData?.subscription?.expiresAt) ;
+    const daysleft = calculateDaysleftdaysleft(storeOwnerData?.subscription?.expiresAt);
     const whatsappNumber = import.meta.env.VITE_APP_ADMIN_PHONE_NUMBER;
     const message = 'Hi, I want to upgrade my store plan.';
-
-    console.log("storeownerdata ",storeOwnerData)
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error fetching store data</div>;
     return (
         <>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                 <div className="panel p-2  sm:mb-0 shadow-sm">
                     <div className="flex justify-end items-center">
                         <div className="rounded-full flex items-center mx-2 justify-center h-8 border dark:border-gray-500">
                             <small className=" px-2 uppercase dark:text-white-light">{storeOwnerData?.subscription?.plan?.name}</small>
-                            {storeOwnerData?.subscription?.plan?.name === "premium" && (
+                            {storeOwnerData?.subscription?.plan?.name === 'premium' && (
                                 <small className="flex items-center rounded-full bg-red-500 text-white dark:text-white-dark  dark:bg-dark py-1 px-1 mx-1 text-xs  font-semibold">
                                     <IconClock className="w-6 font-bold h-4 ltr:mr-1 text-white dark:text-white-dark rtl:ml-1" />
                                     {daysleft} Days Left
@@ -84,7 +74,7 @@ function StoreOwnerLanding() {
                             <p className="font-semibold text-xl">{storeOwnerData?.storeName}</p>
                             <div className="flex gap-x-1">
                                 <HiOutlineStatusOnline size={20} />
-                                {storeOwnerData?.isActive ? "Live" : "Closed"}
+                                {storeOwnerData?.isActive ? 'Live' : 'Closed'}
                             </div>
                         </div>
                         <ul className=" justify-center flex flex-col max-w-[160px] m-auto space-y-4 font-semibold text-white-dark">
@@ -117,7 +107,7 @@ function StoreOwnerLanding() {
                         </ul>
                     </div>
                 </div>
-                {(daysleft < 20 || storeOwnerData?.subscription?.plan?.name === "basic") && (
+                {(daysleft < 20 || storeOwnerData?.subscription?.plan?.name === 'basic') && (
                     <div className="shadow-sm p-2 mt-5 panel">
                         <div className="flex items-center justify-between mb-2">
                             <h5 className="font-semibold uppercase text-lg  dark:text-white-light">{storeOwnerData?.subscription?.plan?.name} plan</h5>
@@ -191,9 +181,8 @@ function StoreOwnerLanding() {
                     </div>
                 )}
             </div>
-        <ProductView/>
+            {storeOwnerData?.storeProviding === 'serviceBased' ? <BookingList /> : <ProductView />}
         </>
-
     );
 }
 
