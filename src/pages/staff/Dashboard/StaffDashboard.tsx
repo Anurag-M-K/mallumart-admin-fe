@@ -11,17 +11,12 @@ import { useQuery } from '@tanstack/react-query'
 function StaffDashboard() {
 const staffDetails = useSelector((state:any)=>state.staff.staffDetails)
 
-  const { isPending, error, data } = useQuery({
-    queryKey:['stores'], 
-    queryFn:()=> fetchAllStore(staffDetails?.token)
-  });
+  const { isPending, error, data } = useQuery({queryKey:['stores'], queryFn:()=> fetchAllStore(staffDetails?.token)});
+  const { isLoading: isPending2, error: errors, data: staffData } = useQuery({queryKey: ['staff', staffDetails.token], queryFn: () => fetchStaffById(staffDetails.token),});
 
-  const { isLoading: isPending2, error: errors, data: staffData } = useQuery({
-    queryKey: ['staff', staffDetails.token], // Adding token to the queryKey for unique identification
-    queryFn: () => fetchStaffById(staffDetails.token),
-  });
-
-console.log("staffData  ",staffData)
+  
+  if(isPending || isPending2) return <div>Loading...</div>
+  if(error || errors)return <div>Error loading data..</div>;
 
   const todayAdded = data?.data?.filter((item:any) => {
     const today = new Date();
@@ -42,9 +37,6 @@ console.log("staffData  ",staffData)
     itemDate.getFullYear() === today.getFullYear()
   })
   
-  
-  if(isPending) return <div>Loading</div>
-  if(error)return null;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6 text-white">
