@@ -487,7 +487,7 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
                                         )}
                                     />
                                 </div>
-                                <div className="col-span-full z-10">
+                                {/* <div className="col-span-full z-10">
                                     <Controller
                                         name="storeProviding"
                                         control={control}
@@ -527,7 +527,7 @@ function NewEditStoreForm({ editDefaultValues }: { editDefaultValues?: IStore })
                                             </div>
                                         )}
                                     />
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className="col-span-full xl:col-span-2">
