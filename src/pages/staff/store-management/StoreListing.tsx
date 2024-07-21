@@ -78,17 +78,19 @@ function StoreListing() {
     }, [page, pageSize, initialRecords]);
 
     useEffect(() => {
-        setInitialRecords(() => {
-            return storeData?.filter((item: { status: any; storeName: string; category: string; phone: { toString: () => string }; email: string }) => {
-                return (
-                    item?.storeName.toLowerCase().includes(search.toLowerCase()) ||
-                    item?.category.toLowerCase().includes(search.toLowerCase()) ||
-                    item?.phone.toString().toLowerCase().includes(search.toLowerCase()) ||
-                    item?.email.toLowerCase().includes(search.toLowerCase()) ||
-                    item?.status.toLowerCase().includes(search.toLowerCase())
-                );
+        if (Array.isArray(storeData)) {
+            setInitialRecords(() => {
+                return storeData?.filter((item: { status: any; storeName: string; category: string; phone: { toString: () => string }; email: string }) => {
+                    return (
+                        item?.storeName.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.category.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.phone.toString().toLowerCase().includes(search.toLowerCase()) ||
+                        item?.email.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.status.toLowerCase().includes(search.toLowerCase())
+                    );
+                });
             });
-        });
+        }
     }, [search]);
 
     useEffect(() => {
@@ -188,8 +190,8 @@ function StoreListing() {
                             title: 'Store Provides',
                             sortable: false,
                             render: (store: any) => (
-                               <div>{store.storeProviding === "serviceBased" ?  "Service":"Product"}</div>
-                            //    <div>{store?.storeProviding}</div>
+                                <div>{store.storeProviding === 'serviceBased' ? 'Service' : 'Product'}</div>
+                                //    <div>{store?.storeProviding}</div>
                             ),
                         },
 
