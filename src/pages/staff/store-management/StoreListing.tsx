@@ -9,14 +9,10 @@ import Tippy from '@tippyjs/react';
 import { Link } from 'react-router-dom';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Swal from 'sweetalert2';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { setStoreData } from '../../../store/storeSlice';
-
 import { fetchAllStore, updateStoreStatus } from '../../../api/staffApi';
 import { deleteStoreById } from '../../../api/commonApi';
-
 import IconCircleCheck from '../../../components/Icon/IconCircleCheck';
 import IconPlus from '../../../components/Icon/IconPlus';
 import IconEye from '../../../components/Icon/IconEye';
@@ -29,7 +25,6 @@ function StoreListing() {
     const storeData = useSelector((state: any) => state?.stores?.storeData);
     const [initialRecords, setInitialRecords] = useState(sortBy(storeData, 'store'));
     const [recordsData, setRecordsData] = useState(initialRecords);
-
     const [search, setSearch] = useState('');
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
         columnAccessor: 'store',
@@ -41,16 +36,6 @@ function StoreListing() {
         dispatch(setPageTitle('Stores'));
     });
     const navigate = useNavigate();
-
-    // Fetching all store data
-    // const { isLoading, error, data } = useQuery({
-    //     queryKey: ['store'],
-    //     queryFn: () => fetchAllStore(staffData?.staffToken)
-    //        .then((res) => {
-    //             dispatch(setStoreData(res?.data));
-    //         }),
-
-    // });
 
     const fetchWholeStore = async () => {
         try {
@@ -112,7 +97,6 @@ function StoreListing() {
             title: 'Do you want to delete store permenently?',
             text: 'Please verify store, it cant be take back',
             showCancelButton: true,
-            // confirmButtonText,
             padding: '2em',
             customClass: 'sweet-alerts',
         }).then(async (result) => {
@@ -148,10 +132,7 @@ function StoreListing() {
                                 return (
                                     <div className="w-max">
                                         <h2 className="font-bold">{store?.storeName}</h2>
-                                        <small>
-                                            {/* {city}, */}
-                                            {store?.district}
-                                        </small>
+                                        <small>{store?.district}</small>
                                     </div>
                                 );
                             },
@@ -189,10 +170,7 @@ function StoreListing() {
                             accessor: 'storeProviding',
                             title: 'Store Provides',
                             sortable: false,
-                            render: (store: any) => (
-                                <div>{store.storeProviding === 'serviceBased' ? 'Service' : 'Product'}</div>
-                                //    <div>{store?.storeProviding}</div>
-                            ),
+                            render: (store: any) => <div>{store.storeProviding === 'serviceBased' ? 'Service' : 'Product'}</div>,
                         },
 
                         {
