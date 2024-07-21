@@ -37,26 +37,10 @@ function Dashboard({ role }: { role: string }) {
           window.removeEventListener('scroll', handleScroll);
         };
       }, []);
-    const { isLoading, error, data } = useQuery({
-        queryKey: ['total-count'],
-        queryFn: () => fetchStoreCountByCategory(adminDetails?.token) 
-    });
-    const { isLoading: isLoadingCategory, error: errorCategory, data: categoryData } = useQuery({
-        queryKey: ['category'],
-        queryFn:()=> getCategory()
-      });
-
-      const {isLoading:fetchUsersCountLoading, data:fetchUsersCountData} = useQuery({
-        queryKey:['users-count'],
-        queryFn:()=> fetchUsersCount(adminDetails?.token)
-      })
-
-      console.log("fetchUsersCountData ",fetchUsersCountData)
-
-      const  {isLoading:isLoadingMostSearchedProduct,error:mostSearchedErroe,data:mostSearchedProducts} = useQuery({
-        queryKey:['most-searched-products'],
-        queryFn:()=> fetchMostSearchedProducts(adminDetails.token)
-      })
+    const { isLoading, error, data } = useQuery({queryKey: ['total-count'],queryFn: () => fetchStoreCountByCategory(adminDetails?.token)});
+    const { isLoading: isLoadingCategory, error: errorCategory, data: categoryData } = useQuery({queryKey: ['category'], queryFn:()=> getCategory()      });
+    const {isLoading:fetchUsersCountLoading, data:fetchUsersCountData} = useQuery({queryKey:['users-count'],queryFn:()=> fetchUsersCount(adminDetails?.token)})
+    const {isLoading:isLoadingMostSearchedProduct,error:mostSearchedErroe,data:mostSearchedProducts} = useQuery({queryKey:['most-searched-products'], queryFn:()=> fetchMostSearchedProducts(adminDetails.token)})
 
     if (import.meta.env.VITE_APP_ADMIN_EMAIL !== adminDetails?.email && !token) {
         return (
@@ -67,10 +51,14 @@ function Dashboard({ role }: { role: string }) {
         );
     }
 
-
-    if (!data) {
+    if (loading || isLoadingCategory || fetchUsersCountLoading || isLoadingMostSearchedProduct) return <div>Loading...</div>;
+    if(error || errorCategory || mostSearchedErroe) return <div>Error loading data</div>
+    
+    if(!data){
         return null;
     }
+    // if()
+    console.log("Data ",data)
     //Sales By Category
     const series = data?.map((item: { count: any }) => item?.count);
     const labels = data?.map((item: { category: any }) => item?.category);
