@@ -51,17 +51,15 @@ function Dashboard({ role }: { role: string }) {
         );
     }
 
-    if (loading || isLoadingCategory || fetchUsersCountLoading || isLoadingMostSearchedProduct) return <div>Loading...</div>;
-    if(error || errorCategory || mostSearchedErroe) return <div>Error loading data</div>
+    if (isLoading || isLoadingCategory || fetchUsersCountLoading || isLoadingMostSearchedProduct) return <div>Loading...</div>;
+    if(error || errorCategory || mostSearchedErroe) return <div>Loading data...</div>
     
     if(!data){
         return null;
     }
-    // if()
-    console.log("Data ",data)
     //Sales By Category
-    const series = data?.map((item: { count: any }) => item?.count);
-    const labels = data?.map((item: { category: any }) => item?.category);
+    const series = (data ?? [])?.map((item: { count: any }) => item?.count);
+    const labels = (data ?? [])?.map((item: { category: any }) => item?.category);
 
     const totalStore = series?.reduce((a:any,b:any)=>{
       return a+b
@@ -150,63 +148,6 @@ function Dashboard({ role }: { role: string }) {
         },
     };
 
-    //Total Orders
-    const totalOrders: any = {
-        series: [
-            {
-                name: 'Sales',
-                data: [28, 40, 36, 52, 38, 60, 38, 52, 36, 40],
-            },
-        ],
-        options: {
-            chart: {
-                height: 290,
-                type: 'area',
-                fontFamily: 'Nunito, sans-serif',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 2,
-            },
-            colors: isDark ? ['#00ab55'] : ['#00ab55'],
-            labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-            yaxis: {
-                min: 0,
-                show: false,
-            },
-            grid: {
-                padding: {
-                    top: 125,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                },
-            },
-            fill: {
-                opacity: 1,
-                type: 'gradient',
-                gradient: {
-                    type: 'vertical',
-                    shadeIntensity: 1,
-                    inverseColors: !1,
-                    opacityFrom: 0.3,
-                    opacityTo: 0.05,
-                    stops: [100, 100],
-                },
-            },
-            tooltip: {
-                x: {
-                    show: false,
-                },
-            },
-        },
-    };
-
-
-
     return (
         <>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6 text-white">
@@ -228,7 +169,6 @@ function Dashboard({ role }: { role: string }) {
                     </div>
                     <div className="flex items-center mt-5">
                         <div className="text-3xl text-center font-bold ltr:mr-3 rtl:ml-3">{totalStore}</div>
-                        {/* <div className="badge bg-white/30">+ 2.35% </div> */}
                     </div>
                     <div  className="flex items-center font-semibold mt-5">
                         <IconEye className="ltr:mr-2 rtl:ml-2 shrink-0" />
@@ -255,7 +195,6 @@ function Dashboard({ role }: { role: string }) {
                     </div>
                     <div className="flex items-center mt-5">
                         <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{fetchUsersCountData?.data}</div>
-                        {/* <div className="badge bg-white/30">- 2.35% </div> */}
                     </div>
                     <div className="flex cursor-pointer items-center font-semibold mt-5">
                         <IconEye className="ltr:mr-2 rtl:ml-2 shrink-0" />
@@ -282,7 +221,6 @@ function Dashboard({ role }: { role: string }) {
                     </div>
                     <div className="flex items-center mt-5">
                         <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{mostSearchedProducts?.[0].productName}</div>
-                        {/* <div className="badge bg-white/30">+ 1.35% </div> */}
                     </div>
                     <div onClick={()=>'#most_searched_list'} className="flex cursor-pointer items-center font-semibold mt-5">
                         <IconEye className="ltr:mr-2 rtl:ml-2 shrink-0" />
@@ -335,28 +273,6 @@ function Dashboard({ role }: { role: string }) {
                         </div>
                     </div>
                 </div>
-                {/* <div className="panel h-full p-0">
-                    <div className="flex items-center justify-between w-full p-5 absolute">
-                        <div className="relative">
-                            <div className="text-success dark:text-success-light bg-success-light dark:bg-success w-11 h-11 rounded-lg flex items-center justify-center">
-                                <IconUser />
-                            </div>
-                        </div>
-                        <h5 className="font-semibold text-2xl ltr:text-right rtl:text-left dark:text-white-light">
-                            3,192
-                            <span className="block text-sm font-normal">Total Users</span>
-                        </h5>
-                    </div>
-                    <div className="bg-transparent rounded-lg overflow-hidden">
-                        {loading ? (
-                            <div className="min-h-[325px] grid place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
-                                <span className="animate-spin border-2 border-black dark:border-white !border-l-transparent  rounded-full w-5 h-5 inline-flex"></span>
-                            </div>
-                        ) : (
-                            <ReactApexChart series={totalOrders.series} options={totalOrders.options} type="area" height={500} />
-                        )}
-                    </div>
-                </div> */}
                 <div id='most_searched_list' className="panel h-full sm:col-span-2 xl:col-span-1 pb-0">
                     <h5 className="font-semibold text-lg dark:text-white-light mb-5">Most Searched top 10 Products</h5>
                     <PerfectScrollbar className="relative h-[290px] ltr:pr-3 rtl:pl-3 ltr:-mr-3 rtl:-ml-3 mb-4">
