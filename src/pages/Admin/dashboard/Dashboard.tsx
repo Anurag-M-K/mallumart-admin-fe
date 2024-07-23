@@ -57,6 +57,9 @@ function Dashboard({ role }: { role: string }) {
     if(!data){
         return null;
     }
+    if (!Array.isArray(data)) {
+        return  <div>Something went wrong. Please try again later</div>;
+    }
     //Sales By Category
     const series = (data ?? [])?.map((item: { count: any }) => item?.count);
     const labels = (data ?? [])?.map((item: { category: any }) => item?.category);
