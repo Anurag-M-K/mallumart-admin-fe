@@ -114,7 +114,7 @@ interface Slot {
     date: Date;
     startTime: string;
     endTime: string;
-    token: number;
+    slotCount: number;
   }
   
   interface TSlot {

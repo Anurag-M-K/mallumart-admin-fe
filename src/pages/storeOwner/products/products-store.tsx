@@ -16,7 +16,7 @@ const PAGE_SIZES = [10, 20, 30, 50, 100];
 
 export default function ProductView() {
     const storeOwnerData = useSelector((state: any) => state.storeOwner.storeOwnerData);
-    const { _id: id } = storeOwnerData;
+    const  id  = storeOwnerData?._id;
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
     const { data, isPending, error } = useQuery({

@@ -1,3 +1,4 @@
+import { DataTableSortStatus } from 'mantine-datatable';
 import instance from '../config/axiosInstance';
 
 export const storeLogin = async (payload: any) => {
@@ -108,9 +109,10 @@ export const updateStore = async (token:string, payload:any ) => {
 };
 
 export const addTimeSlot = async ( token: string,payload: TSlot) => {
+    console.log("in addtimslot api")
     try {
         const res = await instance({
-            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/add-time-slot`,
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/time-slots`,
             method: 'POST',
             data: payload,
             headers: {
@@ -120,5 +122,57 @@ export const addTimeSlot = async ( token: string,payload: TSlot) => {
         return res;
     } catch (error) {
         return error
+    }
+};
+
+export const fetchTimeSlots = async (token:string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/time-slots`,
+            method:"GET",
+            headers:{
+                Authorization:token
+            }            
+        })    
+        return res.data  
+    } catch (error) {
+        return error
+    }
+}
+export const fetchBookings = async (token:string,page:any,pageSize:any,sortStatus:DataTableSortStatus,) => {
+    console.log("token  from api ",token)
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/booking/fetch-bookings`,
+            method:"GET",
+            headers:{
+                Authorization:token
+            },
+            params:{
+                page,
+                pageSize,
+                sortColumn: sortStatus.columnAccessor,
+                sortDirection: sortStatus.direction,
+            }    
+
+        })    
+        return res.data  
+    } catch (error) {
+        return error
+    }
+}
+
+export const deleteTimeSlots = async (token: string) => {
+    try {
+       const res =  await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/time-slots`,
+            method: 'DELETE',
+            headers: {
+                Authorization: token,
+            },
+        });
+        return res
+    } catch (error) {
+        console.log(error);
     }
 };
