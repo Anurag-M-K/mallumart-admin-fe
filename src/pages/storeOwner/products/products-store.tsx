@@ -11,6 +11,7 @@ import IconPlus from '../../../components/Icon/IconPlus';
 import IconEdit from '../../../components/Icon/IconEdit';
 import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import NewStore from '../../staff/store-management/new-product/new-product';
+import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 
 const PAGE_SIZES = [10, 20, 30, 50, 100];
 
@@ -116,6 +117,8 @@ export default function ProductView() {
 
     return (
         <div>
+            {/* <Breadcrumbs heading="Products" links={[{ name: 'Dashboard', href: '/store' }, { name: 'Products' }]} /> */}
+
             {!addNewProduct ? (
                 <div className="panel mt-3">
                     <div className="flex md:items-center md:flex-row flex-col mb-5 gap-5">

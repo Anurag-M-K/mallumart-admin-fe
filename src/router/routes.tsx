@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import Dashboard from '../pages/Admin/dashboard/Dashboard';
-import ProductView from '../pages/storeOwner/products/products-store';
+import ProductView from '../pages/storeOwner/products/ProductsPage';
 import ProtectedRouteAdmin from '../components/protectedRoutes/ProtectedRoutesAdmin';
 import ProtectedRouteStaff from '../components/protectedRoutes/ProtectedRoutesStaff';
 import ProtectedRouteStore from '../components/protectedRoutes/ProtectedRoutesStore';

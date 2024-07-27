@@ -9,8 +9,8 @@ import { MdLocalGroceryStore } from 'react-icons/md';
 import { fetchStore } from '../../api/storeApi';
 import { setStoreData } from '../../store/storeSlice';
 import { FaAdversal } from 'react-icons/fa';
-import { WiTime8 } from "react-icons/wi";
-import { LuTicket } from "react-icons/lu";
+import { WiTime8 } from 'react-icons/wi';
+import { LuTicket } from 'react-icons/lu';
 
 const StoreSidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
@@ -48,7 +48,6 @@ const StoreSidebar = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
-
 
     useEffect(() => {
         const fetchStoreData = async () => {
@@ -107,28 +106,40 @@ const StoreSidebar = () => {
                                 </NavLink>
                             </li>
 
-                            <li className="menu nav-item">
-                                <NavLink to={`${storeOwnerData?.storeProviding === "serviceBased" ? "/store/bookings": "/store/products" }`} className="group" onClick={() => toggleMenu(`${storeOwnerData?.storeProviding === "serviceBased" ? "Bookings": "Products" }`)}>
-                                    <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
-                                        <div className="flex items-center">
-                                           { storeOwnerData?.storeProviding === 'serviceBased' ? <LuTicket className="group-hover:!text-primary shrink-0" />  :<MdLocalGroceryStore className="group-hover:!text-primary shrink-0" />}
-                                            <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{storeOwnerData?.storeProviding === "serviceBased" ? "Bookings": "Products"}</span>
-                                        </div>
-                                    </button>
-                                </NavLink>
-                            </li>
-                            {storeOwnerData?.storeProviding === "serviceBased" && (
+                            {storeOwnerData?.storeProviding === 'serviceBased' && (
                                 <li className="menu nav-item">
-                                <NavLink to={`/store/time-slots`} className="group" onClick={() => toggleMenu(`Time Slots`)}>
+                                    <NavLink to={`${'/store/bookings'}`} className="group" onClick={() => toggleMenu(`${'Bookings'}`)}>
+                                        <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
+                                            <div className="flex items-center">
+                                                <LuTicket className="group-hover:!text-primary shrink-0" />
+                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Bookings</span>
+                                            </div>
+                                        </button>
+                                    </NavLink>
+                                </li>
+                            )}
+                            <li className="menu nav-item">
+                                <NavLink to={'/store/products'} className="group" onClick={() => toggleMenu(`${'Products'}`)}>
                                     <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
                                         <div className="flex items-center">
-                                            <WiTime8
-                                            className="group-hover:!text-primary shrink-0" />
-                                            <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Time Slots</span>
+                                            {<MdLocalGroceryStore className="group-hover:!text-primary shrink-0" />}
+                                            <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{'Products'}</span>
                                         </div>
                                     </button>
                                 </NavLink>
                             </li>
+
+                            {storeOwnerData?.storeProviding === 'serviceBased' && (
+                                <li className="menu nav-item">
+                                    <NavLink to={`/store/time-slots`} className="group" onClick={() => toggleMenu(`Time Slots`)}>
+                                        <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
+                                            <div className="flex items-center">
+                                                <WiTime8 className="group-hover:!text-primary shrink-0" />
+                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Time Slots</span>
+                                            </div>
+                                        </button>
+                                    </NavLink>
+                                </li>
                             )}
 
                             <li className="nav-item">

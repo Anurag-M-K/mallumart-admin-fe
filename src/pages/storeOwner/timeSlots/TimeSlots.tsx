@@ -117,19 +117,19 @@ export default function TimeSlot() {
                     className="whitespace-nowrap table-hover"
                     records={data?.[0]?.slots || []}
                     columns={[
-                        {
-                            accessor: 'date',
-                            title: 'Date',
-                            sortable: true,
-                            render: (date: any) => {
-                                try {
-                                    return date.date.substring(0, 10);
-                                } catch (error) {
-                                    console.error('Error formatting date:', error);
-                                    return 'Invalid date'; // Return raw date if formatting fails
-                                }
-                            },
-                        },
+                        // {
+                        //     accessor: 'date',
+                        //     title: 'Date',
+                        //     sortable: true,
+                        //     render: (date: any) => {
+                        //         try {
+                        //             return date.date.substring(0, 10);
+                        //         } catch (error) {
+                        //             console.error('Error formatting date:', error);
+                        //             return 'Invalid date'; // Return raw date if formatting fails
+                        //         }
+                        //     },
+                        // },
                         {
                             accessor: 'startTime',
                             title: 'Start Time',
@@ -142,7 +142,7 @@ export default function TimeSlot() {
                         },
                         {
                             accessor: 'slotCount',
-                            title: 'Count',
+                            title: 'Total Workers',
                         },
                     ]}
                     totalRecords={data?.length || 0}
@@ -156,7 +156,7 @@ export default function TimeSlot() {
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mb-4">
                         {fields.map((field, index) => (
                             <div key={field.id} className="dark:bg-gray-900 grid bg-gray-100 shadow-md px-3 py-4 rounded-md sm:grid-cols-8 gap-4 items-center">
-                                <div className="col-span-2">
+                                {/* <div className="col-span-2">
                                     <label htmlFor={`slots[${index}].date`} className="dark:text-gray-500 block text-sm font-medium text-gray-700">
                                         Date
                                     </label>
@@ -175,7 +175,7 @@ export default function TimeSlot() {
                                         )}
                                     />
                                     {errors.slots?.[index]?.date && <span className="text-red-600 text-sm">{errors.slots[index].date.message}</span>}
-                                </div>
+                                </div> */}
                                 <div className="col-span-2">
                                     <label htmlFor={`slots[${index}].startTime`} className="dark:text-gray-500 block text-sm font-medium text-gray-700">
                                         Start Time
@@ -214,7 +214,7 @@ export default function TimeSlot() {
                                 </div>
                                 <div className="col-span-1">
                                     <label htmlFor={`slots[${index}].slotCount`} className="dark:text-gray-500 block text-sm font-medium text-gray-700">
-                                        Count
+                                        Total Workers
                                     </label>
                                     <input
                                         {...register(`slots.${index}.slotCount`)}
