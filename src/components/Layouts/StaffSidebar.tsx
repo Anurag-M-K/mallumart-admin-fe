@@ -9,6 +9,9 @@ import { useState, useEffect } from 'react';
 import { FaUser, FaUsers, FaUsersCog } from 'react-icons/fa';
 import { MdLocalGroceryStore, MdLocalSee } from 'react-icons/md';
 import IconCaretDown from '../Icon/IconCaretDown';
+import { useQuery } from '@tanstack/react-query';
+import { fetchStaffDetails } from '../../api/staffApi';
+import { setStaffLogout } from '../../store/staffSlice';
 
 const StaffSidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
@@ -17,11 +20,25 @@ const StaffSidebar = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const staffDetails = useSelector((state:any)=>state.staff.staffDetails)
+
+
     const toggleMenu = (value: string) => {
         setCurrentMenu((oldValue) => {
             return oldValue === value ? '' : value;
         });
     };
+
+    const { data,error,isLoading} = useQuery<any>({
+        queryKey:["fetch-staff",staffDetails?.token],
+        queryFn:()=>fetchStaffDetails(staffDetails?.token)
+    })
+  
+    if (data?.response?.data?.tokenExpired) {
+        localStorage.removeItem('staffToken');
+        dispatch(setStaffLogout());
+    }
+    console.log("Staff sidebar ",data)
 
     useEffect(() => {
         const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');

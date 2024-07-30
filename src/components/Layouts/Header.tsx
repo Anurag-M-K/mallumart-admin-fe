@@ -30,7 +30,7 @@ const Header = () => {
 
     const dispatch = useDispatch();
     const { data, error, isLoading } = useQuery<any>({
-        queryKey: ['admin-details'],
+        queryKey: ['admin-details',adminDetails?.token],
         queryFn: () => fetchAdminDetails(adminDetails?.token),
     });
 

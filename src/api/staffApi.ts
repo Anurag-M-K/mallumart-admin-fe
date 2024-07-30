@@ -185,3 +185,17 @@ export const fetchStaffById = async (token: string) => {
         return error;
     }
 };
+export const fetchStaffDetails = async (token: string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/staff`,
+            headers: {
+                Authorization: token,
+            },
+            method: 'GET',
+        });
+        return res;
+    } catch (error) {
+        return error;
+    }
+};
