@@ -18,12 +18,22 @@ import { setStaffDetails } from '../../../store/staffManagementSlice';
 import { validation_email, validation_phone, validation_required } from '../../../utils/validation';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
 import IconPlus from '../../../components/Icon/IconPlus';
+import { setAdminLogout } from '../../../store/adminSlice';
 
 function StaffManagement() {
     const [staffRegisterModal, setStaffRegisterModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const adminDetails = useSelector((state: any) => state.admin.adminDetails);
     const dispatch = useDispatch();
+    // const admin: any = useSelector((state: any) => state.admin);
+
+
+    // if(!admin?.isAuthenticated){
+    //     localStorage.removeItem('adminToken');
+    //     dispatch(setAdminLogout());
+    // }
+
+
     if (import.meta.env.VITE_APP_ADMIN_EMAIL !== adminDetails?.email) {
         return (
             <div className="flex justify-center items-center   ">

@@ -18,7 +18,9 @@ import WrappedInput from '../wrappedComponents/WrappedInputField';
 import { Spinner } from 'flowbite-react';
 import { changePassword } from '../../api/commonApi';
 import toast, { Toaster } from 'react-hot-toast';
-import { RiLockPasswordLine } from "react-icons/ri";
+import { RiLockPasswordLine } from 'react-icons/ri';
+import { useQuery } from '@tanstack/react-query';
+import { fetchAdminDetails } from '../../api/adminApi';
 
 const Header = () => {
     const adminDetails = useSelector((state: any) => state.admin.adminDetails);
@@ -26,6 +28,16 @@ const Header = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [res, setRes] = useState<any>(null);
 
+    const dispatch = useDispatch();
+    const { data, error, isLoading } = useQuery<any>({
+        queryKey: ['admin-details'],
+        queryFn: () => fetchAdminDetails(adminDetails?.token),
+    });
+
+    if (data?.response?.data?.tokenExpired) {
+        localStorage.removeItem('adminToken');
+        dispatch(setAdminLogout());
+    }
     const location = useLocation();
     useEffect(() => {
         const selector = document.querySelector('ul.horizontal-menu a[href="' + window.location.pathname + '"]');
@@ -51,12 +63,11 @@ const Header = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
 
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
-    const dispatch = useDispatch();
 
     const navigate = useNavigate();
     const handleLogout = () => {
         dispatch(setAdminLogout());
-        localStorage.removeItem("adminToken");
+        localStorage.removeItem('adminToken');
         navigate('/admin/login');
         window.location.reload();
     };
@@ -65,22 +76,21 @@ const Header = () => {
         <div>Invalid User</div>;
     }
 
-
     const onSubmit = async (values: TChangePassword) => {
         try {
-            setLoading(true)
+            setLoading(true);
             const response: any = await changePassword(adminDetails?.token, values, 'admin');
             setRes(response);
             if (response?.status === 200) {
                 toast.success(response?.data?.message);
-                setModal(false)
+                setModal(false);
             } else {
                 toast.error(response?.data?.message);
             }
-            setLoading(false)
+            setLoading(false);
         } catch (error) {
-            setLoading(false)
-            console.log(error)
+            setLoading(false);
+            console.log(error);
         }
     };
 
@@ -317,9 +327,8 @@ const Header = () => {
                                                                     className="form-input ps-10 placeholder:text-white-dark"
                                                                 />
                                                             </div>
-                                                            <div className='mt-4 text-center'>
-
-                                                                {res?.response?.status != 200 && <span className="text-red-500 mt-5 text-center">{res?.response?.data?.message}</span>  } 
+                                                            <div className="mt-4 text-center">
+                                                                {res?.response?.status != 200 && <span className="text-red-500 mt-5 text-center">{res?.response?.data?.message}</span>}
                                                             </div>
                                                         </div>
                                                         <button type="submit" className="btn btn-primary mb-3 w-full">
@@ -329,8 +338,6 @@ const Header = () => {
                                                 )}
                                             />
                                         </div>
-
-                                        
                                     </Dialog.Panel>
                                 </Transition.Child>
                             </div>
@@ -339,7 +346,6 @@ const Header = () => {
                 </Transition>
             </div>
             <Toaster position="bottom-right" />
-
         </header>
     );
 };

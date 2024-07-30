@@ -6,10 +6,23 @@ export const adminLogin = async (payload: any) => {
         const res = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/login`, payload);
         return res;
     } catch (error) {
+        return error;
+    }
+};
+export const fetchAdminDetails = async (adminToken: string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/fetch-admin-details`,
+            method: 'GET',
+            headers: {
+                Authorization: adminToken,
+            },
+        });
+        return res;
+    } catch (error) {
         return error
     }
 };
-
 export const addStaff = async (payload: any, adminToken: string) => {
     try {
         const res = await instance({
@@ -53,7 +66,7 @@ export const updateStaff = async (adminToken: string, payload: any) => {
         });
         return res;
     } catch (error) {
-      return error
+        return error;
     }
 };
 
@@ -71,68 +84,67 @@ export const deleteStaff = async (adminToken: string, staffId: any) => {
     }
 };
 
-
-export const fetchAllStore = async (adminToken:string) => {
+export const fetchAllStore = async (adminToken: string) => {
     try {
-       const res = await instance({
+        const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/store`,
-            method:"GET",
-            headers:{
-                Authorization:adminToken
-            }
-        })
-        return res
+            method: 'GET',
+            headers: {
+                Authorization: adminToken,
+            },
+        });
+        return res;
     } catch (error) {
         console.log(error);
     }
-}
+};
 
-export const updateSubscription = async (adminTOken:string,values:string) => {
+export const updateSubscription = async (adminTOken: string, values: string) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/store/subscription`,
-            method:"PUT",
-            headers:{
-                Authorization:adminTOken
+            method: 'PUT',
+            headers: {
+                Authorization: adminTOken,
             },
-            data:values
-        })
+            data: values,
+        });
         return res;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
-export const updateStoreStatus = async (adminTOken:string,storeId:string) => {
+};
+export const updateStoreStatus = async (adminTOken: string, storeId: string) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/store/status-update/${storeId}`,
-            method:"PUT",
-            headers:{
-                Authorization:adminTOken
+            method: 'PUT',
+            headers: {
+                Authorization: adminTOken,
             },
-        })
+        });
         return res;
     } catch (error) {
         return error;
     }
-}
-export const updateStore = async (adminTOken:string,payload:any) => {
+};
+export const updateStore = async (adminTOken: string, payload: any) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/store/${payload.storeId}`,
-            method:"PUT",
-            data:payload,
-            headers:{
-                Authorization:adminTOken
+            method: 'PUT',
+            data: payload,
+            headers: {
+                Authorization: adminTOken,
             },
-        })
+        });
         return res;
     } catch (error) {
         return error;
     }
-}
+};
 
-export const addAdvertisement = async ( adminToken: string,payload: TAdvertisement) => {
+export const addAdvertisement = async (adminToken: string, payload: TAdvertisement) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/advertisement`,
@@ -144,74 +156,72 @@ export const addAdvertisement = async ( adminToken: string,payload: TAdvertiseme
         });
         return res;
     } catch (error) {
-        return error
+        return error;
     }
 };
 
-export const fetchAllAdvertisement = async (adminToken:string) => {
+export const fetchAllAdvertisement = async (adminToken: string) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/advertisement`,
-            method:"GET",
-            headers:{
-                Authorization:adminToken
-            }            
-        })      
-        return res.data  
+            method: 'GET',
+            headers: {
+                Authorization: adminToken,
+            },
+        });
+        return res.data;
     } catch (error) {
-        return error
+        return error;
     }
-}
+};
 
-export const deleteAdvertisement = async (adminToken: string, advertisementId:string) => {
+export const deleteAdvertisement = async (adminToken: string, advertisementId: string) => {
     try {
-       const res =  await instance({
+        const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/advertisement/${advertisementId}`,
             method: 'DELETE',
             headers: {
                 Authorization: adminToken,
             },
         });
-        return res
+        return res;
     } catch (error) {
         console.log(error);
     }
 };
 
-
-export const updateAdvertisementDisplay = async(adminToken:string,payload:TAdvertisementUpdate) => {
+export const updateAdvertisementDisplay = async (adminToken: string, payload: TAdvertisementUpdate) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/advertisement`,
-            method:"PUT",
-            headers:{
-                Authorization:adminToken
+            method: 'PUT',
+            headers: {
+                Authorization: adminToken,
             },
-            data:payload
-        })
+            data: payload,
+        });
         return res;
     } catch (error) {
-        return error
+        return error;
     }
-}
+};
 
-
-export const fetchStoreCountByCategory = async (adminToken:string) => {
+export const fetchStoreCountByCategory = async (adminToken: string) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/total-store`,
-            method:"GET",
-            headers:{
-                Authorization:adminToken
-            }            
-        })      
-        return res.data  
+            method: 'GET',
+            headers: {
+                Authorization: adminToken,
+            },
+        });
+        return res.data;
     } catch (error) {
-        return error
+        return error;
     }
-}
+};
 
-export const addTarget = async (adminToken: string,payload:any) => {
+export const addTarget = async (adminToken: string, payload: any) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/staff/target`,
@@ -227,94 +237,93 @@ export const addTarget = async (adminToken: string,payload:any) => {
     }
 };
 
-export const fetchMostSearchedProducts = async (adminToken:string) => {
+export const fetchMostSearchedProducts = async (adminToken: string) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/most-searched-products`,
-            method:"GET",
-            headers:{
-                Authorization:adminToken
-            }            
-        })      
-        return res.data  
+            method: 'GET',
+            headers: {
+                Authorization: adminToken,
+            },
+        });
+        return res.data;
     } catch (error) {
-        return error
+        return error;
     }
-}
+};
 
-export const deleteStoreById = async (adminToken: string, storeId:string) => {
+export const deleteStoreById = async (adminToken: string, storeId: string) => {
     try {
-       const res =  await instance({
+        const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/store/${storeId}`,
             method: 'DELETE',
             headers: {
                 Authorization: adminToken,
             },
         });
-        return res
+        return res;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const fetchAllUsers = async (adminToken:string,page:any,limit:any,search:string) => {
+export const fetchAllUsers = async (adminToken: string, page: any, limit: any, search: string) => {
     try {
-       const res = await instance({
+        const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/fetch-all-users?page=${page}&limit=${limit}&search=${search}`,
-            method:"GET",
-            headers:{
-                Authorization:adminToken
-            }
-        })
-        return res
-    } catch (error) {
-        console.log(error);
-    }
-}
-export const changeUserStatus = async (adminToken:string,userId:string) => {
-    try {
-       const res = await instance({
-            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/change-user-status`,
-            method:"PUT",
-            headers:{
-                Authorization:adminToken
+            method: 'GET',
+            headers: {
+                Authorization: adminToken,
             },
-            data:{
-                userId
-            }
-        })
-        return res
+        });
+        return res;
     } catch (error) {
         console.log(error);
     }
-}
-export const deleteUser = async (adminToken:string,userId:string) => {
+};
+export const changeUserStatus = async (adminToken: string, userId: string) => {
     try {
-       const res = await instance({
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/change-user-status`,
+            method: 'PUT',
+            headers: {
+                Authorization: adminToken,
+            },
+            data: {
+                userId,
+            },
+        });
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const deleteUser = async (adminToken: string, userId: string) => {
+    try {
+        const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/delete-user/${userId}`,
-            method:"DELETE",
-            headers:{
-                Authorization:adminToken
-            }
-        })
-        return res
+            method: 'DELETE',
+            headers: {
+                Authorization: adminToken,
+            },
+        });
+        return res;
     } catch (error) {
         console.log(error);
     }
-}
+};
 
-
-export const fetchUsersCount = async (adminToken:string) => {
+export const fetchUsersCount = async (adminToken: string) => {
     try {
-       const res = await instance({
+        const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/admin/users-count`,
-            method:"GET",
-            headers:{
-                Authorization:adminToken
-            }
-        })
-        return res
+            method: 'GET',
+            headers: {
+                Authorization: adminToken,
+            },
+        });
+        return res;
     } catch (error) {
         console.log(error);
     }
-}
+};

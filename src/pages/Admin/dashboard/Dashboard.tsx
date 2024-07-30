@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactApexChart from 'react-apexcharts';
 import { IRootState } from '../../../store';
 import IconShoppingCart from '../../../components/Icon/IconShoppingCart';
@@ -14,6 +14,7 @@ import IconHorizontalDots from '../../../components/Icon/IconHorizontalDots';
 import IconEye from '../../../components/Icon/IconEye';
 import { Link as ScrollLink } from 'react-scroll';
 import { getCategory } from '../../../api/categoryApi';
+import { setAdminDetails, setAdminLogout } from '../../../store/adminSlice';
 
 function Dashboard({ role }: { role: string }) {
     const token = localStorage.getItem('adminToken');
@@ -21,7 +22,7 @@ function Dashboard({ role }: { role: string }) {
     const [loading] = useState(false);
     const isDark = useSelector((state: IRootState) => state?.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const [isScrolled, setIsScrolled] = useState(false);
-    
+    const dispatch = useDispatch()
     useEffect(() => {
         const handleScroll = () => {
           if (window.scrollY >= 10) {
@@ -41,6 +42,11 @@ function Dashboard({ role }: { role: string }) {
     const { isLoading: isLoadingCategory, error: errorCategory, data: categoryData } = useQuery({queryKey: ['category'], queryFn:()=> getCategory()      });
     const {isLoading:fetchUsersCountLoading, data:fetchUsersCountData} = useQuery({queryKey:['users-count'],queryFn:()=> fetchUsersCount(adminDetails?.token)})
     const {isLoading:isLoadingMostSearchedProduct,error:mostSearchedErroe,data:mostSearchedProducts} = useQuery({queryKey:['most-searched-products'], queryFn:()=> fetchMostSearchedProducts(adminDetails.token)})
+
+    if(data?.response?.data?.tokenExpired){
+        localStorage.removeItem('adminToken');
+        dispatch(setAdminLogout());
+    }
 
     if (import.meta.env.VITE_APP_ADMIN_EMAIL !== adminDetails?.email && !token) {
         return (
