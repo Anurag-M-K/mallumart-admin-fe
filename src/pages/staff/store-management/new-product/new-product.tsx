@@ -199,7 +199,7 @@ function NewProduct({ handleCancel, id, editDefaultValues }: { handleCancel: () 
                         </div>
                         <div className="">
                             <label htmlFor="">Price</label>
-                            <div className="flex gap-8">
+                            <div className="flex flex-col sm:flex-row gap-8">
                                 <div className="flex flex-1 max-h-[38px]">
                                     <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         &#x20B9;
