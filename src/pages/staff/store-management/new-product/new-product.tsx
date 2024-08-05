@@ -165,12 +165,13 @@ function NewProduct({ handleCancel, id, editDefaultValues }: { handleCancel: () 
                                                 <CreatableSelect
                                                     {...(field as any)}
                                                     classNames={{
-                                                        input: () => 'dark:text-white-dark text-[#999]',
-                                                        control: () => 'font-semibold',
+                                                        input: () => 'dark:text-white-dark placeholder:text-blue-500 text-[#999]',
+                                                        control: () => 'font-semibold  placeholder:text-blue-500',
                                                     }}
                                                     styles={{
                                                         input: (base) => ({
                                                             ...base,
+                                                             color: '#3b82f6',
                                                             'input:focus': {
                                                                 boxShadow: 'none',
                                                             },
@@ -182,13 +183,17 @@ function NewProduct({ handleCancel, id, editDefaultValues }: { handleCancel: () 
                                                             padding: '0 8px',
                                                             fontSize: '1rem',
                                                         }),
+                                                        // placeholder:(base)=>({
+                                                        //     ...base,
+                                                        //     color:"#3b82f6"
+                                                        // })
                                                     }}
                                                     isLoading={isPending}
                                                     options={(data ?? []).map(({ _id, name }) => ({ value: _id, label: name }))}
                                                     placeholder="Select Category or Type New Category"
                                                     formatCreateLabel={(userInput) => `Request '${userInput}'`}
                                                 />
-                                                <span className={`text-xs text-white-dark ${error?.message && '!text-danger'}`}>
+                                                <span className={`text-xs  text-white-dark  ${error?.message && '!text-danger'}`}>
                                                     {error?.message || 'choose a category. not have appropriate category ? no issues, request new!'}
                                                 </span>
                                             </>
