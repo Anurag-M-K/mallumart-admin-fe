@@ -171,7 +171,7 @@ function NewProduct({ handleCancel, id, editDefaultValues }: { handleCancel: () 
                                                     styles={{
                                                         input: (base) => ({
                                                             ...base,
-                                                             color: '#3b82f6',
+                                                            //  color: '#999',
                                                             'input:focus': {
                                                                 boxShadow: 'none',
                                                             },
@@ -183,10 +183,16 @@ function NewProduct({ handleCancel, id, editDefaultValues }: { handleCancel: () 
                                                             padding: '0 8px',
                                                             fontSize: '1rem',
                                                         }),
-                                                        // placeholder:(base)=>({
-                                                        //     ...base,
-                                                        //     color:"#3b82f6"
-                                                        // })
+                                                        menu: (base) => ({
+                                                            ...base,
+                                                            zIndex: 100, // Ensure menu is on top
+                                                        }),
+                                                        option: (base, state) => ({
+                                                            ...base,
+                                                            backgroundColor: state.isFocused || state.isSelected ? '#3b82f6' : base.backgroundColor,
+                                                            color: state.isFocused || state.isSelected ? '#ffffff' : base.color,
+                                                            cursor: 'pointer',
+                                                        }),
                                                     }}
                                                     isLoading={isPending}
                                                     options={(data ?? []).map(({ _id, name }) => ({ value: _id, label: name }))}
