@@ -176,3 +176,19 @@ export const deleteTimeSlots = async (token: string) => {
         console.log(error);
     }
 };
+
+export const stockChanger = async (token:string,proId:string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/update-product-stock`,
+            method:"PUT",
+            headers:{
+                Authorization:token
+            },
+            data:{proId:proId}
+        })
+        return res;
+    } catch (error) {
+        return error;
+    }
+}

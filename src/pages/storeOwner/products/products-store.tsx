@@ -12,12 +12,14 @@ import IconEdit from '../../../components/Icon/IconEdit';
 import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import NewStore from '../../staff/store-management/new-product/new-product';
 import { Breadcrumbs } from '../../../components/breadcrumbs/breadcrumbs';
+import { stockChanger } from '../../../api/storeApi';
 
 const PAGE_SIZES = [10, 20, 30, 50, 100];
 
 export default function ProductView() {
     const storeOwnerData = useSelector((state: any) => state.storeOwner.storeOwnerData);
-    const  id  = storeOwnerData?._id;
+    const storeToken = useSelector((state: any) => state.storeOwner.storeOwnerToken);
+    const id = storeOwnerData?._id;
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
     const { data, isPending, error } = useQuery({
@@ -115,6 +117,15 @@ export default function ProductView() {
         }
     };
 
+    const stockChange = async (proId: string) => {
+        const resposne: any = await stockChanger(storeToken, proId);
+        if (resposne?.status === 200) {
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+            showAlert('success', resposne?.data?.message);
+            console.log('response ', resposne);
+        }
+    };
+
     return (
         <div>
             {/* <Breadcrumbs heading="Products" links={[{ name: 'Dashboard', href: '/store' }, { name: 'Products' }]} /> */}
@@ -157,21 +168,16 @@ export default function ProductView() {
                                     title: 'Offer Price',
                                 },
                                 {
-                                    accessor: 'isActive',
-                                    title: 'Status',
+                                    accessor: 'stock',
+                                    title: 'Stock Status',
                                     sortable: false,
-                                    render: (record: { images: string[]; isActive?: boolean; isPending?: boolean }, index: number) => (
-                                        <span className={`uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500`}>
-                                            {record.isPending ? 'Pending' : record.isActive ? 'Active' : 'Inactive'}
+                                    render: (record: any, index: number) => (
+                                        <span onClick={() => stockChange(record._id)} className={`uppercase cursor-pointer bg-primary text-white px-2 py-1 rounded-md hover:bg-blue-500`}>
+                                            {record.stock ? 'Stock In' : 'Stock Out'}
                                         </span>
                                     ),
                                 },
-                                // {
-                                //     accessor: 'status',
-                                //     title: 'Retails',
-                                //     sortable: true,
-                                //     render: ({ status }) => <span className={storeStatus[status].badgeClass}>{status}</span>,
-                                // },
+
                                 {
                                     accessor: 'id',
                                     title: 'Action',
