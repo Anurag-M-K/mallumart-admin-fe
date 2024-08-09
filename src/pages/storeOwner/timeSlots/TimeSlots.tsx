@@ -141,7 +141,7 @@ export default function TimeSlot() {
                             render: (slot: any) => convertTo12HourFormat(slot.endTime),
                         },
                         {
-                            accessor: 'slotCount',
+                            accessor: 'originalSlotCount',
                             title: 'Total Workers',
                         },
                     ]}
