@@ -40,6 +40,7 @@ const StoreChangePassword = lazy(()=>import("../pages/storeOwner/authentication/
 const EditProfile = lazy(()=>import("../pages/storeOwner/profile/EditProfile"))
 const BookingList = lazy(()=>import("../pages/storeOwner/bookings/BookingPage"))
 const TimeSlots = lazy(()=>import("../pages/storeOwner/timeSlots/TimeSlots"))
+const DoctorsList = lazy((()=>import("../pages/storeOwner/doctors-list/DoctorDetailsPage")))
 
 const routes = [
 
@@ -219,6 +220,11 @@ layout:"blank"
     {
         path: '/store/contact-us',
         element: <ProtectedRouteStore><h1>Contact us</h1></ProtectedRouteStore>,
+        layout: 'storeLayout',
+    },
+    {
+        path: '/store/doctors-list',
+        element: <ProtectedRouteStore><DoctorsList/></ProtectedRouteStore>,
         layout: 'storeLayout',
     },
     // common

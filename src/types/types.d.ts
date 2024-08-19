@@ -7,7 +7,7 @@ type TStoreValues = {
     retail?:boolean;
     email:string;
     address:string;
-    category:string;
+    category:TCategory;
     phone:string;
     storeOwnerName:string;
     bio:string;
@@ -19,6 +19,10 @@ type TStoreValues = {
     storeProviding:"productBased" | "serviceBased";
     addedBy:string;
 
+}
+type TCategory = {
+    name:string;
+    _id:string;
 }
 type ICategorySchema = {
     label: string;
@@ -119,4 +123,14 @@ interface Slot {
   
   interface TSlot {
     slots: Slot[];
+  }
+
+  type TDoctor = {
+    name:string;
+    image: any[];
+    specialisation:string;
+    startingTime:string;
+    endingTime:string;
+    noOfToken:string;
+    isNewSpecialisation:boolean;
   }

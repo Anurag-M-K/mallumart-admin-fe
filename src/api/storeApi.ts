@@ -29,23 +29,23 @@ export const fetchStore = async (storeToken: string) => {
     }
 };
 
-export const updateStoreLiveStatus = async (token:string,value:TStoreLiveStatus) => {
+export const updateStoreLiveStatus = async (token: string, value: TStoreLiveStatus) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/update-live-status`,
-            method:"PUT",
-            headers:{
-                Authorization:token
+            method: 'PUT',
+            headers: {
+                Authorization: token,
             },
-            data:value
-        })
+            data: value,
+        });
         return res;
     } catch (error) {
         return error;
     }
-}
+};
 
-export const addAdvertisement = async ( token: string,payload: TAdvertisement) => {
+export const addAdvertisement = async (token: string, payload: TAdvertisement) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/advertisement`,
@@ -53,46 +53,45 @@ export const addAdvertisement = async ( token: string,payload: TAdvertisement) =
             data: payload,
             headers: {
                 Authorization: token,
-            }
+            },
         });
         return res;
     } catch (error) {
-        return error
+        return error;
     }
 };
 
-export const fetchAllAdvertisement = async (token:string) => {
+export const fetchAllAdvertisement = async (token: string) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/advertisement`,
-            method:"GET",
-            headers:{
-                Authorization:token
-            }            
-        })      
-        return res.data  
+            method: 'GET',
+            headers: {
+                Authorization: token,
+            },
+        });
+        return res.data;
     } catch (error) {
-        return error
+        return error;
     }
-}
+};
 
-export const deleteAdvertisement = async (token: string, advertisementId:string) => {
+export const deleteAdvertisement = async (token: string, advertisementId: string) => {
     try {
-       const res =  await instance({
+        const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/advertisement/${advertisementId}`,
             method: 'DELETE',
             headers: {
                 Authorization: token,
             },
         });
-        return res
+        return res;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const updateStore = async (token:string, payload:any ) => {
-
+export const updateStore = async (token: string, payload: any) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/`,
@@ -108,8 +107,8 @@ export const updateStore = async (token:string, payload:any ) => {
     }
 };
 
-export const addTimeSlot = async ( token: string,payload: TSlot) => {
-    console.log("in addtimslot api")
+export const addTimeSlot = async (token: string, payload: TSlot) => {
+    console.log('in addtimslot api');
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/time-slots`,
@@ -117,78 +116,151 @@ export const addTimeSlot = async ( token: string,payload: TSlot) => {
             data: payload,
             headers: {
                 Authorization: token,
-            }
+            },
         });
         return res;
     } catch (error) {
-        return error
+        return error;
     }
 };
 
-export const fetchTimeSlots = async (token:string) => {
+export const fetchTimeSlots = async (token: string) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/time-slots`,
-            method:"GET",
-            headers:{
-                Authorization:token
-            }            
-        })    
-        return res.data  
+            method: 'GET',
+            headers: {
+                Authorization: token,
+            },
+        });
+        return res.data;
     } catch (error) {
-        return error
+        return error;
     }
-}
-export const fetchBookings = async (token:string,page:any,pageSize:any,sortStatus:DataTableSortStatus,) => {
-    console.log("token  from api ",token)
+};
+export const fetchBookings = async (token: string, page: any, pageSize: any, sortStatus: DataTableSortStatus) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/booking/fetch-bookings`,
-            method:"GET",
-            headers:{
-                Authorization:token
+            method: 'GET',
+            headers: {
+                Authorization: token,
             },
-            params:{
+            params: {
                 page,
                 pageSize,
                 sortColumn: sortStatus.columnAccessor,
                 sortDirection: sortStatus.direction,
-            }    
-
-        })    
-        return res.data  
+            },
+        });
+        return res.data;
     } catch (error) {
-        return error
+        return error;
     }
-}
+};
 
 export const deleteTimeSlots = async (token: string) => {
     try {
-       const res =  await instance({
+        const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/time-slots`,
             method: 'DELETE',
             headers: {
                 Authorization: token,
             },
         });
-        return res
+        return res;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const stockChanger = async (token:string,proId:string) => {
+export const stockChanger = async (token: string, proId: string) => {
     try {
         const res = await instance({
             url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/update-product-stock`,
-            method:"PUT",
-            headers:{
-                Authorization:token
+            method: 'PUT',
+            headers: {
+                Authorization: token,
             },
-            data:{proId:proId}
-        })
+            data: { proId: proId },
+        });
         return res;
     } catch (error) {
         return error;
     }
-}
+};
+export const addDoctor = async (token: string, paylaod: TDoctor) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/doctor`,
+            method: 'post',
+            headers: {
+                Authorization: token,
+            },
+            data: paylaod,
+        });
+        return res.data;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const fetchSpecialisations = async (token: string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/specialisation`,
+            method: 'GET',
+            headers: {
+                Authorization: token,
+            },
+        });
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message || 'failed to fetch specialisation');
+    }
+};
+export const fetchAllDoctors = async (token: string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/fetch-all-doctors`,
+            method: 'GET',
+            headers: {
+                Authorization: token,
+            },
+        });
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error?.response?.data?.message || 'failed to fetch specialisation');
+    }
+};
+
+export const changeDrAvailability = async (token: string, doctorId: string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/change-dr-availability`,
+            method: 'PUT',
+            headers: {
+                Authorization: token,
+            },
+            data: { doctorId: doctorId },
+        });
+        return res.data;
+    } catch (error) {
+        return error;
+    }
+};
+export const deleteDoctor = async (token: string, doctorId: string) => {
+    try {
+        const res = await instance({
+            url: `${import.meta.env.VITE_APP_BACKEND_URL}/api/store/doctor`,
+            method: 'DELETE',
+            headers: {
+                Authorization: token,
+            },
+            data: { doctorId: doctorId },
+        });
+        return res.data;
+    } catch (error) {
+        return error;
+    }
+};

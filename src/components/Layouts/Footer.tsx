@@ -1,5 +1,5 @@
 const Footer = () => {
-    return <div className="dark:text-white-dark text-center ltr:sm:text-left rtl:sm:text-right p-6 mt-auto">© {new Date().getFullYear()}. HASHQUBES All rights reserved.</div>;
+    return <div className="dark:text-white-dark text-center ltr:sm:text-left rtl:sm:text-right p-6 mt-auto">© {new Date().getFullYear()} - MALLU MART All rights reserved.</div>;
 };
 
 export default Footer;

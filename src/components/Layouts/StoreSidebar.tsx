@@ -11,6 +11,7 @@ import { setStoreData } from '../../store/storeSlice';
 import { FaAdversal } from 'react-icons/fa';
 import { WiTime8 } from 'react-icons/wi';
 import { LuTicket } from 'react-icons/lu';
+import { FaUserDoctor } from 'react-icons/fa6';
 
 const StoreSidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
@@ -129,13 +130,30 @@ const StoreSidebar = () => {
                                 </NavLink>
                             </li>
 
-                            {storeOwnerData?.storeProviding === 'serviceBased' && (
+                            {storeOwnerData?.storeProviding === 'serviceBased' &&
+                               ( storeOwnerData?.category?.name !== 'Hospital' &&
+                                storeOwnerData?.category?.name !== 'Clinic' &&
+                                storeOwnerData?.category?.name !== 'Clinic and lab') && (
+                                    <li className="menu nav-item">
+                                        <NavLink to={`/store/time-slots`} className="group" onClick={() => toggleMenu(`Time Slots`)}>
+                                            <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
+                                                <div className="flex items-center">
+                                                    <WiTime8 className="group-hover:!text-primary shrink-0" />
+                                                    <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Time Slots</span>
+                                                </div>
+                                            </button>
+                                        </NavLink>
+                                    </li>
+                                )}
+                            {(storeOwnerData?.category?.name === 'Hospital' ||
+                                storeOwnerData?.category?.name === 'Clinic' ||
+                                storeOwnerData?.category?.name === 'Clinic and lab') && (
                                 <li className="menu nav-item">
-                                    <NavLink to={`/store/time-slots`} className="group" onClick={() => toggleMenu(`Time Slots`)}>
+                                    <NavLink to={`/store/doctors-list`} className="group" onClick={() => toggleMenu(`Doctors List`)}>
                                         <button type="button" className={`${currentMenu === 'stores' ? 'active' : ''} nav-link group w-full`}>
                                             <div className="flex items-center">
-                                                <WiTime8 className="group-hover:!text-primary shrink-0" />
-                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Time Slots</span>
+                                                <FaUserDoctor className="group-hover:!text-primary shrink-0" />
+                                                <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Doctors List</span>
                                             </div>
                                         </button>
                                     </NavLink>

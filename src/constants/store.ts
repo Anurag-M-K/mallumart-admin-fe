@@ -41,3 +41,12 @@ export const districts = [
     { label: 'TRIVANDRUM', value: 'Trivandrum' },
 ];
 
+export const offDays = [
+    { label: 'Monday', value: 'monday' },
+    { label: 'Tuesday', value: 'tuesday' },
+    { label: 'Wednsday', value: 'wednsday' },
+    { label: 'Thursday', value: 'thursday' },
+    { label: 'Friday', value: 'friday' },
+    { label: 'Saturday', value: 'saturday' },
+    { label: 'sunday', value: 'sunday' },
+];
